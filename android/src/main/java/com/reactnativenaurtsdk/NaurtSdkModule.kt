@@ -63,6 +63,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   }
   private val isRunningCB = IsRunningCallback(reactContext)
 
+  // TODO: Expose whole Journey & Other Naurt Metadata as JSON
   private class NaurtPointCallback(
     val reactContext: ReactApplicationContext,
   ) : Observable.OnPropertyChangedCallback() {
@@ -199,5 +200,16 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     }
   }
 
-  // TODO: Expose whole Journey & Other Naurt Metadata as JSON
+  @ReactMethod
+  fun isNaurtInitialised(): Boolean {
+    return Naurt.isInitialised.get()
+  }
+  @ReactMethod
+  fun isNaurtValidated(): Boolean {
+    return Naurt.isValidated.get()
+  }
+  @ReactMethod
+  fun isNaurtRunning(): Boolean {
+    return Naurt.isRunning.get()
+  }
 }

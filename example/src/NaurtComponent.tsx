@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, useColorScheme, View } from 'react-native';
+import { NativeModules, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import * as naurt from 'react-native-naurt-sdk';
 import Config from 'react-native-config';
@@ -22,9 +22,8 @@ const NaurtComponent = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
-    console.log(naurt.getNaurtEvents());
     naurtEventEmitter = naurt.getNaurtEventEmitter();
-    naurt.initialiseNaurt(Config.API_KEY);
+    naurt.initialiseNaurt("4b4d91b4-db2f-4104-922d-e0c94d9fa472-3c0ecfd8-c29a-498f-8d81-8bc58b318698");
 
     naurtEventEmitter.addListener(
       'NAURT_IS_INITIALISED',
