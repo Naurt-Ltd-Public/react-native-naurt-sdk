@@ -1,6 +1,6 @@
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['NaurtSdk_kotlinVersion']
+//  def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['NaurtSdk_kotlinVersion']
 
   repositories {
     google()
@@ -10,13 +10,13 @@ buildscript {
             maven { url 'https://jitpack.io' }
         }
     }
-    jcenter()
+//    jcenter()
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
+    classpath 'com.android.tools.build:gradle:7.0.4'
     // noinspection DifferentKotlinGradleVersion
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0"
   }
 }
 
@@ -36,11 +36,9 @@ android {
   defaultConfig {
     minSdkVersion 26
     targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-    versionCode 1
-    versionName "1.0"
-    
+
   }
-  
+
   buildTypes {
     release {
       minifyEnabled false
@@ -131,12 +129,12 @@ repositories {
   }
 }
 
-def kotlin_version = getExtOrDefault('kotlinVersion')
+//def kotlin_version = getExtOrDefault('kotlinVersion')
 
 dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
 
   implementation 'com.github.Naurt-Ltd-Public:naurt-android-sdk:v1.8.4'
   implementation 'androidx.core:core-ktx:1.7.0'

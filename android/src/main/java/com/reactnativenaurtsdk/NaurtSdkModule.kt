@@ -12,15 +12,15 @@ import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEm
 import androidx.databinding.Observable
 import com.naurt_kotlin_sdk.Naurt.INSTANCE as Naurt
 
+val NAURT_EVENT_IDS = arrayOf(
+  "NAURT_IS_INITIALISED",
+  "NAURT_IS_VALIDATED",
+  "NAURT_IS_RUNNING",
+  "NAURT_NEW_POINT"
+)
+
 class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), LifecycleEventListener {
   private var hadPaused = false
-
-  val NAURT_EVENT_IDS = arrayOf(
-    "NAURT_IS_INITIALISED",
-    "NAURT_IS_VALIDATED",
-    "NAURT_IS_RUNNING",
-    "NAURT_NEW_POINT"
-  )
 
   // ============================= React Callbacks =============================
   private class IsInitialisedCallback(
