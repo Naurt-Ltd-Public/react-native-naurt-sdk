@@ -1,31 +1,32 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-naurt-sdk';
+import {
+  useColorScheme,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import NaurtComponent from './NaurtComponent';
 
-export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+const App = () => {
+  const isDarkMode = useColorScheme() === 'dark';
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}
+      >
+        <NaurtComponent />
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
+export default App;
