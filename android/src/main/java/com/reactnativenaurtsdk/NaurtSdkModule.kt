@@ -137,16 +137,16 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   /** Initialise Naurt with a given context  */
   @ReactMethod
-  fun initialiseNaurt(apiKey: String?) {
+  fun initialiseNaurt(apiKey: String, precision: Int?) {
     // Guarded return, to prevent duplicate Initialisations
     if (Naurt.isInitialised.get()) {
       return
     }
 
     Naurt.initialise(
-      apiKey!!,
+      apiKey,
       reactApplicationContext.applicationContext,
-      6
+      precision?: 6
     )
   }
 

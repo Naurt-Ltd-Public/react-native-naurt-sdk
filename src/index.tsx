@@ -44,7 +44,7 @@ export function getNaurtEvents(): String[] {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      return sdk.getConstants().get('NAURT_EVENT_IDS');
+      return sdk.getIds();
     }
     // TODO: iOS Wrapper
     // case 'ios': {

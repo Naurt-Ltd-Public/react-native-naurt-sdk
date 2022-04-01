@@ -1,7 +1,7 @@
 export interface NaurtAndroidInterface {
     getName(): String;
-    getConstants(): Map<String, any>;
-    initialiseNaurt(apiKey: String, precision: Number): void;
+    getIds(): Array<String>;
+    initialiseNaurt(apiKey: String, precision?: Number): void;
     resumeNaurt(): void;
     pauseNaurt(): void;
     startNaurt(): void;
