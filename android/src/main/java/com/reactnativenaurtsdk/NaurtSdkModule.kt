@@ -11,14 +11,5 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         return "NaurtSdk"
     }
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    fun multiply(a: Int, b: Int, promise: Promise) {
-    
-      promise.resolve(a * b)
-    
-    }
-
     
 }
