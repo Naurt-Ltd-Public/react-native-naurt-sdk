@@ -1,6 +1,6 @@
 {
   "name": "react-native-naurt-sdk",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Naurt's official react native sdk wrapper",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
