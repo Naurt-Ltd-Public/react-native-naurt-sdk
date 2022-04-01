@@ -131,6 +131,16 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   // ============================== React Methods ==============================
   @ReactMethod
+  fun addListener(eventName: String) {
+      // Set up any upstream listeners or background tasks as necessary
+  }
+
+  @ReactMethod
+  fun removeListeners(count: Integer) {
+      // Remove upstream listeners, stop unnecessary background tasks
+  }
+  
+  @ReactMethod
   fun getIds(): Array<String> {
     return NAURT_EVENT_IDS
   }
