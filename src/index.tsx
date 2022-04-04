@@ -98,7 +98,7 @@ export function initialiseNaurt(
           ]`;
           }
         })
-        .catch((err) => {
+        .catch((err: any) => {
           throw `initialiseNaurt | error: ${err}`;
         });
 
