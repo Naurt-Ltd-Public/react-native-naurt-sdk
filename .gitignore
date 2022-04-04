@@ -3,6 +3,7 @@
 # OSX
 #
 .DS_Store
+/ios/Pods
 
 # XDE
 .expo/

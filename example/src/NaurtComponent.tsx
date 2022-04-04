@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { NativeModules, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import * as naurt from 'react-native-naurt-sdk';
-import Config from 'react-native-config';
 import type { NaurtInitialisedEvent, NaurtPoint, NaurtPointEvent, NaurtRunningEvent, NaurtValidatedEvent } from 'react-native-naurt-sdk';
 
 const NaurtComponent = () => {
