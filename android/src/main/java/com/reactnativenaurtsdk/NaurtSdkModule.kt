@@ -70,12 +70,25 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     override fun onPropertyChanged(sender: Observable, propertyId: Int) {
       if (Naurt.naurtPoint.get() != null) {
         val params = Arguments.createMap()
-        params.putDouble("latitude", Naurt.naurtPoint.get()!!.latitude)
-        params.putDouble("longitude", Naurt.naurtPoint.get()!!.longitude)
-        params.putString(
-          "timestamp",
-          Naurt.naurtPoint.get()!!.timestamp.toString()
-        )
+        val point = Naurt.naurtPoint.get()!!
+        params.putDouble("latitude", point.latitude)
+        params.putDouble("longitude", point.longitude)
+        params.putString("timestamp", point.timestamp.toString())
+        params.putDouble("horizontalAccuracy",point.horizontalAccuracy)
+        params.putDouble("speed",point.speed)
+        params.putDouble("heading",point.heading)
+        params.putDouble("speedAccuracy",point.speedAccuracy)
+        params.putDouble("headingAccuracy",point.headingAccuracy)
+        params.putDouble("horizontalCovariance",point.horizontalCovariance)
+        params.putDouble("altitude",point.altitude)
+        params.putDouble("verticalAccuracy",point.verticalAccuracy)
+
+        var spoof = Arguments.createMap()
+        spoof.putBoolean("mockedLocation", point.spoofReport.mockedLocation)
+        spoof.putBoolean("mockAppsInstalled", point.spoofReport.mockAppsInstalled)
+        spoof.putBoolean("mockSettingActive", point.spoofReport.mockSettingActive)
+        params.putMap("spoofReport", spoof)
+        
         reactContext
           .getJSModule(RCTDeviceEventEmitter::class.java)
           .emit(NAURT_EVENT_IDS[3], params)

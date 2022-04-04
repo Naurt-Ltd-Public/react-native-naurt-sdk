@@ -1,6 +1,18 @@
-// TODO: Add aditional fields exposed by 1.8+ of core SDK
 export interface NaurtPoint {
     latitude: number,
     longitude: number,
-    timestamp: String
+    timestamp: String,
+    horizontalAccuracy: number,
+    speed: number,
+    heading: number,
+    speedAccuracy: number,
+    headingAccuracy: number,
+    horizontalCovariance: number,
+    altitude: number,
+    verticalAccuracy: number,
+    spoofReport: {
+      mockedLocation: Boolean,
+      mockAppsInstalled: Boolean,
+      mockSettingActive: Boolean
+    }
   }
