@@ -5,6 +5,9 @@ import {
   Platform,
 } from 'react-native';
 import type { NaurtAndroidInterface } from './interfaces/android-interface';
+import type { AndroidDeviceReport } from './interfaces/androrid-device-report';
+import type { NaurtIosInterface } from './interfaces/ios-interface';
+import type { NaurtPoint } from './interfaces/naurt-point';
 
 const LINKING_ERROR =
   `The package 'react-native-naurt-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -24,31 +27,33 @@ const NaurtSdk = NativeModules.NaurtSdk
     );
 
 /** Get the NativeEventEmitter for Naurt - to register NAURT_EVENT listeners to */
-export function getNaurtEventEmitter(): NativeEventEmitter {
+export function getEventEmitter(): NativeEventEmitter {
   switch (Platform.OS) {
     case 'android': {
       return new NativeEventEmitter(NaurtSdk);
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   break;
-    // }
+    case 'ios': {
+      return new NativeEventEmitter(NaurtSdk);
+    }
     default: {
       throw `getNaurtEventEmitter | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
-export function getNaurtEvents(): String[] {
+export function getEventIds(): Promise<String[]> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      return sdk.getIds();
+      return sdk.getIds().then(ids => {
+        return ids
+      })
     }
-    // TODO: iOS Wrapper
     // case 'ios': {
-    //   return false;
+    //   let sdk = NaurtSdk as NaurtIosInterface;
+
+    //   return sdk.supportedEvents();
     // }
     default: {
       throw `startNaurt | Unsupported OS!: ${Platform.OS}`;
@@ -56,22 +61,20 @@ export function getNaurtEvents(): String[] {
   }
 }
 
-export function initialiseNaurt(
+export function initialise(
   apiKey: String,
   precision: Number = 6
 ): Boolean {
   switch (Platform.OS) {
     case 'android': {
       PermissionsAndroid.requestMultiple([
-        'android.permission.ACCESS_COARSE_LOCATION',
         'android.permission.ACCESS_FINE_LOCATION',
-        'android.permission.WRITE_EXTERNAL_STORAGE',
+        'android.permission.ACCESS_COARSE_LOCATION',
       ])
         .then((result) => {
           let granted =
             result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted' &&
-            result['android.permission.ACCESS_FINE_LOCATION'] === 'granted' &&
-            result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted';
+            result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
 
           if (granted) {
             let sdk = NaurtSdk as NaurtAndroidInterface;
@@ -90,11 +93,6 @@ export function initialiseNaurt(
                 ? 'Granted'
                 : 'Denied'
             },
-            WRITE_EXTERNAL_STORAGE: ${
-              result['android.permission.WRITE_EXTERNAL_STORAGE'] === 'granted'
-                ? 'Granted'
-                : 'Denied'
-            },
           ]`;
           }
         })
@@ -104,103 +102,310 @@ export function initialiseNaurt(
 
       return false;
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   return false;
-    // }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+
+      sdk.initialiseNaurt(apiKey, precision);
+      return true
+    }
     default: {
       throw `initialiseNaurt | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
-export function startNaurt(): Boolean {
+export function start(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      if (sdk.isNaurtInitialised()) {
-        sdk.startNaurt();
-        return true;
-      } else {
-        return false;
-      }
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.startNaurt()
+        }
+        return result;
+      });
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   return false;
-    // }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.startNaurt()
+        }
+        return result;
+      });
+    }
     default: {
       throw `startNaurt | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
-export function stopNaurt(): Boolean {
+export function stop(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      if (sdk.isNaurtInitialised()) {
-        sdk.stopNaurt();
-        return true;
-      } else {
-        return false;
-      }
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.stopNaurt()
+        }
+        return result;
+      });
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   return false;
-    // }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.stopNaurt()
+        }
+        return result;
+      });
+    }
     default: {
       throw `stopNaurt | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
-export function pauseNaurt(): Boolean {
+export function pause(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      if (sdk.isNaurtInitialised()) {
-        sdk.pauseNaurt();
-        return true;
-      } else {
-        return false;
-      }
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.pauseNaurt()
+        }
+        return result;
+      });
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   return false;
-    // }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.pauseNaurt()
+        }
+        return result;
+      });
+    }
     default: {
       throw `pauseNaurt | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
-export function resumeNaurt(): Boolean {
+export function resume(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      if (sdk.isNaurtInitialised()) {
-        sdk.resumeNaurt();
-        return true;
-      } else {
-        return false;
-      }
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.resumeNaurt()
+        }
+        return result;
+      });
     }
-    // TODO: iOS Wrapper
-    // case 'ios': {
-    //   return false;
-    // }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isInitialised().then((result) => {
+        if (result) {
+          sdk.resumeNaurt()
+        }
+        return result;
+      });
+    }
     default: {
       throw `resumeNaurt | Unsupported OS!: ${Platform.OS}`;
     }
   }
 }
 
+export function isInitialised(): Promise<boolean> {
+  console.log(NativeModules)
+
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.isInitialised().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isInitialised().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `isInitialised | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function isValidated(): Promise<boolean> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.isValidated().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isValidated().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `isValidated | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function isRunning(): Promise<boolean> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.isRunning().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.isRunning().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `isRunning | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function hasLocationProvider(): Promise<boolean> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.hasLocationProvider().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `hasLocationProvider | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function deviceReport(): Promise<AndroidDeviceReport> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return  sdk.deviceReport().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `deviceReport | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function deviceUUID(): Promise<String> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.deviceUUID().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `deviceUUID | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function journeyUuid(): Promise<String> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.journeyUuid().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.journeyUuid().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `journeyUuid | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function naurtPoint(): Promise<NaurtPoint> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.naurtPoint().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.naurtPoint().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `naurtPoint | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function naurtPoints(): Promise<NaurtPoint[]> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.naurtPoints().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.naurtPoints().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `naurtPoints | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
+export function trackingStatus(): Promise<String> {
+  switch (Platform.OS) {
+    case 'android': {
+      let sdk = NaurtSdk as NaurtAndroidInterface;
+      return sdk.trackingStatus().then((result) => {
+        return result;
+      });
+    }
+    case 'ios': {
+      let sdk = NaurtSdk as NaurtIosInterface;
+      return sdk.trackingStatus().then((result) => {
+        return result;
+      });
+    }
+    default: {
+      throw `trackingStatus | Unsupported OS!: ${Platform.OS}`;
+    }
+  }
+}
+
 export { NaurtPoint } from './interfaces/naurt-point';
+export { AndroidDeviceReport } from './interfaces/androrid-device-report';
 export * from './interfaces/events';

@@ -1,6 +1,6 @@
 # react-native-naurt-sdk
 
-Naurt's official react native sdk wrapper
+Naurt's official sdk wrapper for react native
 
 ## Installation
 

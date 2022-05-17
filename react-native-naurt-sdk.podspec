@@ -11,9 +11,16 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => "13.4" }
-  s.source       = { :git => "https://github.com/Naurt-Ltd-Public/react-native-naurt-sdk.git.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/Naurt-Ltd-Public/react-native-naurt-sdk.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React-Core"
+  s.dependency 'Zip', '2.1.2'
+  s.dependency 'naurt_cocoapod', '0.6.3'
+
+  s.xcconfig = { 'ENABLE_BITCODE' => 'NO', }
+  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+  s.swift_version = '5.0'
 end
+

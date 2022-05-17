@@ -1,18 +1,13 @@
 export interface NaurtPoint {
-    latitude: number,
-    longitude: number,
-    timestamp: String,
-    horizontalAccuracy: number,
-    speed: number,
-    heading: number,
-    speedAccuracy: number,
-    headingAccuracy: number,
-    horizontalCovariance: number,
-    altitude: number,
-    verticalAccuracy: number,
-    spoofReport: {
-      mockedLocation: Boolean,
-      mockAppsInstalled: Boolean,
-      mockSettingActive: Boolean
-    }
-  }
+  latitude: number,
+  longitude: number,
+  timestamp: String,
+  horizontalAccuracy: number,
+  speed: number,
+  heading: number,
+  speedAccuracy: number,
+  headingAccuracy: number,
+  horizontalCovariance: number,
+  altitude: number,
+  verticalAccuracy: number,
+}
