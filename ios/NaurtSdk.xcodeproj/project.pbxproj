@@ -25,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libNaurtSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNaurtSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		96C7BB55282E5E2800A92788 /* NaurtSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NaurtSdk.h; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* NaurtSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NaurtSdk.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* NaurtSdk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NaurtSdk-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* NaurtSdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaurtSdk.swift; sourceTree = "<group>"; };
@@ -52,6 +53,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				96C7BB55282E5E2800A92788 /* NaurtSdk.h */,
 				F4FF95D6245B92E800C19C63 /* NaurtSdk.swift */,
 				B3E7B5891CC2AC0600A0062D /* NaurtSdk.m */,
 				F4FF95D5245B92E700C19C63 /* NaurtSdk-Bridging-Header.h */,

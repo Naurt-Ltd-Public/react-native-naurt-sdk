@@ -104,7 +104,6 @@ export function initialise(
     }
     case 'ios': {
       let sdk = NaurtSdk as NaurtIosInterface;
-
       sdk.initialiseNaurt(apiKey, precision);
       return true
     }

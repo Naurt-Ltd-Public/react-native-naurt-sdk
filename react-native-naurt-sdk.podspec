@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
   s.dependency 'Zip', '2.1.2'
-  s.dependency 'naurt_cocoapod', '0.6.3'
+  s.dependency 'naurt_cocoapod'
 
   s.xcconfig = { 'ENABLE_BITCODE' => 'NO', }
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

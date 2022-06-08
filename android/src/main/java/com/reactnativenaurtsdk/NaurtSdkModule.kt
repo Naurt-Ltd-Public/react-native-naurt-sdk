@@ -10,7 +10,8 @@ import com.facebook.react.bridge.Promise;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter
 
-import com.naurt.Sdk.INSTANCE as Sdk
+//import com.naurt.Sdk.INSTANCE as Sdk
+import com.naurt.Sdk as Sdk
 import com.naurt.*
 import com.naurt.events.*
 
@@ -215,7 +216,14 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   }
 
   override fun onHostResume() {
-    Sdk.resume(reactApplicationContext.applicationContext)
+    try {
+      if (reactApplicationContext != null) {
+        Sdk.resume(reactApplicationContext.applicationContext)
+      }
+    }
+    catch(e: Exception) {
+      e.printStackTrace()
+    }
   }
 
   override fun onHostPause() {

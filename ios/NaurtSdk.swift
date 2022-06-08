@@ -10,7 +10,7 @@ class NaurtSdk: NSObject {
     private var runningSubscriber: AnyCancellable? = nil
     private var pointSubscriber: AnyCancellable? = nil
     
-    private var bridge: RCTBridge!
+    @objc var bridge: RCTBridge!
 
 
     private let eventIds: [String] = [
@@ -92,10 +92,6 @@ class NaurtSdk: NSObject {
     
     override init() {
         super.init()
-        initialisationSubscriber = getInitialisationSubscriber()
-        validationSubscriber = getValidationSubscriber()
-        runningSubscriber = getRunningSubscriber()
-        pointSubscriber = getPointSubscriber()
     }
     
     deinit {
@@ -114,7 +110,12 @@ class NaurtSdk: NSObject {
         resolve(eventIds)
     }
     
-    @objc public func initialiseNaurt(apiKey: String, precision: Int) {
+    @objc(initialiseNaurt:precision:)
+    func initialiseNaurt(_ apiKey: String, precision: Int) {
+        initialisationSubscriber = getInitialisationSubscriber()
+        validationSubscriber = getValidationSubscriber()
+        runningSubscriber = getRunningSubscriber()
+        pointSubscriber = getPointSubscriber()
       Naurt.shared.initialise(apiKey: apiKey, precision: precision);
     }
     
@@ -134,25 +135,33 @@ class NaurtSdk: NSObject {
       Naurt.shared.resume()
     }
     
-    @objc public func isInitialised(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(isInitialised:reject:)
+    func isInitialised(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.isInitialised)
     }
-    @objc public func isValidated(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    
+    @objc(isValidated:reject:)
+    public func isValidated(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.isValidated)
     }
-    @objc public func isRunning(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(isRunning:reject:)
+    public func isRunning(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.isRunning)
     }
-    @objc public func journeyUuid(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(journeyUuid:reject:)
+    public func journeyUuid(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.journeyUuid)
     }
-    @objc public func naurtPoint(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(naurtPoint:reject:)
+    public func naurtPoint(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.naurtPoint)
     }
-    @objc public func naurtPoints(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(naurtPoints:reject:)
+    public func naurtPoints(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.naurtPoints)
     }
-    @objc public func trackingStatus(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
+    @objc(trackingStatus:reject:)
+    public func trackingStatus(_ resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) {
         resolve(Naurt.shared.trackingStatus)
     }
 }
