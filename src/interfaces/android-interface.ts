@@ -4,9 +4,9 @@ import type { NaurtPoint } from "./naurt-point";
 export interface NaurtAndroidInterface {
     getName(): String;
     getIds(): Promise<String[]>;
-    initialiseNaurt(apiKey: String, precision?: Number): void;
-    resumeNaurt(): void;
-    pauseNaurt(): void;
+    initialiseNaurt(apiKey: String): void;
+    // resumeNaurt(): void;
+    // pauseNaurt(): void;
     startNaurt(): void;
     stopNaurt(): void;
     addListener(eventName: String): void;

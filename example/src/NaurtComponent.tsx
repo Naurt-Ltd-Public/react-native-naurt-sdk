@@ -61,7 +61,7 @@ const NaurtComponent = () => {
 
   useEffect(() => {
     naurtEventEmitter = Naurt.getEventEmitter();
-    Naurt.initialise("2a56e73b-acb4-4579-9faf-1d5ec2283394-e2757307-4fdd-4005-a092-ca3bb53de56e");
+    Naurt.initialise("<API-KEY-HERE>");
 
     naurtEventEmitter.addListener(
       'NAURT_IS_INITIALISED',
@@ -76,6 +76,9 @@ const NaurtComponent = () => {
       (event: NaurtValidatedEvent) => {
         console.log('NAURT_IS_VALIDATED: ' + event.isValidated);
         setNaurtIsValidated(event.isValidated);
+        Naurt.isValidated().then((v) => {
+          console.log('NAURT_IS_VALIDATED_2: ' + v);
+        })
       }
     );
 
@@ -84,6 +87,9 @@ const NaurtComponent = () => {
       (event: NaurtRunningEvent) => {
         console.log('NAURT_IS_RUNNING: ' + event.isRunning);
         setNaurtIsRunning(event.isRunning);
+        Naurt.isValidated().then((v) => {
+          console.log('NAURT_IS_VALIDATED_2: ' + v);
+        })
       }
     );
 

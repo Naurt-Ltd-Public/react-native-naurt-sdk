@@ -47,7 +47,7 @@ const NaurtComponent = () => {
     const isDarkMode = useColorScheme() === 'dark';
     useEffect(() => {
         naurtEventEmitter = Naurt.getEventEmitter();
-        Naurt.initialise("2a56e73b-acb4-4579-9faf-1d5ec2283394-e2757307-4fdd-4005-a092-ca3bb53de56e");
+        Naurt.initialise("<API-KEY-HERE>");
         naurtEventEmitter.addListener('NAURT_IS_INITIALISED', (event) => {
             console.log('NAURT_IS_INITIALISED: ' + event.isInitialised);
             setNaurtIsInitialised(event.isInitialised);
@@ -55,10 +55,16 @@ const NaurtComponent = () => {
         naurtEventEmitter.addListener('NAURT_IS_VALIDATED', (event) => {
             console.log('NAURT_IS_VALIDATED: ' + event.isValidated);
             setNaurtIsValidated(event.isValidated);
+            Naurt.isValidated().then((v) => {
+                console.log('NAURT_IS_VALIDATED_2: ' + v);
+            });
         });
         naurtEventEmitter.addListener('NAURT_IS_RUNNING', (event) => {
             console.log('NAURT_IS_RUNNING: ' + event.isRunning);
             setNaurtIsRunning(event.isRunning);
+            Naurt.isValidated().then((v) => {
+                console.log('NAURT_IS_VALIDATED_2: ' + v);
+            });
         });
         naurtEventEmitter.addListener('NAURT_NEW_POINT', (event) => {
             console.log(`NAURT_NEW_POINT: [${event.latitude}, ${event.longitude}], ${event.timestamp}`);

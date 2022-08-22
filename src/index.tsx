@@ -61,10 +61,7 @@ export function getEventIds(): Promise<String[]> {
   }
 }
 
-export function initialise(
-  apiKey: String,
-  precision: Number = 6
-): Boolean {
+export function initialise(apiKey: String): Boolean {
   switch (Platform.OS) {
     case 'android': {
       PermissionsAndroid.requestMultiple([
@@ -79,7 +76,7 @@ export function initialise(
           if (granted) {
             let sdk = NaurtSdk as NaurtAndroidInterface;
 
-            sdk.initialiseNaurt(apiKey, precision);
+            sdk.initialiseNaurt(apiKey);
             return true;
           } else {
             throw `initialiseNaurt | Missing Permissions! [
@@ -104,7 +101,7 @@ export function initialise(
     }
     case 'ios': {
       let sdk = NaurtSdk as NaurtIosInterface;
-      sdk.initialiseNaurt(apiKey, precision);
+      sdk.initialiseNaurt(apiKey, 8);
       return true
     }
     default: {
@@ -170,14 +167,15 @@ export function stop(): Promise<boolean> {
 export function pause(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
-      let sdk = NaurtSdk as NaurtAndroidInterface;
+      // let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      return sdk.isInitialised().then((result) => {
-        if (result) {
-          sdk.pauseNaurt()
-        }
-        return result;
-      });
+      // return sdk.isInitialised().then((result) => {
+      //   if (result) {
+      //     sdk.pauseNaurt()
+      //   }
+      //   return result;
+      // });
+      return Promise.resolve(true);
     }
     case 'ios': {
       let sdk = NaurtSdk as NaurtIosInterface;
@@ -197,14 +195,15 @@ export function pause(): Promise<boolean> {
 export function resume(): Promise<boolean> {
   switch (Platform.OS) {
     case 'android': {
-      let sdk = NaurtSdk as NaurtAndroidInterface;
+      // let sdk = NaurtSdk as NaurtAndroidInterface;
 
-      return sdk.isInitialised().then((result) => {
-        if (result) {
-          sdk.resumeNaurt()
-        }
-        return result;
-      });
+      // return sdk.isInitialised().then((result) => {
+      //   if (result) {
+      //     sdk.resumeNaurt()
+      //   }
+      //   return result;
+      // });
+      return Promise.resolve(true);
     }
     case 'ios': {
       let sdk = NaurtSdk as NaurtIosInterface;

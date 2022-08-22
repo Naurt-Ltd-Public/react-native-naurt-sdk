@@ -10,27 +10,26 @@ import com.facebook.react.bridge.Promise;
 
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter
 
-//import com.naurt.Sdk.INSTANCE as Sdk
-import com.naurt.Sdk as Sdk
+import com.naurt.Naurt
 import com.naurt.*
-import com.naurt.events.*
 
 class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), LifecycleEventListener {
-  private lateinit var naurtLocationListener: EventListener<NaurtNewLocationEvent>
-  private lateinit var naurtOnlineListener: EventListener<NaurtIsOnlineEvent>
-  private lateinit var naurtIsInitialisedListener: EventListener<NaurtIsInitialisedEvent>
-  private lateinit var naurtIsValidatedListener: EventListener<NaurtIsValidatedEvent>
-  private lateinit var naurtNewJourneyListener: EventListener<NaurtNewJourneyEvent>
-  private lateinit var naurtRunningListener: EventListener<NaurtIsRunningEvent>
-  private lateinit var naurtHasLocationProviderListener: EventListener<NaurtHasLocationProviderEvent>
-  private lateinit var naurtNewTrackingStatusListener: EventListener<NaurtNewTrackingStatusEvent>
-  private lateinit var naurtNewDeviceReportListener: EventListener<NaurtNewDeviceReportEvent>
+  private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>
+  private lateinit var naurtOnlineListener: NaurtEventListener<NaurtIsOnlineEvent>
+  private lateinit var naurtIsInitialisedListener: NaurtEventListener<NaurtIsInitialisedEvent>
+  private lateinit var naurtIsValidatedListener: NaurtEventListener<NaurtIsValidatedEvent>
+  private lateinit var naurtNewJourneyListener: NaurtEventListener<NaurtNewJourneyEvent>
+  private lateinit var naurtRunningListener: NaurtEventListener<NaurtIsRunningEvent>
+  private lateinit var naurtHasLocationProviderListener: NaurtEventListener<NaurtHasLocationProviderEvent>
+  private lateinit var naurtNewTrackingStatusListener: NaurtEventListener<NaurtNewTrackingStatusEvent>
+  private lateinit var naurtNewDeviceReportListener: NaurtEventListener<NaurtNewDeviceReportEvent>
 
   private val permissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
     Manifest.permission.ACCESS_NETWORK_STATE,
     Manifest.permission.ACCESS_COARSE_LOCATION,
-    Manifest.permission.INTERNET
+    Manifest.permission.INTERNET,
+    Manifest.permission.READ_PHONE_STATE,
   )
 
   val eventIds = arrayOf(
@@ -67,7 +66,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
     params.putDouble("latitude", loc.latitude)
     params.putDouble("longitude", loc.longitude)
-    params.putInt("timestamp", loc.timestamp.toInt())
+    params.putDouble("timestamp", loc.timestamp.toDouble())
     params.putDouble("horizontalAccuracy", loc.horizontalAccuracy)
     params.putDouble("speed", loc.speed)
     params.putDouble("heading", loc.heading)
@@ -80,7 +79,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     return params
   }
 
-  private fun mapDeviceReport(rep: DeviceReport): WritableMap {
+  private fun mapDeviceReport(rep: NaurtDeviceReport): WritableMap {
     val params = Arguments.createMap()
 
     rep.processName?.let {
@@ -121,16 +120,16 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   }
 
   private fun addListeners(reactContext: ReactApplicationContext) {
-    naurtLocationListener = EventListener<NaurtNewLocationEvent> { p0 ->
+    naurtLocationListener = NaurtEventListener<NaurtNewLocationEvent> { p0 ->
       val params = mapLocation(p0.newPoint)
 
       reactContext
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[0], params)
     }
-    Sdk.on("NAURT_NEW_POINT", naurtLocationListener)
+    Naurt.on(NaurtEvents.NEW_LOCATION, naurtLocationListener)
 
-    naurtOnlineListener = EventListener<NaurtIsOnlineEvent> { p0 ->
+    naurtOnlineListener = NaurtEventListener<NaurtIsOnlineEvent> { p0 ->
       val params = Arguments.createMap()
       params.putBoolean("isSOnline", p0.isOnline)
 
@@ -138,9 +137,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[5], params)
     }
-    Sdk.on("NAURT_IS_ONLINE", naurtOnlineListener)
+    Naurt.on(NaurtEvents.IS_ONLINE, naurtOnlineListener)
 
-    naurtIsInitialisedListener = EventListener<NaurtIsInitialisedEvent> { p0 ->
+    naurtIsInitialisedListener = NaurtEventListener<NaurtIsInitialisedEvent> { p0 ->
       val params = Arguments.createMap()
       params.putBoolean("isInitialised", p0.isInitialised)
 
@@ -148,9 +147,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[2], params)
     }
-    Sdk.on("NAURT_IS_INITIALISED", naurtIsInitialisedListener)
+    Naurt.on(NaurtEvents.IS_INITIALISED, naurtIsInitialisedListener)
 
-    naurtIsValidatedListener = EventListener<NaurtIsValidatedEvent> { p0 ->
+    naurtIsValidatedListener = NaurtEventListener<NaurtIsValidatedEvent> { p0 ->
       val params = Arguments.createMap()
       params.putBoolean("isValidated", p0.isValidated)
 
@@ -158,9 +157,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[3], params)
     }
-    Sdk.on("NAURT_IS_VALIDATED", naurtIsValidatedListener)
+    Naurt.on(NaurtEvents.IS_VALIDATED, naurtIsValidatedListener)
 
-    naurtNewJourneyListener = EventListener<NaurtNewJourneyEvent> { p0 ->
+    naurtNewJourneyListener = NaurtEventListener<NaurtNewJourneyEvent> { p0 ->
       val params = Arguments.createMap()
       params.putString("newJourney", p0.newUuid.toString())
 
@@ -168,9 +167,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[1], params)
     }
-    Sdk.on("NAURT_NEW_JOURNEY", naurtNewJourneyListener)
+    Naurt.on(NaurtEvents.NEW_JOURNEY, naurtNewJourneyListener)
 
-    naurtRunningListener = EventListener<NaurtIsRunningEvent> { p0 ->
+    naurtRunningListener = NaurtEventListener<NaurtIsRunningEvent> { p0 ->
       val params = Arguments.createMap()
       params.putBoolean("isRunning", p0.isRunning)
 
@@ -178,9 +177,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[4], params)
     }
-    Sdk.on("NAURT_IS_RUNNING", naurtRunningListener)
+    Naurt.on(NaurtEvents.IS_RUNNING, naurtRunningListener)
 
-    naurtHasLocationProviderListener = EventListener<NaurtHasLocationProviderEvent> { p0 ->
+    naurtHasLocationProviderListener = NaurtEventListener<NaurtHasLocationProviderEvent> { p0 ->
       val params = Arguments.createMap()
       params.putBoolean("hasLocationProvider", p0.hasLocationProvider)
 
@@ -188,9 +187,9 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[6], params)
     }
-    Sdk.on("NAURT_HAS_LOCATION", naurtHasLocationProviderListener)
+    Naurt.on(NaurtEvents.HAS_LOCATION_PROVIDER, naurtHasLocationProviderListener)
 
-    naurtNewTrackingStatusListener = EventListener<NaurtNewTrackingStatusEvent> { p0 ->
+    naurtNewTrackingStatusListener = NaurtEventListener<NaurtNewTrackingStatusEvent> { p0 ->
       val params = Arguments.createMap()
       params.putString("newTrackingStatus", stringifyTrackingStatus(p0.status))
 
@@ -198,16 +197,16 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[8], params)
     }
-    Sdk.on("NAURT_NEW_TRACKING_STATUS", naurtNewTrackingStatusListener)
+    Naurt.on(NaurtEvents.NEW_TRACKING_STATUS, naurtNewTrackingStatusListener)
 
-    naurtNewDeviceReportListener = EventListener<NaurtNewDeviceReportEvent> { p0 ->
-      val params = mapDeviceReport(p0.deviceReport)
+    naurtNewDeviceReportListener = NaurtEventListener<NaurtNewDeviceReportEvent> { p0 ->
+      val params = mapDeviceReport(p0.naurtDeviceReport)
 
       reactContext
         .getJSModule(RCTDeviceEventEmitter::class.java)
         .emit(eventIds[7], params)
     }
-    Sdk.on("NAURT_NEW_DEVICE_REPORT", naurtNewDeviceReportListener)
+    Naurt.on(NaurtEvents.NEW_DEVICE_REPORT, naurtNewDeviceReportListener)
   }
 
   // =============================== Host Methods ==============================
@@ -215,23 +214,27 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
       return "NaurtSdk"
   }
 
-  override fun onHostResume() {
-    try {
-      if (reactApplicationContext != null) {
-        Sdk.resume(reactApplicationContext.applicationContext)
-      }
-    }
-    catch(e: Exception) {
-      e.printStackTrace()
-    }
-  }
+  override fun onHostResume() { }
 
-  override fun onHostPause() {
-    Sdk.pause()
-  }
+  override fun onHostPause() { }
+
+//  override fun onHostResume() {
+//    try {
+//      if (reactApplicationContext != null) {
+//        Naurt.resume(reactApplicationContext.applicationContext)
+//      }
+//    }
+//    catch(e: Exception) {
+//      e.printStackTrace()
+//    }
+//  }
+
+//  override fun onHostPause() {
+//    Sdk.pause()
+//  }
 
   override fun onHostDestroy() {
-    Sdk.stop()
+    Naurt.stop()
   }
 
   override fun canOverrideExistingModule(): Boolean {
@@ -257,7 +260,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   fun removeListeners(count: Integer) {
       // Remove upstream listeners, stop unnecessary background tasks
   }
-  
+
   @ReactMethod
   fun getIds(cb: Promise) {
     val wa = WritableNativeArray()
@@ -270,72 +273,71 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   /** Initialise Naurt with a given context  */
   @ReactMethod
-  fun initialiseNaurt(apiKey: String, precision: Int?) {
+  fun initialiseNaurt(apiKey: String) {
     if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
       Log.e("naurt", "Naurt does not have all required permissions to start")
     }
 
-    Sdk.initialise(
+    Naurt.initialiseStandalone(
       apiKey,
-      reactApplicationContext.applicationContext,
-      precision?: 6
+      reactApplicationContext.applicationContext
     )
   }
 
   /** Resume the Naurt Engine with a given context  */
-  @ReactMethod
-  fun resumeNaurt() {
-    Sdk.resume(reactApplicationContext.applicationContext)
-    addListeners(reactApplicationContext)
-  }
+//  @ReactMethod
+//  fun resumeNaurt() {
+//    Sdk.resume(reactApplicationContext.applicationContext)
+//    addListeners(reactApplicationContext)
+//  }
 
   /** Pause the Naurt Engine  */
-  @ReactMethod
-  fun pauseNaurt() {
-      Sdk.pause()
-      Sdk.removeAllListeners()
-  }
+//  @ReactMethod
+//  fun pauseNaurt() {
+//      Sdk.pause()
+//      Sdk.removeAllListeners()
+//  }
 
   /** Start the Naurt engine  */
   @ReactMethod
   fun startNaurt() {
-      Sdk.start()
+      Naurt.start()
   }
 
   /** Stop the Naurt Engine  */
   @ReactMethod
   fun stopNaurt() {
-      Sdk.stop()
+      Naurt.stop()
   }
 
   @ReactMethod
   fun isInitialised(cb: Promise) {
-    cb.resolve(Sdk.isInitialised)
+    cb.resolve(Naurt.getInitialised())
   }
 
   @ReactMethod
   fun isValidated(cb: Promise) {
-    cb.resolve(Sdk.isValidated)
+    cb.resolve(Naurt.getValidated())
   }
 
   @ReactMethod
   fun isRunning(cb: Promise) {
-    cb.resolve(Sdk.isRunning)
+    cb.resolve(Naurt.getRunning())
   }
 
   @ReactMethod
   fun isOnline(cb: Promise) {
-    cb.resolve(Sdk.isOnline)
+    cb.resolve(Naurt.getOnline())
   }
 
   @ReactMethod
   fun hasLocationProvider(cb: Promise) {
-    cb.resolve(Sdk.hasLocationProvider)
+    cb.resolve(Naurt.getHasLocationProvider())
   }
 
   @ReactMethod
   fun deviceReport(cb: Promise) {
-    Sdk.deviceReport?.let {
+    Naurt.getDeviceReport()?.let {
       cb.resolve(mapDeviceReport(it))
     }
 
@@ -343,19 +345,19 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     cb.resolve(Arguments.createMap())
   }
 
-  @ReactMethod
-  fun deviceUUID(cb: Promise) {
-    cb.resolve(Sdk.deviceUUID.toString())
-  }
+//  @ReactMethod
+//  fun deviceUUID(cb: Promise) {
+//    cb.resolve(Naurt.deviceUUID.toString())
+//  }
 
   @ReactMethod
   fun journeyUuid(cb: Promise) {
-    cb.resolve(Sdk.journeyUuid.toString())
+    cb.resolve(Naurt.getJourneyUuid().toString())
   }
 
   @ReactMethod
   fun naurtPoint(cb: Promise) {
-    Sdk.naurtPoint?.let {
+    Naurt.getLocation()?.let {
       cb.resolve(mapLocation(it))
     }
 
@@ -366,7 +368,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   @ReactMethod
   fun naurtPoints(cb: Promise){
     val arr = WritableNativeArray()
-    Sdk.naurtPoints.forEach{
+    Naurt.getLocationHistory().forEach{
       arr.pushMap(mapLocation(it))
     }
     cb.resolve(arr)
@@ -374,6 +376,6 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   @ReactMethod
   fun trackingStatus(cb: Promise) {
-    cb.resolve(stringifyTrackingStatus(Sdk.trackingStatus))
+    cb.resolve(stringifyTrackingStatus(Naurt.getTrackingStatus()))
   }
 }
