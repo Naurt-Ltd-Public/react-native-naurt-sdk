@@ -6,26 +6,26 @@ import type { NaurtInitialisedEvent, NaurtPoint, NaurtPointEvent, NaurtRunningEv
 
 function RadioButton(props: any) {
   return (
-      <View style={[{
-        height: 24,
-        width: 24,
-        borderRadius: 12,
-        borderWidth: 2,
-        borderColor: props.selected? '#2A2' : '#A22',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }, props.style]}>
-        {
-          props.selected ?
-            <View style={{
-              height: 12,
-              width: 12,
-              borderRadius: 6,
-              backgroundColor: '#2A2',
-            }}/>
-            : null
-        }
-      </View>
+    <View style={[{
+      height: 24,
+      width: 24,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: props.selected ? '#2A2' : '#A22',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }, props.style]}>
+      {
+        props.selected ?
+          <View style={{
+            height: 12,
+            width: 12,
+            borderRadius: 6,
+            backgroundColor: '#2A2',
+          }} />
+          : null
+      }
+    </View>
   );
 }
 
@@ -50,9 +50,9 @@ const NaurtComponent = () => {
     speed: 0.0,
     speedAccuracy: 0.0,
     spoofReport: {
-        mockAppsInstalled: false,
-        mockSettingActive: false,
-        mockedLocation: false
+      mockAppsInstalled: false,
+      mockSettingActive: false,
+      mockedLocation: false
     },
     verticalAccuracy: 0.0
   } as NaurtPoint);
@@ -61,7 +61,7 @@ const NaurtComponent = () => {
 
   useEffect(() => {
     naurtEventEmitter = Naurt.getEventEmitter();
-    Naurt.initialise("<API-KEY-HERE>");
+    Naurt.coreInitialise("<API-KEY-HERE>", "service")
 
     naurtEventEmitter.addListener(
       'NAURT_IS_INITIALISED',
@@ -135,7 +135,7 @@ const NaurtComponent = () => {
           flexDirection: 'row',
           margin: 8
         }}>
-          <RadioButton selected={naurtIsInitialised}/>
+          <RadioButton selected={naurtIsInitialised} />
           <Text style={{
             flex: 1,
             flexGrow: 1,
@@ -150,7 +150,7 @@ const NaurtComponent = () => {
           flexDirection: 'row',
           margin: 8
         }}>
-          <RadioButton selected={naurtIsValidated}/>
+          <RadioButton selected={naurtIsValidated} />
           <Text style={{
             flex: 1,
             flexGrow: 1,
@@ -165,7 +165,7 @@ const NaurtComponent = () => {
           flexDirection: 'row',
           margin: 8
         }}>
-          <RadioButton selected={naurtIsRunning}/>
+          <RadioButton selected={naurtIsRunning} />
           <Text style={{
             flex: 1,
             flexGrow: 1,
@@ -179,11 +179,11 @@ const NaurtComponent = () => {
       </View>
     );
 
-    return () => {};
+    return () => { };
   }, [naurtPoint, naurtIsInitialised, naurtIsRunning, naurtIsValidated]);
 
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => { 
+  const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
 
     console.log("Previous State: " + isEnabled);
@@ -191,7 +191,7 @@ const NaurtComponent = () => {
     Naurt.isInitialised().then(isInitialised => {
       console.log("Is Initialised: " + isInitialised);
     })
-    
+
     // As this toggle is always one state change behind the current, we need to inverse this boolean
     if (!isEnabled) {
       console.log("Starting...")
@@ -244,7 +244,7 @@ const NaurtComponent = () => {
             margin: 8,
             left: -24,
             height: 32,
-            transform: [{scale: 1.2}]
+            transform: [{ scale: 1.2 }]
           }}
         />
       </View>

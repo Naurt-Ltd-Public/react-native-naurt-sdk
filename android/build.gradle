@@ -137,7 +137,7 @@ dependencies {
   
   implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
   
-  implementation 'com.github.Naurt-Ltd-Public:naurt-android-sdk:1.15.0'
+  implementation 'com.github.Naurt-Ltd-Public:naurt-android-sdk:1.15.1'
 
   implementation 'androidx.core:core-ktx:1.7.0'
   implementation 'androidx.concurrent:concurrent-futures:1.1.0'

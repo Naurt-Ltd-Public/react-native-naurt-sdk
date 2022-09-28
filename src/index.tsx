@@ -18,13 +18,13 @@ const LINKING_ERROR =
 const NaurtSdk = NativeModules.NaurtSdk
   ? NativeModules.NaurtSdk
   : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+    {},
+    {
+      get() {
+        throw new Error(LINKING_ERROR);
+      },
+    }
+  );
 
 /** Get the NativeEventEmitter for Naurt - to register NAURT_EVENT listeners to */
 export function getEventEmitter(): NativeEventEmitter {
@@ -61,9 +61,51 @@ export function getEventIds(): Promise<String[]> {
   }
 }
 
-export function initialise(apiKey: String): Boolean {
-  switch (Platform.OS) {
-    case 'android': {
+
+
+export type NaurtEngineType = 'standalone' | 'service';
+
+export function coreInitialise(apiKey: String, naurtEngine: NaurtEngineType): Boolean {
+
+  switch (naurtEngine) {
+    case 'standalone': {
+
+      PermissionsAndroid.requestMultiple([
+        'android.permission.ACCESS_FINE_LOCATION',
+        'android.permission.ACCESS_COARSE_LOCATION',
+      ])
+        .then((result) => {
+          let granted =
+            result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted' &&
+            result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
+
+          if (granted) {
+            let sdk = NaurtSdk as NaurtAndroidInterface;
+            sdk.initialiseNaurtStandalone(apiKey)
+
+            return true;
+          } else {
+            throw `initialiseNaurt | Missing Permissions! [
+            ACCESS_COARSE_LOCATION: ${result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted'
+              ? 'Granted'
+              : 'Denied'
+            },
+            ACCESS_FINE_LOCATION: ${result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
+              ? 'Granted'
+              : 'Denied'
+            },
+          ]`;
+          }
+        })
+        .catch((err: any) => {
+          throw `initialiseNaurt | error: ${err}`;
+        });
+
+      return false;
+    }
+
+    case 'service': {
+
       PermissionsAndroid.requestMultiple([
         'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.ACCESS_COARSE_LOCATION',
@@ -76,19 +118,18 @@ export function initialise(apiKey: String): Boolean {
           if (granted) {
             let sdk = NaurtSdk as NaurtAndroidInterface;
 
-            sdk.initialiseNaurt(apiKey);
+            sdk.initialiseNaurtService(apiKey)
+
             return true;
           } else {
             throw `initialiseNaurt | Missing Permissions! [
-            ACCESS_COARSE_LOCATION: ${
-              result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted'
-                ? 'Granted'
-                : 'Denied'
+            ACCESS_COARSE_LOCATION: ${result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted'
+              ? 'Granted'
+              : 'Denied'
             },
-            ACCESS_FINE_LOCATION: ${
-              result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
-                ? 'Granted'
-                : 'Denied'
+            ACCESS_FINE_LOCATION: ${result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
+              ? 'Granted'
+              : 'Denied'
             },
           ]`;
           }
@@ -99,16 +140,12 @@ export function initialise(apiKey: String): Boolean {
 
       return false;
     }
-    case 'ios': {
-      let sdk = NaurtSdk as NaurtIosInterface;
-      sdk.initialiseNaurt(apiKey, 8);
-      return true
-    }
-    default: {
-      throw `initialiseNaurt | Unsupported OS!: ${Platform.OS}`;
-    }
+
+
+
   }
 }
+
 
 export function start(): Promise<boolean> {
   switch (Platform.OS) {
@@ -300,7 +337,7 @@ export function deviceReport(): Promise<AndroidDeviceReport> {
   switch (Platform.OS) {
     case 'android': {
       let sdk = NaurtSdk as NaurtAndroidInterface;
-      return  sdk.deviceReport().then((result) => {
+      return sdk.deviceReport().then((result) => {
         return result;
       });
     }

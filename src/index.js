@@ -41,9 +41,9 @@ export function getEventIds() {
         }
     }
 }
-export function initialise(apiKey) {
-    switch (Platform.OS) {
-        case 'android': {
+export function coreInitialise(apiKey, naurtEngine) {
+    switch (naurtEngine) {
+        case 'standalone': {
             PermissionsAndroid.requestMultiple([
                 'android.permission.ACCESS_FINE_LOCATION',
                 'android.permission.ACCESS_COARSE_LOCATION',
@@ -53,7 +53,7 @@ export function initialise(apiKey) {
                     result['android.permission.ACCESS_FINE_LOCATION'] === 'granted';
                 if (granted) {
                     let sdk = NaurtSdk;
-                    sdk.initialiseNaurt(apiKey);
+                    sdk.initialiseNaurtStandalone(apiKey);
                     return true;
                 }
                 else {
@@ -72,13 +72,34 @@ export function initialise(apiKey) {
             });
             return false;
         }
-        case 'ios': {
-            let sdk = NaurtSdk;
-            sdk.initialiseNaurt(apiKey, 8);
-            return true;
-        }
-        default: {
-            throw `initialiseNaurt | Unsupported OS!: ${Platform.OS}`;
+        case 'service': {
+            PermissionsAndroid.requestMultiple([
+                'android.permission.ACCESS_FINE_LOCATION',
+                'android.permission.ACCESS_COARSE_LOCATION',
+            ])
+                .then((result) => {
+                let granted = result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted' &&
+                    result['android.permission.ACCESS_FINE_LOCATION'] === 'granted';
+                if (granted) {
+                    let sdk = NaurtSdk;
+                    sdk.initialiseNaurtService(apiKey);
+                    return true;
+                }
+                else {
+                    throw `initialiseNaurt | Missing Permissions! [
+            ACCESS_COARSE_LOCATION: ${result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted'
+                        ? 'Granted'
+                        : 'Denied'},
+            ACCESS_FINE_LOCATION: ${result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
+                        ? 'Granted'
+                        : 'Denied'},
+          ]`;
+                }
+            })
+                .catch((err) => {
+                throw `initialiseNaurt | error: ${err}`;
+            });
+            return false;
         }
     }
 }

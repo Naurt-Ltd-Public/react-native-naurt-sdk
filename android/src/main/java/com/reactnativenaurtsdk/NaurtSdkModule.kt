@@ -273,12 +273,26 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   /** Initialise Naurt with a given context  */
   @ReactMethod
-  fun initialiseNaurt(apiKey: String) {
+  fun initialiseNaurtStandalone(apiKey: String) {
     if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
       Log.e("naurt", "Naurt does not have all required permissions to start")
     }
 
     Naurt.initialiseStandalone(
+      apiKey,
+      reactApplicationContext.applicationContext
+    )
+  }
+
+  
+  /** Initialise Naurt with a given context  */
+  @ReactMethod
+  fun initialiseNaurtService(apiKey: String) {
+    if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
+      Log.e("naurt", "Naurt does not have all required permissions to start")
+    }
+
+    Naurt.initialiseService(
       apiKey,
       reactApplicationContext.applicationContext
     )
