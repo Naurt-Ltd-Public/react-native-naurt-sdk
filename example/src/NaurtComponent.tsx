@@ -42,6 +42,7 @@ const NaurtComponent = () => {
     latitude: 0.0,
     longitude: 0.0,
     timestamp: '',
+    locationProviderTimestamp: '',
     altitude: 0.0,
     heading: 0.0,
     headingAccuracy: 0.0,
@@ -54,7 +55,13 @@ const NaurtComponent = () => {
       mockSettingActive: false,
       mockedLocation: false
     },
-    verticalAccuracy: 0.0
+    verticalAccuracy: 0.0,
+    cumulativeDistance: 0.0,
+    motionFlag: '',
+    locationOrigin: '',
+    environmentFlag: '',
+    backgroundStatus: '',
+
   } as NaurtPoint);
 
   const isDarkMode = useColorScheme() === 'dark';
@@ -103,6 +110,7 @@ const NaurtComponent = () => {
           latitude: event.latitude,
           longitude: event.longitude,
           timestamp: event.timestamp,
+          locationProviderTimestamp: event.locationProviderTimestamp,
           altitude: event.latitude,
           heading: event.heading,
           headingAccuracy: event.headingAccuracy,
@@ -110,7 +118,12 @@ const NaurtComponent = () => {
           horizontalCovariance: event.horizontalCovariance,
           speed: event.speed,
           speedAccuracy: event.speedAccuracy,
-          verticalAccuracy: event.verticalAccuracy
+          verticalAccuracy: event.verticalAccuracy,
+          cumulativeDistance: event.cumulativeDistance,
+          motionFlag: event.motionFlag,
+          locationOrigin: event.locationOrigin,
+          environmentFlag: event.environmentFlag,
+          backgroundStatus: event.backgroundStatus,
         });
       }
     );
@@ -176,6 +189,7 @@ const NaurtComponent = () => {
         </View>
 
         <Text>{`${naurtPoint.timestamp}: Lat: ${naurtPoint.latitude}, Lon: ${naurtPoint.longitude}`}</Text>
+        <Text>{`${naurtPoint.backgroundStatus}: ${naurtPoint.motionFlag}: ${naurtPoint.environmentFlag}`}</Text>
       </View>
     );
 

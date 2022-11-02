@@ -4,6 +4,7 @@ export interface NaurtPointEvent extends Event {
     latitude: number,
     longitude: number,
     timestamp: String,
+    locationProviderTimestamp: String,
     horizontalAccuracy: number,
     speed: number,
     heading: number,
@@ -12,6 +13,11 @@ export interface NaurtPointEvent extends Event {
     horizontalCovariance: number,
     altitude: number,
     verticalAccuracy: number,
+    cumulativeDistance: number,
+    motionFlag: String,
+    locationOrigin: String,
+    environmentFlag: String,
+    backgroundStatus: String,
 }
 
 export interface NaurtOnlineEvent extends Event {

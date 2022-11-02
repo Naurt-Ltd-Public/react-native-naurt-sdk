@@ -86,6 +86,7 @@ class NaurtSdk: NSObject {
               auxDic["latitude"] = value?.latitude
               auxDic["longitude"] = value?.longitude
               
+              
               self.bridge.eventDispatcher().sendAppEvent(withName: self.eventIds[0], body: auxDic)
           })
     }

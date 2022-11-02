@@ -3,25 +3,21 @@ import { Text, useColorScheme, View, Switch } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import * as Naurt from 'react-native-naurt-sdk';
 function RadioButton(props) {
-    return (React.createElement(View, {
-        style: [{
-            height: 24,
-            width: 24,
-            borderRadius: 12,
-            borderWidth: 2,
-            borderColor: props.selected ? '#2A2' : '#A22',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }, props.style]
-    }, props.selected ?
-        React.createElement(View, {
-            style: {
+    return (React.createElement(View, { style: [{
+                height: 24,
+                width: 24,
+                borderRadius: 12,
+                borderWidth: 2,
+                borderColor: props.selected ? '#2A2' : '#A22',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }, props.style] }, props.selected ?
+        React.createElement(View, { style: {
                 height: 12,
                 width: 12,
                 borderRadius: 6,
                 backgroundColor: '#2A2',
-            }
-        })
+            } })
         : null));
 }
 const NaurtComponent = () => {
@@ -34,6 +30,7 @@ const NaurtComponent = () => {
         latitude: 0.0,
         longitude: 0.0,
         timestamp: '',
+        locationProviderTimestamp: '',
         altitude: 0.0,
         heading: 0.0,
         headingAccuracy: 0.0,
@@ -46,7 +43,12 @@ const NaurtComponent = () => {
             mockSettingActive: false,
             mockedLocation: false
         },
-        verticalAccuracy: 0.0
+        verticalAccuracy: 0.0,
+        cumulativeDistance: 0.0,
+        motionFlag: '',
+        locationOrigin: '',
+        environmentFlag: '',
+        backgroundStatus: '',
     });
     const isDarkMode = useColorScheme() === 'dark';
     useEffect(() => {
@@ -76,6 +78,7 @@ const NaurtComponent = () => {
                 latitude: event.latitude,
                 longitude: event.longitude,
                 timestamp: event.timestamp,
+                locationProviderTimestamp: event.locationProviderTimestamp,
                 altitude: event.latitude,
                 heading: event.heading,
                 headingAccuracy: event.headingAccuracy,
@@ -83,7 +86,12 @@ const NaurtComponent = () => {
                 horizontalCovariance: event.horizontalCovariance,
                 speed: event.speed,
                 speedAccuracy: event.speedAccuracy,
-                verticalAccuracy: event.verticalAccuracy
+                verticalAccuracy: event.verticalAccuracy,
+                cumulativeDistance: event.cumulativeDistance,
+                motionFlag: event.motionFlag,
+                locationOrigin: event.locationOrigin,
+                environmentFlag: event.environmentFlag,
+                backgroundStatus: event.backgroundStatus,
             });
         });
         return () => {
@@ -91,68 +99,55 @@ const NaurtComponent = () => {
         };
     }, []);
     useEffect(() => {
-        setNaurtDisplay(React.createElement(View, {
-            style: {
+        setNaurtDisplay(React.createElement(View, { style: {
                 flex: 1,
                 flexGrow: 1,
                 flexDirection: "column"
-            }
-        },
-            React.createElement(View, {
-                style: {
+            } },
+            React.createElement(View, { style: {
                     flex: 1,
                     flexGrow: 1,
                     flexDirection: 'row',
                     margin: 8
-                }
-            },
+                } },
                 React.createElement(RadioButton, { selected: naurtIsInitialised }),
-                React.createElement(Text, {
-                    style: {
+                React.createElement(Text, { style: {
                         flex: 1,
                         flexGrow: 1,
                         flexDirection: 'row',
                         // margin: 8
                         marginLeft: 8
-                    }
-                }, "isInitialised")),
-            React.createElement(View, {
-                style: {
+                    } }, "isInitialised")),
+            React.createElement(View, { style: {
                     flex: 1,
                     flexGrow: 1,
                     flexDirection: 'row',
                     margin: 8
-                }
-            },
+                } },
                 React.createElement(RadioButton, { selected: naurtIsValidated }),
-                React.createElement(Text, {
-                    style: {
+                React.createElement(Text, { style: {
                         flex: 1,
                         flexGrow: 1,
                         flexDirection: 'row',
                         // margin: 8
                         marginLeft: 8
-                    }
-                }, "isValidated")),
-            React.createElement(View, {
-                style: {
+                    } }, "isValidated")),
+            React.createElement(View, { style: {
                     flex: 1,
                     flexGrow: 1,
                     flexDirection: 'row',
                     margin: 8
-                }
-            },
+                } },
                 React.createElement(RadioButton, { selected: naurtIsRunning }),
-                React.createElement(Text, {
-                    style: {
+                React.createElement(Text, { style: {
                         flex: 1,
                         flexGrow: 1,
                         flexDirection: 'row',
                         // margin: 8
                         marginLeft: 8
-                    }
-                }, "isRunning")),
-            React.createElement(Text, null, `${naurtPoint.timestamp}: Lat: ${naurtPoint.latitude}, Lon: ${naurtPoint.longitude}`)));
+                    } }, "isRunning")),
+            React.createElement(Text, null, `${naurtPoint.timestamp}: Lat: ${naurtPoint.latitude}, Lon: ${naurtPoint.longitude}`),
+            React.createElement(Text, null, `${naurtPoint.backgroundStatus}: ${naurtPoint.motionFlag}: ${naurtPoint.environmentFlag}`)));
         return () => { };
     }, [naurtPoint, naurtIsInitialised, naurtIsRunning, naurtIsValidated]);
     const [isEnabled, setIsEnabled] = useState(false);
@@ -179,28 +174,21 @@ const NaurtComponent = () => {
             });
         }
     };
-    return (React.createElement(View, {
-        style: {
+    return (React.createElement(View, { style: {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        }
-    },
-        React.createElement(View, {
-            style: {
+        } },
+        React.createElement(View, { style: {
                 flex: 1,
                 flexDirection: "row",
                 width: "100%",
                 flexGrow: 1,
                 backgroundColor: "#999999"
-            }
-        },
-            React.createElement(Text, {
-                style: {
+            } },
+            React.createElement(Text, { style: {
                     left: 8,
                     fontSize: 32
-                }
-            }, "Naurt"),
-            React.createElement(Switch, {
-                trackColor: { false: "#767577", true: "#81b0ff" }, thumbColor: isEnabled ? "#f5dd4b" : "#f4f3f4", ios_backgroundColor: "#3e3e3e", onValueChange: toggleSwitch, value: isEnabled, style: {
+                } }, "Naurt"),
+            React.createElement(Switch, { trackColor: { false: "#767577", true: "#81b0ff" }, thumbColor: isEnabled ? "#f5dd4b" : "#f4f3f4", ios_backgroundColor: "#3e3e3e", onValueChange: toggleSwitch, value: isEnabled, style: {
                     flex: 1,
                     flexShrink: 0,
                     alignSelf: "flex-end",
@@ -208,8 +196,7 @@ const NaurtComponent = () => {
                     left: -24,
                     height: 32,
                     transform: [{ scale: 1.2 }]
-                }
-            })),
+                } })),
         naurtDisplay));
 };
 export default NaurtComponent;

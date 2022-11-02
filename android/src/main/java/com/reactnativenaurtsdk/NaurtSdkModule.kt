@@ -64,9 +64,34 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   private fun mapLocation(loc: NaurtLocation): WritableMap {
     val params = Arguments.createMap()
 
+    val motionFlagString = when (loc.motionFlag) {
+      NaurtMovement.Stationary -> "Stationary"
+      NaurtMovement.OnFoot -> "OnFoot"
+      NaurtMovement.VehicleMotion -> "VehicleMotion"
+      NaurtMovement.NA -> "NA"
+    }
+    val naurtLocationOriginString = when (loc.locationOrigin) {
+      NaurtLocationOrigin.GNSS -> "GNSS"
+      NaurtLocationOrigin.NaurtNetwork -> "NaurtNetwork"
+      NaurtLocationOrigin.NaurtStandard -> "NaurtStandard"
+      NaurtLocationOrigin.NaurtAdvanced -> "NaurtAdvanced"
+    }
+
+    val environmentFlagString = when (loc.environmentFlag) {
+      NaurtEnvironmentFlag.Outside -> "Outside"
+      NaurtEnvironmentFlag.Inside -> "Inside"
+      NaurtEnvironmentFlag.NA -> "NA"
+    }
+
+    val backgroundStatusString = when (loc.backgroundStatus) {
+      NaurtBackgroundStatus.Foreground -> "Foreground"
+      NaurtBackgroundStatus.Background -> "Background"
+    }
+
     params.putDouble("latitude", loc.latitude)
     params.putDouble("longitude", loc.longitude)
     params.putDouble("timestamp", loc.timestamp.toDouble())
+    params.putDouble("locationProviderTimestamp", loc.locationProviderTimestamp.toDouble())
     params.putDouble("horizontalAccuracy", loc.horizontalAccuracy)
     params.putDouble("speed", loc.speed)
     params.putDouble("heading", loc.heading)
@@ -75,6 +100,12 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
     params.putDouble("horizontalCovariance", loc.horizontalCovariance)
     params.putDouble("altitude", loc.altitude)
     params.putDouble("verticalAccuracy", loc.verticalAccuracy)
+    params.putDouble("cumulativeDistance", loc.cumulativeDistance)
+    params.putString("motionFlag", motionFlagString)
+    params.putString("locationOrigin", naurtLocationOriginString)
+    params.putString("environmentFlag", environmentFlagString)
+    params.putString("backgroundStatus", backgroundStatusString)
+
 
     return params
   }
