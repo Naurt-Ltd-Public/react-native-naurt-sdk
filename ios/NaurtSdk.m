@@ -1,4 +1,5 @@
-#import <React/RCTBridgeModule.h>
+#import "NaurtSdk.h"
+
 
 @interface RCT_EXTERN_MODULE(NaurtSdk, NSObject)
 
@@ -29,4 +30,6 @@ RCT_EXTERN_METHOD(journeyUuid: (RCTPromiseResolveBlock)resolve reject:(RCTPromis
 RCT_EXTERN_METHOD(naurtPoint: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(naurtPoints: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(trackingStatus: (RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
 @end
