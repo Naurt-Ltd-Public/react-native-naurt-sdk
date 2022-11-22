@@ -75,7 +75,7 @@ PODS:
   - glog (0.3.5)
   - LASwift (0.2.5)
   - libevent (2.1.12)
-  - Naurt.swift (0.0.2):
+  - Naurt.swift (0.0.3):
     - LASwift (~> 0.2.5)
     - Zip (~> 2.1.2)
   - OpenSSL-Universal (1.1.1100)
@@ -287,7 +287,7 @@ PODS:
   - React-logger (0.68.2):
     - glog
   - react-native-naurt-sdk (0.9.1):
-    - Naurt.swift (= 0.0.2)
+    - Naurt.swift (= 0.0.3)
     - React
   - React-perflogger (0.68.2)
   - React-RCTActionSheet (0.68.2):
@@ -524,7 +524,7 @@ SPEC CHECKSUMS:
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   LASwift: a820932178025d61856a3c32c51fdfff3b00a42c
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  Naurt.swift: 432143a652fd3c808fa59fab641a6f89541b0fb8
+  Naurt.swift: b1a9417931ea08f60834e0c747c1f3fcdbd7bf38
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 3e917ea5377751094f38145fdece525aa90545a0
@@ -539,7 +539,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b7b553412f2ec768fe6c8f27cd6bafdb9d8719e6
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
-  react-native-naurt-sdk: 69e75bc61edfea5bd57ce88d9e71d1d8552308a3
+  react-native-naurt-sdk: 71911475deae36a660e3962eea14b4d78bed4119
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034

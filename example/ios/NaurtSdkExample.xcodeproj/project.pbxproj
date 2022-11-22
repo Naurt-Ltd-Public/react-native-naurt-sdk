@@ -3,16 +3,59 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* NaurtSdkExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NaurtSdkExampleTests.m */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		79127427292BDB3C003C3D3F /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FAF1A68108700A75B9A /* AppDelegate.h */; };
+		79EDFDF5292BD95700398D3B /* libCocoaAsyncSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */; };
+		79EDFDF7292BD95700398D3B /* double-conversion.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF6292BD95700398D3B /* double-conversion.xcframework */; };
+		79EDFDF9292BD95700398D3B /* libDoubleConversion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF8292BD95700398D3B /* libDoubleConversion.a */; };
+		79EDFDFB292BD95700398D3B /* libFlipper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDFA292BD95700398D3B /* libFlipper.a */; };
+		79EDFDFD292BD95700398D3B /* libFlipper-Boost-iOSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDFC292BD95700398D3B /* libFlipper-Boost-iOSX.a */; };
+		79EDFDFF292BD95700398D3B /* libFlipper-Fmt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDFE292BD95700398D3B /* libFlipper-Fmt.a */; };
+		79EDFE01292BD95700398D3B /* libFlipper-Folly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE00292BD95700398D3B /* libFlipper-Folly.a */; };
+		79EDFE03292BD95700398D3B /* libFlipper-PeerTalk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE02292BD95700398D3B /* libFlipper-PeerTalk.a */; };
+		79EDFE05292BD95700398D3B /* libFlipper-RSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE04292BD95700398D3B /* libFlipper-RSocket.a */; };
+		79EDFE07292BD95700398D3B /* libFlipperKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE06292BD95700398D3B /* libFlipperKit.a */; };
+		79EDFE09292BD95700398D3B /* libfmt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE08292BD95700398D3B /* libfmt.a */; };
+		79EDFE0B292BD95700398D3B /* libglog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE0A292BD95700398D3B /* libglog.a */; };
+		79EDFE0D292BD95700398D3B /* glog.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE0C292BD95700398D3B /* glog.xcframework */; };
+		79EDFE0F292BD95700398D3B /* libLASwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE0E292BD95700398D3B /* libLASwift.a */; };
+		79EDFE11292BD95700398D3B /* liblibevent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE10292BD95700398D3B /* liblibevent.a */; };
+		79EDFE13292BD95700398D3B /* NaurtSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE12292BD95700398D3B /* NaurtSDK.xcframework */; };
+		79EDFE15292BD95700398D3B /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE14292BD95700398D3B /* OpenSSL.xcframework */; };
+		79EDFE17292BD95700398D3B /* libRCT-Folly.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE16292BD95700398D3B /* libRCT-Folly.a */; };
+		79EDFE19292BD95700398D3B /* libRCTTypeSafety.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE18292BD95700398D3B /* libRCTTypeSafety.a */; };
+		79EDFE1B292BD95700398D3B /* libReact-Codegen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE1A292BD95700398D3B /* libReact-Codegen.a */; };
+		79EDFE1D292BD95700398D3B /* libReact-Core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE1C292BD95700398D3B /* libReact-Core.a */; };
+		79EDFE1F292BD95700398D3B /* libReact-CoreModules.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE1E292BD95700398D3B /* libReact-CoreModules.a */; };
+		79EDFE21292BD95700398D3B /* libReact-cxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE20292BD95700398D3B /* libReact-cxxreact.a */; };
+		79EDFE23292BD95700398D3B /* libReact-jsi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE22292BD95700398D3B /* libReact-jsi.a */; };
+		79EDFE25292BD95700398D3B /* libReact-jsiexecutor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE24292BD95700398D3B /* libReact-jsiexecutor.a */; };
+		79EDFE27292BD95700398D3B /* libReact-jsinspector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE26292BD95700398D3B /* libReact-jsinspector.a */; };
+		79EDFE29292BD95700398D3B /* libReact-logger.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE28292BD95700398D3B /* libReact-logger.a */; };
+		79EDFE2B292BD95700398D3B /* libreact-native-naurt-sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE2A292BD95700398D3B /* libreact-native-naurt-sdk.a */; };
+		79EDFE2D292BD95700398D3B /* libReact-perflogger.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE2C292BD95700398D3B /* libReact-perflogger.a */; };
+		79EDFE2F292BD95700398D3B /* libReact-RCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE2E292BD95700398D3B /* libReact-RCTAnimation.a */; };
+		79EDFE31292BD95700398D3B /* libReact-RCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE30292BD95700398D3B /* libReact-RCTBlob.a */; };
+		79EDFE33292BD95700398D3B /* libReact-RCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE32292BD95700398D3B /* libReact-RCTImage.a */; };
+		79EDFE35292BD95700398D3B /* libReact-RCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE34292BD95700398D3B /* libReact-RCTLinking.a */; };
+		79EDFE37292BD95700398D3B /* libReact-RCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE36292BD95700398D3B /* libReact-RCTNetwork.a */; };
+		79EDFE39292BD95700398D3B /* libReact-RCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE38292BD95700398D3B /* libReact-RCTSettings.a */; };
+		79EDFE3B292BD95700398D3B /* libReact-RCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE3A292BD95700398D3B /* libReact-RCTText.a */; };
+		79EDFE3D292BD95700398D3B /* libReact-RCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE3C292BD95700398D3B /* libReact-RCTVibration.a */; };
+		79EDFE3F292BD95700398D3B /* libReactCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE3E292BD95700398D3B /* libReactCommon.a */; };
+		79EDFE41292BD95700398D3B /* libSocketRocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE40292BD95700398D3B /* libSocketRocket.a */; };
+		79EDFE43292BD95700398D3B /* libYoga.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE42292BD95700398D3B /* libYoga.a */; };
+		79EDFE45292BD95700398D3B /* libYogaKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE44292BD95700398D3B /* libYogaKit.a */; };
+		79EDFE47292BD95700398D3B /* libZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE46292BD95700398D3B /* libZip.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		B601784E37576B066976F1E6 /* libPods-NaurtSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C879D2639D2C9CBFAD357882 /* libPods-NaurtSdkExample.a */; };
+		D253E254BD0348FB980B2AA4 /* libPods-NaurtSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,16 +75,58 @@
 		00E356F21AD99517003FC87E /* NaurtSdkExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NaurtSdkExampleTests.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* NaurtSdkExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaurtSdkExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = NaurtSdkExample/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = NaurtSdkExample/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = NaurtSdkExample/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NaurtSdkExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NaurtSdkExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NaurtSdkExample/main.m; sourceTree = "<group>"; };
-		19FC93913F985FC2F8BDD24A /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
+		639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
+		68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
+		6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NaurtSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCocoaAsyncSocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFDF6292BD95700398D3B /* double-conversion.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "double-conversion.xcframework"; path = "Pods/Flipper-DoubleConversion/Frameworks/double-conversion.xcframework"; sourceTree = "<group>"; };
+		79EDFDF8292BD95700398D3B /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFDFA292BD95700398D3B /* libFlipper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipper.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFDFC292BD95700398D3B /* libFlipper-Boost-iOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-Boost-iOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFDFE292BD95700398D3B /* libFlipper-Fmt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-Fmt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE00292BD95700398D3B /* libFlipper-Folly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-Folly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE02292BD95700398D3B /* libFlipper-PeerTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-PeerTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE04292BD95700398D3B /* libFlipper-RSocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libFlipper-RSocket.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE06292BD95700398D3B /* libFlipperKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFlipperKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE08292BD95700398D3B /* libfmt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfmt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE0A292BD95700398D3B /* libglog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libglog.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE0C292BD95700398D3B /* glog.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = glog.xcframework; path = "Pods/Flipper-Glog/Frameworks/glog.xcframework"; sourceTree = "<group>"; };
+		79EDFE0E292BD95700398D3B /* libLASwift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libLASwift.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE10292BD95700398D3B /* liblibevent.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblibevent.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE12292BD95700398D3B /* NaurtSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = NaurtSDK.xcframework; path = Pods/Naurt.swift/Sources/NaurtSDK.xcframework; sourceTree = "<group>"; };
+		79EDFE14292BD95700398D3B /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
+		79EDFE16292BD95700398D3B /* libRCT-Folly.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libRCT-Folly.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE18292BD95700398D3B /* libRCTTypeSafety.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRCTTypeSafety.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE1A292BD95700398D3B /* libReact-Codegen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-Codegen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE1C292BD95700398D3B /* libReact-Core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-Core.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE1E292BD95700398D3B /* libReact-CoreModules.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-CoreModules.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE20292BD95700398D3B /* libReact-cxxreact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-cxxreact.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE22292BD95700398D3B /* libReact-jsi.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsi.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE24292BD95700398D3B /* libReact-jsiexecutor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsiexecutor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE26292BD95700398D3B /* libReact-jsinspector.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-jsinspector.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE28292BD95700398D3B /* libReact-logger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-logger.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE2A292BD95700398D3B /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE2C292BD95700398D3B /* libReact-perflogger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-perflogger.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE2E292BD95700398D3B /* libReact-RCTAnimation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTAnimation.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE30292BD95700398D3B /* libReact-RCTBlob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTBlob.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE32292BD95700398D3B /* libReact-RCTImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTImage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE34292BD95700398D3B /* libReact-RCTLinking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTLinking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE36292BD95700398D3B /* libReact-RCTNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTNetwork.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE38292BD95700398D3B /* libReact-RCTSettings.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTSettings.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE3A292BD95700398D3B /* libReact-RCTText.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTText.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE3C292BD95700398D3B /* libReact-RCTVibration.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libReact-RCTVibration.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE3E292BD95700398D3B /* libReactCommon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReactCommon.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE40292BD95700398D3B /* libSocketRocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSocketRocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE42292BD95700398D3B /* libYoga.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYoga.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE44292BD95700398D3B /* libYogaKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYogaKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79EDFE46292BD95700398D3B /* libZip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libZip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NaurtSdkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1E7F3D12811F26200F89D77 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C879D2639D2C9CBFAD357882 /* libPods-NaurtSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NaurtSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8DB89A3F8C0A3F39F2CDFC3 /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -58,7 +143,49 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B601784E37576B066976F1E6 /* libPods-NaurtSdkExample.a in Frameworks */,
+				79EDFE15292BD95700398D3B /* OpenSSL.xcframework in Frameworks */,
+				79EDFDF5292BD95700398D3B /* libCocoaAsyncSocket.a in Frameworks */,
+				79EDFDF7292BD95700398D3B /* double-conversion.xcframework in Frameworks */,
+				79EDFDF9292BD95700398D3B /* libDoubleConversion.a in Frameworks */,
+				79EDFDFB292BD95700398D3B /* libFlipper.a in Frameworks */,
+				79EDFDFD292BD95700398D3B /* libFlipper-Boost-iOSX.a in Frameworks */,
+				79EDFDFF292BD95700398D3B /* libFlipper-Fmt.a in Frameworks */,
+				79EDFE01292BD95700398D3B /* libFlipper-Folly.a in Frameworks */,
+				79EDFE03292BD95700398D3B /* libFlipper-PeerTalk.a in Frameworks */,
+				79EDFE05292BD95700398D3B /* libFlipper-RSocket.a in Frameworks */,
+				79EDFE07292BD95700398D3B /* libFlipperKit.a in Frameworks */,
+				79EDFE09292BD95700398D3B /* libfmt.a in Frameworks */,
+				79EDFE0B292BD95700398D3B /* libglog.a in Frameworks */,
+				79EDFE0D292BD95700398D3B /* glog.xcframework in Frameworks */,
+				79EDFE0F292BD95700398D3B /* libLASwift.a in Frameworks */,
+				79EDFE11292BD95700398D3B /* liblibevent.a in Frameworks */,
+				79EDFE13292BD95700398D3B /* NaurtSDK.xcframework in Frameworks */,
+				D253E254BD0348FB980B2AA4 /* libPods-NaurtSdkExample.a in Frameworks */,
+				79EDFE17292BD95700398D3B /* libRCT-Folly.a in Frameworks */,
+				79EDFE19292BD95700398D3B /* libRCTTypeSafety.a in Frameworks */,
+				79EDFE1B292BD95700398D3B /* libReact-Codegen.a in Frameworks */,
+				79EDFE1D292BD95700398D3B /* libReact-Core.a in Frameworks */,
+				79EDFE1F292BD95700398D3B /* libReact-CoreModules.a in Frameworks */,
+				79EDFE21292BD95700398D3B /* libReact-cxxreact.a in Frameworks */,
+				79EDFE23292BD95700398D3B /* libReact-jsi.a in Frameworks */,
+				79EDFE25292BD95700398D3B /* libReact-jsiexecutor.a in Frameworks */,
+				79EDFE27292BD95700398D3B /* libReact-jsinspector.a in Frameworks */,
+				79EDFE29292BD95700398D3B /* libReact-logger.a in Frameworks */,
+				79EDFE2B292BD95700398D3B /* libreact-native-naurt-sdk.a in Frameworks */,
+				79EDFE2D292BD95700398D3B /* libReact-perflogger.a in Frameworks */,
+				79EDFE2F292BD95700398D3B /* libReact-RCTAnimation.a in Frameworks */,
+				79EDFE31292BD95700398D3B /* libReact-RCTBlob.a in Frameworks */,
+				79EDFE33292BD95700398D3B /* libReact-RCTImage.a in Frameworks */,
+				79EDFE35292BD95700398D3B /* libReact-RCTLinking.a in Frameworks */,
+				79EDFE37292BD95700398D3B /* libReact-RCTNetwork.a in Frameworks */,
+				79EDFE39292BD95700398D3B /* libReact-RCTSettings.a in Frameworks */,
+				79EDFE3B292BD95700398D3B /* libReact-RCTText.a in Frameworks */,
+				79EDFE3D292BD95700398D3B /* libReact-RCTVibration.a in Frameworks */,
+				79EDFE3F292BD95700398D3B /* libReactCommon.a in Frameworks */,
+				79EDFE41292BD95700398D3B /* libSocketRocket.a in Frameworks */,
+				79EDFE43292BD95700398D3B /* libYoga.a in Frameworks */,
+				79EDFE45292BD95700398D3B /* libYogaKit.a in Frameworks */,
+				79EDFE47292BD95700398D3B /* libZip.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +214,7 @@
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
+				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -99,11 +226,53 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */,
+				79EDFDF6292BD95700398D3B /* double-conversion.xcframework */,
+				79EDFDF8292BD95700398D3B /* libDoubleConversion.a */,
+				79EDFDFA292BD95700398D3B /* libFlipper.a */,
+				79EDFDFC292BD95700398D3B /* libFlipper-Boost-iOSX.a */,
+				79EDFDFE292BD95700398D3B /* libFlipper-Fmt.a */,
+				79EDFE00292BD95700398D3B /* libFlipper-Folly.a */,
+				79EDFE02292BD95700398D3B /* libFlipper-PeerTalk.a */,
+				79EDFE04292BD95700398D3B /* libFlipper-RSocket.a */,
+				79EDFE06292BD95700398D3B /* libFlipperKit.a */,
+				79EDFE08292BD95700398D3B /* libfmt.a */,
+				79EDFE0A292BD95700398D3B /* libglog.a */,
+				79EDFE0C292BD95700398D3B /* glog.xcframework */,
+				79EDFE0E292BD95700398D3B /* libLASwift.a */,
+				79EDFE10292BD95700398D3B /* liblibevent.a */,
+				79EDFE12292BD95700398D3B /* NaurtSDK.xcframework */,
+				79EDFE14292BD95700398D3B /* OpenSSL.xcframework */,
+				79EDFE16292BD95700398D3B /* libRCT-Folly.a */,
+				79EDFE18292BD95700398D3B /* libRCTTypeSafety.a */,
+				79EDFE1A292BD95700398D3B /* libReact-Codegen.a */,
+				79EDFE1C292BD95700398D3B /* libReact-Core.a */,
+				79EDFE1E292BD95700398D3B /* libReact-CoreModules.a */,
+				79EDFE20292BD95700398D3B /* libReact-cxxreact.a */,
+				79EDFE22292BD95700398D3B /* libReact-jsi.a */,
+				79EDFE24292BD95700398D3B /* libReact-jsiexecutor.a */,
+				79EDFE26292BD95700398D3B /* libReact-jsinspector.a */,
+				79EDFE28292BD95700398D3B /* libReact-logger.a */,
+				79EDFE2A292BD95700398D3B /* libreact-native-naurt-sdk.a */,
+				79EDFE2C292BD95700398D3B /* libReact-perflogger.a */,
+				79EDFE2E292BD95700398D3B /* libReact-RCTAnimation.a */,
+				79EDFE30292BD95700398D3B /* libReact-RCTBlob.a */,
+				79EDFE32292BD95700398D3B /* libReact-RCTImage.a */,
+				79EDFE34292BD95700398D3B /* libReact-RCTLinking.a */,
+				79EDFE36292BD95700398D3B /* libReact-RCTNetwork.a */,
+				79EDFE38292BD95700398D3B /* libReact-RCTSettings.a */,
+				79EDFE3A292BD95700398D3B /* libReact-RCTText.a */,
+				79EDFE3C292BD95700398D3B /* libReact-RCTVibration.a */,
+				79EDFE3E292BD95700398D3B /* libReactCommon.a */,
+				79EDFE40292BD95700398D3B /* libSocketRocket.a */,
+				79EDFE42292BD95700398D3B /* libYoga.a */,
+				79EDFE44292BD95700398D3B /* libYogaKit.a */,
+				79EDFE46292BD95700398D3B /* libZip.a */,
 				A1E7F3D12811F26200F89D77 /* libreact-native-naurt-sdk.a */,
 				A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				C879D2639D2C9CBFAD357882 /* libPods-NaurtSdkExample.a */,
+				6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -111,8 +280,8 @@
 		6B9684456A2045ADE5A6E47E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C8DB89A3F8C0A3F39F2CDFC3 /* Pods-NaurtSdkExample.debug.xcconfig */,
-				19FC93913F985FC2F8BDD24A /* Pods-NaurtSdkExample.release.xcconfig */,
+				68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */,
+				639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -173,14 +342,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NaurtSdkExample" */;
 			buildPhases = (
-				A05AF9C59CCB5931D29D73F8 /* [CP] Check Pods Manifest.lock */,
+				87F024F2FBCD77BDB3659E9A /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				C0EA49B33A6CDC32A692D772 /* [CP] Embed Pods Frameworks */,
-				E4FD77B016A2E0156DE9E138 /* [CP] Copy Pods Resources */,
+				C5981A904A21073FCAA35F1C /* [CP] Embed Pods Frameworks */,
+				AB0D5F9452CED29A37910FF1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,7 +373,6 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = JY56PWCR3Q;
 						LastSwiftMigration = 1120;
 					};
 				};
@@ -260,9 +428,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		A05AF9C59CCB5931D29D73F8 /* [CP] Check Pods Manifest.lock */ = {
+		87F024F2FBCD77BDB3659E9A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -284,29 +452,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0EA49B33A6CDC32A692D772 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E4FD77B016A2E0156DE9E138 /* [CP] Copy Pods Resources */ = {
+		AB0D5F9452CED29A37910FF1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -322,6 +468,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5981A904A21073FCAA35F1C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Naurt.swift/NaurtSDK.framework/NaurtSDK",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NaurtSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -358,7 +528,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				79127427292BDB3C003C3D3F /* AppDelegate.h in Sources */,
+				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,13 +549,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEVELOPMENT_TEAM = JY56PWCR3Q;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = NaurtSdkExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -400,10 +577,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = JY56PWCR3Q;
 				INFOPLIST_FILE = NaurtSdkExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -417,7 +600,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C8DB89A3F8C0A3F39F2CDFC3 /* Pods-NaurtSdkExample.debug.xcconfig */;
+			baseConfigurationReference = 68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -467,11 +650,19 @@
 					"\"$(PODS_TARGET_SRCROOT)/include/\"",
 				);
 				INFOPLIST_FILE = NaurtSdkExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
+					"-lc++",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"$(inherited)",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativenaurtsdk;
@@ -487,7 +678,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19FC93913F985FC2F8BDD24A /* Pods-NaurtSdkExample.release.xcconfig */;
+			baseConfigurationReference = 639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -536,9 +727,18 @@
 					"\"$(PODS_TARGET_SRCROOT)/include/\"",
 				);
 				INFOPLIST_FILE = NaurtSdkExample/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
@@ -604,7 +804,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -660,13 +863,17 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
