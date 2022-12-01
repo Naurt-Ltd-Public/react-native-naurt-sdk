@@ -11,7 +11,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		71F57778FAE8B47115327AFC /* libPods-NaurtSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45676650C05049CBD2D666 /* libPods-NaurtSdkExample.a */; };
 		79127427292BDB3C003C3D3F /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FAF1A68108700A75B9A /* AppDelegate.h */; };
+		7985816F292E658E007F0905 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 7985816E292E658E007F0905 /* Collections */; };
+		79858171292E658E007F0905 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 79858170292E658E007F0905 /* DequeModule */; };
+		79858173292E658E007F0905 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 79858172292E658E007F0905 /* OrderedCollections */; };
 		79EDFDF5292BD95700398D3B /* libCocoaAsyncSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */; };
 		79EDFDF7292BD95700398D3B /* double-conversion.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF6292BD95700398D3B /* double-conversion.xcframework */; };
 		79EDFDF9292BD95700398D3B /* libDoubleConversion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFDF8292BD95700398D3B /* libDoubleConversion.a */; };
@@ -55,7 +59,6 @@
 		79EDFE45292BD95700398D3B /* libYogaKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE44292BD95700398D3B /* libYogaKit.a */; };
 		79EDFE47292BD95700398D3B /* libZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79EDFE46292BD95700398D3B /* libZip.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		D253E254BD0348FB980B2AA4 /* libPods-NaurtSdkExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,9 +82,8 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NaurtSdkExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NaurtSdkExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NaurtSdkExample/main.m; sourceTree = "<group>"; };
-		639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
-		68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
-		6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NaurtSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21568F5AF288338D9A91CA46 /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
+		3E45676650C05049CBD2D666 /* libPods-NaurtSdkExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NaurtSdkExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCocoaAsyncSocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFDF6292BD95700398D3B /* double-conversion.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "double-conversion.xcframework"; path = "Pods/Flipper-DoubleConversion/Frameworks/double-conversion.xcframework"; sourceTree = "<group>"; };
 		79EDFDF8292BD95700398D3B /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 		79EDFE44292BD95700398D3B /* libYogaKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYogaKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFE46292BD95700398D3B /* libZip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libZip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NaurtSdkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9B1574D8445EB8B44A06DBE2 /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
 		A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1E7F3D12811F26200F89D77 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -151,6 +154,7 @@
 				79EDFDFD292BD95700398D3B /* libFlipper-Boost-iOSX.a in Frameworks */,
 				79EDFDFF292BD95700398D3B /* libFlipper-Fmt.a in Frameworks */,
 				79EDFE01292BD95700398D3B /* libFlipper-Folly.a in Frameworks */,
+				79858173292E658E007F0905 /* OrderedCollections in Frameworks */,
 				79EDFE03292BD95700398D3B /* libFlipper-PeerTalk.a in Frameworks */,
 				79EDFE05292BD95700398D3B /* libFlipper-RSocket.a in Frameworks */,
 				79EDFE07292BD95700398D3B /* libFlipperKit.a in Frameworks */,
@@ -160,7 +164,6 @@
 				79EDFE0F292BD95700398D3B /* libLASwift.a in Frameworks */,
 				79EDFE11292BD95700398D3B /* liblibevent.a in Frameworks */,
 				79EDFE13292BD95700398D3B /* NaurtSDK.xcframework in Frameworks */,
-				D253E254BD0348FB980B2AA4 /* libPods-NaurtSdkExample.a in Frameworks */,
 				79EDFE17292BD95700398D3B /* libRCT-Folly.a in Frameworks */,
 				79EDFE19292BD95700398D3B /* libRCTTypeSafety.a in Frameworks */,
 				79EDFE1B292BD95700398D3B /* libReact-Codegen.a in Frameworks */,
@@ -169,11 +172,13 @@
 				79EDFE21292BD95700398D3B /* libReact-cxxreact.a in Frameworks */,
 				79EDFE23292BD95700398D3B /* libReact-jsi.a in Frameworks */,
 				79EDFE25292BD95700398D3B /* libReact-jsiexecutor.a in Frameworks */,
+				7985816F292E658E007F0905 /* Collections in Frameworks */,
 				79EDFE27292BD95700398D3B /* libReact-jsinspector.a in Frameworks */,
 				79EDFE29292BD95700398D3B /* libReact-logger.a in Frameworks */,
 				79EDFE2B292BD95700398D3B /* libreact-native-naurt-sdk.a in Frameworks */,
 				79EDFE2D292BD95700398D3B /* libReact-perflogger.a in Frameworks */,
 				79EDFE2F292BD95700398D3B /* libReact-RCTAnimation.a in Frameworks */,
+				79858171292E658E007F0905 /* DequeModule in Frameworks */,
 				79EDFE31292BD95700398D3B /* libReact-RCTBlob.a in Frameworks */,
 				79EDFE33292BD95700398D3B /* libReact-RCTImage.a in Frameworks */,
 				79EDFE35292BD95700398D3B /* libReact-RCTLinking.a in Frameworks */,
@@ -186,6 +191,7 @@
 				79EDFE43292BD95700398D3B /* libYoga.a in Frameworks */,
 				79EDFE45292BD95700398D3B /* libYogaKit.a in Frameworks */,
 				79EDFE47292BD95700398D3B /* libZip.a in Frameworks */,
+				71F57778FAE8B47115327AFC /* libPods-NaurtSdkExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,7 +278,7 @@
 				A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				6DA494A6B539800424E7E194 /* libPods-NaurtSdkExample.a */,
+				3E45676650C05049CBD2D666 /* libPods-NaurtSdkExample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -280,8 +286,8 @@
 		6B9684456A2045ADE5A6E47E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */,
-				639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */,
+				21568F5AF288338D9A91CA46 /* Pods-NaurtSdkExample.debug.xcconfig */,
+				9B1574D8445EB8B44A06DBE2 /* Pods-NaurtSdkExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -342,20 +348,28 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NaurtSdkExample" */;
 			buildPhases = (
-				87F024F2FBCD77BDB3659E9A /* [CP] Check Pods Manifest.lock */,
+				3066A007FAB4D0E74D78FB64 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				C5981A904A21073FCAA35F1C /* [CP] Embed Pods Frameworks */,
-				AB0D5F9452CED29A37910FF1 /* [CP] Copy Pods Resources */,
+				F1D223CAA2A46AEEEA5389F7 /* [CP] Embed Pods Frameworks */,
+				6CD5357284C9031AC6E746FF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				79858175292E659B007F0905 /* PBXTargetDependency */,
+				79858177292E659B007F0905 /* PBXTargetDependency */,
+				79858179292E659B007F0905 /* PBXTargetDependency */,
 			);
 			name = NaurtSdkExample;
+			packageProductDependencies = (
+				7985816E292E658E007F0905 /* Collections */,
+				79858170292E658E007F0905 /* DequeModule */,
+				79858172292E658E007F0905 /* OrderedCollections */,
+			);
 			productName = NaurtSdkExample;
 			productReference = 13B07F961A680F5B00A75B9A /* NaurtSdkExample.app */;
 			productType = "com.apple.product-type.application";
@@ -386,6 +400,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -430,7 +447,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		87F024F2FBCD77BDB3659E9A /* [CP] Check Pods Manifest.lock */ = {
+		3066A007FAB4D0E74D78FB64 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -452,7 +469,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AB0D5F9452CED29A37910FF1 /* [CP] Copy Pods Resources */ = {
+		6CD5357284C9031AC6E746FF /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -470,7 +487,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C5981A904A21073FCAA35F1C /* [CP] Embed Pods Frameworks */ = {
+		F1D223CAA2A46AEEEA5389F7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -542,6 +559,18 @@
 			target = 13B07F861A680F5B00A75B9A /* NaurtSdkExample */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		79858175292E659B007F0905 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 79858174292E659B007F0905 /* Collections */;
+		};
+		79858177292E659B007F0905 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 79858176292E659B007F0905 /* DequeModule */;
+		};
+		79858179292E659B007F0905 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 79858178292E659B007F0905 /* OrderedCollections */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -600,7 +629,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68E5D84824F1DCF82343746F /* Pods-NaurtSdkExample.debug.xcconfig */;
+			baseConfigurationReference = 21568F5AF288338D9A91CA46 /* Pods-NaurtSdkExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -668,8 +697,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativenaurtsdk;
 				PRODUCT_NAME = NaurtSdkExample;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				WATCHOS_DEPLOYMENT_TARGET = "";
@@ -678,7 +711,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 639E9692781815E586C378CA /* Pods-NaurtSdkExample.release.xcconfig */;
+			baseConfigurationReference = 9B1574D8445EB8B44A06DBE2 /* Pods-NaurtSdkExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -746,7 +779,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativenaurtsdk;
 				PRODUCT_NAME = NaurtSdkExample;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
 				VERSIONING_SYSTEM = "apple-generic";
 				WATCHOS_DEPLOYMENT_TARGET = "";
@@ -910,6 +947,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7985816E292E658E007F0905 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = Collections;
+		};
+		79858170292E658E007F0905 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = DequeModule;
+		};
+		79858172292E658E007F0905 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = OrderedCollections;
+		};
+		79858174292E659B007F0905 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = Collections;
+		};
+		79858176292E659B007F0905 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = DequeModule;
+		};
+		79858178292E659B007F0905 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7985816D292E658E007F0905 /* XCRemoteSwiftPackageReference "swift-collections.git" */;
+			productName = OrderedCollections;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }
