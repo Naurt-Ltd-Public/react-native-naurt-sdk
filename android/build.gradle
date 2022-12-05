@@ -55,7 +55,7 @@ android {
 
 repositories {
   mavenCentral()
-  jcenter()
+  // jcenter()
   google()
   allprojects {
     repositories {
