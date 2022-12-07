@@ -1,4 +1,5 @@
 import {
+  NativeEventEmitter,
   NativeModules,
   PermissionsAndroid,
   Platform,
@@ -8,7 +9,7 @@ import type { NaurtPoint } from "./naurt-point";
 
 
 export { NaurtPoint } from "./naurt-point";
-
+export { NaurtPointEvent, NaurtHasLocationEvent, NaurtInitialisedEvent, NaurtRunningEvent, NaurtValidatedEvent } from "./events";
 
 export type NaurtAndroidEngineType = "standalone" | "service";
 
@@ -28,8 +29,10 @@ export class NaurtRN {
       }
       case "ios": {
         // TODO: Permissions requests in here
-        let naurtTemp = NativeModules.NaurtIos;
-        this.naurt = naurtTemp as NaurtIosInterface;
+        let naurtTemp = NativeModules.RNaurt;
+        console.log("The type of naurtTemp is");
+        console.log(naurtTemp);
+        this.naurt = naurtTemp as NaurtIosInterface
         break;
       }
       default: {
@@ -38,8 +41,23 @@ export class NaurtRN {
     }
   }
 
+  IosInitialise() {
+    switch (Platform.OS) {
+      case "ios": {
+        break;
+      }
+      default: {
+        // TODO: better error handling
+        throw "This method must only be called on iOS platforms"
+      }
+    }
+
+    
+    let naurtSDK = this.naurt as NaurtIosInterface;
+    naurtSDK.iOSInit(this.apiKey);
+  }
+
   // Android only function for initialising Naurt
-  // There is no equivalent for iOS as it initialises during object creation
   AndroidInitialise(naurtEngine: NaurtAndroidEngineType): Boolean {
 
     switch (Platform.OS) {
@@ -118,5 +136,9 @@ export class NaurtRN {
   getLatestNaurtPoint() : NaurtPoint | undefined {
     // undefined indicates that there is not yet a naurt point
     return this.naurt.naurtPoint();
+  }
+
+  getEventEmitter() : NativeEventEmitter {
+    return new NativeEventEmitter(this.naurt);
   }
 }

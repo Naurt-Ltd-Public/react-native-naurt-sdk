@@ -6,8 +6,8 @@ export interface NaurtAndroidInterface {
     start(): void;
     stop(): void;
 
-    addListener(eventName: String): void; // TODO: I think these can go
-    removeListeners(count: number): void; // TODO: I think these can go
+    addListener(eventName: String): void; // *: Only here to conform to type
+    removeListeners(count: number): void; // *: Only here to conform to type
 
     isInitialised(): boolean;
     isValidated(): boolean;
@@ -19,9 +19,12 @@ export interface NaurtAndroidInterface {
 }
 
 export interface NaurtIosInterface {
-    init(apiKey: String): void;
+    iOSInit(apiKey: String): void;
     start(): void;
     stop(): void;
+
+    addListener(eventName: String): void; // *: Only here to conform to type
+    removeListeners(count: number): void; // *: Only here to conform to type
 
     isInitialised(): boolean;
     isValidated(): boolean;

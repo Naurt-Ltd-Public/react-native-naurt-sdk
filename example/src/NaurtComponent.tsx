@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Text, useColorScheme, View, Switch } from 'react-native';
+import { Text, useColorScheme, View, Switch, Platform } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import * as Naurt from 'react-native-naurt-sdk';
-import type { NaurtInitialisedEvent, NaurtPoint, NaurtPointEvent, NaurtRunningEvent, NaurtValidatedEvent } from 'react-native-naurt-sdk';
+import { NaurtRN } from 'react-native-naurt-sdk';
+import type { NaurtPoint, NaurtPointEvent, NaurtInitialisedEvent, NaurtRunningEvent, NaurtValidatedEvent  } from 'react-native-naurt-sdk';
 
 function RadioButton(props: any) {
   return (
@@ -31,70 +31,77 @@ function RadioButton(props: any) {
 
 
 const NaurtComponent = () => {
-  let naurtEventEmitter;
+  let naurt = new NaurtRN("637475b9-e92e-4650-bece-822ca077af92-111be559-2294-4cdc-a305-586326170cdb");
+
+  if (Platform.OS == "android") {
+    naurt.AndroidInitialise("service");
+  } else if (Platform.OS == "ios") {
+    naurt.IosInitialise();
+  } else {
+    // TODO: Better error handling
+    throw "This app is only intended for Android or iOS";
+  }
+  let naurtEventEmitter = naurt.getEventEmitter();
+
+    
 
   const [naurtDisplay, setNaurtDisplay] = useState(<></>);
 
   const [naurtIsInitialised, setNaurtIsInitialised] = useState(false);
   const [naurtIsValidated, setNaurtIsValidated] = useState(false);
   const [naurtIsRunning, setNaurtIsRunning] = useState(false);
+
   const [naurtPoint, setNaurtPoint] = useState({
     latitude: 0.0,
     longitude: 0.0,
-    timestamp: '',
-    altitude: 0.0,
-    heading: 0.0,
-    headingAccuracy: 0.0,
+    timestamp: 0.0,
+    locationProviderTimestamp: undefined,
     horizontalAccuracy: 0.0,
-    horizontalCovariance: 0.0,
     speed: 0.0,
+    heading: 0.0,
     speedAccuracy: 0.0,
-    spoofReport: {
-      mockAppsInstalled: false,
-      mockSettingActive: false,
-      mockedLocation: false
-    },
-    verticalAccuracy: 0.0
+    headingAccuracy: 0.0,
+    horizontalCovariance: 0.0,
+    altitude: 0.0,
+    verticalAccuracy: 0.0,
+    cumulativeDistance: undefined,
+    motionFlag: undefined,
+    locationOrigin: undefined,
+    environmentFlag: undefined,
+    backgroundStatus: undefined
   } as NaurtPoint);
 
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
-    naurtEventEmitter = Naurt.getEventEmitter();
-    Naurt.coreInitialise("<API-KEY-HERE>", "service")
+    
 
     naurtEventEmitter.addListener(
-      'NAURT_IS_INITIALISED',
+      'naurtDidUpdateInitialise',
       (event: NaurtInitialisedEvent) => {
-        console.log('NAURT_IS_INITIALISED: ' + event.isInitialised);
+        console.log('naurtDidUpdateInitialise: ' + event.isInitialised);
         setNaurtIsInitialised(event.isInitialised);
       }
     );
 
     naurtEventEmitter.addListener(
-      'NAURT_IS_VALIDATED',
+      'naurtDidUpdateValidation',
       (event: NaurtValidatedEvent) => {
-        console.log('NAURT_IS_VALIDATED: ' + event.isValidated);
+        console.log('naurtDidUpdateValidation: ' + event.isValidated);
         setNaurtIsValidated(event.isValidated);
-        Naurt.isValidated().then((v) => {
-          console.log('NAURT_IS_VALIDATED_2: ' + v);
-        })
       }
     );
 
     naurtEventEmitter.addListener(
-      'NAURT_IS_RUNNING',
+      'naurtDidUpdateRunning',
       (event: NaurtRunningEvent) => {
-        console.log('NAURT_IS_RUNNING: ' + event.isRunning);
+        console.log('naurtDidUpdateRunning: ' + event.isRunning);
         setNaurtIsRunning(event.isRunning);
-        Naurt.isValidated().then((v) => {
-          console.log('NAURT_IS_VALIDATED_2: ' + v);
-        })
       }
     );
-
+    
     naurtEventEmitter.addListener(
-      'NAURT_NEW_POINT',
+      'naurtDidUpdateLocation',
       (event: NaurtPointEvent) => {
         console.log(
           `NAURT_NEW_POINT: [${event.latitude}, ${event.longitude}], ${event.timestamp}`
@@ -110,13 +117,20 @@ const NaurtComponent = () => {
           horizontalCovariance: event.horizontalCovariance,
           speed: event.speed,
           speedAccuracy: event.speedAccuracy,
-          verticalAccuracy: event.verticalAccuracy
+          verticalAccuracy: event.verticalAccuracy,
+          platformOrigin: event.platformOrigin,
+          locationProviderTimestamp: event.locationProviderTimestamp,
+          motionFlag: event.motionFlag,
+          cumulativeDistance: event.cumulativeDistance,
+          locationOrigin: event.locationOrigin,
+          environmentFlag: event.environmentFlag,
+          backgroundStatus: event.backgroundStatus
         });
       }
     );
 
     return () => {
-      Naurt.stop();
+      naurt.stop();
     };
   }, []);
 
@@ -182,31 +196,15 @@ const NaurtComponent = () => {
     return () => { };
   }, [naurtPoint, naurtIsInitialised, naurtIsRunning, naurtIsValidated]);
 
-  const [isEnabled, setIsEnabled] = useState(false);
+
   const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
 
-    console.log("Previous State: " + isEnabled);
-
-    Naurt.isInitialised().then(isInitialised => {
-      console.log("Is Initialised: " + isInitialised);
-    })
-
-    // As this toggle is always one state change behind the current, we need to inverse this boolean
-    if (!isEnabled) {
-      console.log("Starting...")
-      Naurt.start().then(couldStart => {
-        console.log("Could Start: " + couldStart)
-        setNaurtIsRunning(couldStart)
-      })
-    }
-    else {
-      console.log("Stopping...")
-      Naurt.stop().then(couldStop => {
-        console.log("Could Stop: " + couldStop)
-        // A good stop means this returns true, so we must invert the response
-        setNaurtIsRunning(!couldStop)
-      })
+    if (!naurtIsRunning) {
+      naurt.start();
+      setNaurtIsRunning(true);
+    } else {
+      naurt.stop();
+      setNaurtIsRunning(false);
     }
   }
 
@@ -233,10 +231,10 @@ const NaurtComponent = () => {
         >Naurt</Text>
         <Switch
           trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+          thumbColor={naurtIsRunning ? "#f5dd4b" : "#f4f3f4"}
           ios_backgroundColor="#3e3e3e"
           onValueChange={toggleSwitch}
-          value={isEnabled}
+          value={naurtIsRunning}
           style={{
             flex: 1,
             flexShrink: 0,

@@ -38,11 +38,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Description</string>
+	<string>This app needs your location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Will you allow this app to always know your location?</string>
+	<string>This app needs your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Do you allow this app to know your current location?</string>
+	<string>This app needs your location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
