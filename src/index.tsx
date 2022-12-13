@@ -28,7 +28,6 @@ export class NaurtRN {
         break;
       }
       case "ios": {
-        // TODO: Permissions requests in here
         let naurtTemp = NativeModules.RNaurt;
         console.log("The type of naurtTemp is");
         console.log(naurtTemp);
@@ -55,6 +54,8 @@ export class NaurtRN {
     
     let naurtSDK = this.naurt as NaurtIosInterface;
     naurtSDK.iOSInit(this.apiKey);
+
+    console.log("I initialised");
   }
 
   // Android only function for initialising Naurt
@@ -113,15 +114,15 @@ export class NaurtRN {
   }
 
   isInitialised(): boolean {
-    return this.naurt.isInitialised();
+    return this.naurt.getIsInitialised();
   }
 
   isValidated(): boolean {
-    return this.naurt.isValidated();
+    return this.naurt.getIsValidated();
   }
 
   isRunning(): boolean {
-    return this.naurt.isRunning();
+    return this.naurt.getIsRunning();
   }
 
   getDeviceUUID(): String {
@@ -130,7 +131,7 @@ export class NaurtRN {
 
   getJourneyUUID(): String | undefined {
     // undefined indicates that there is no journey yet
-    return this.naurt.journeyUUID();
+    return this.naurt.getJourneyUUID();
   }
 
   getLatestNaurtPoint() : NaurtPoint | undefined {
@@ -140,5 +141,6 @@ export class NaurtRN {
 
   getEventEmitter() : NativeEventEmitter {
     return new NativeEventEmitter(this.naurt);
+    
   }
 }

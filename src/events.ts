@@ -31,7 +31,7 @@ export interface NaurtValidatedEvent extends Event {
 }
 
 export interface NaurtRunningEvent extends Event {
-    isRunning: boolean;
+    body: boolean;
 }
 
 export interface NaurtHasLocationEvent extends Event {

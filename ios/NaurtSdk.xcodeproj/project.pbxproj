@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		792475CB291A75890026C7F6 /* NaurtSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 792475CA291A75890026C7F6 /* NaurtSdk.swift */; };
+		79ECD04E2947589D00AB8495 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ECD04D2947589D00AB8495 /* LocationService.swift */; };
+		79ECD0502947605600AB8495 /* SensorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79ECD04F2947605600AB8495 /* SensorService.swift */; };
 		A11D6C13280ED5F600238B95 /* NaurtSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* NaurtSdk.m */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +28,8 @@
 /* Begin PBXFileReference section */
 		792475CA291A75890026C7F6 /* NaurtSdk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaurtSdk.swift; sourceTree = "<group>"; };
 		792475CD291A7AFD0026C7F6 /* libNaurtSdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNaurtSdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		79ECD04D2947589D00AB8495 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		79ECD04F2947605600AB8495 /* SensorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorService.swift; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* NaurtSdk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NaurtSdk.m; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* NaurtSdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NaurtSdk.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,9 +48,11 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				79ECD04F2947605600AB8495 /* SensorService.swift */,
 				792475CA291A75890026C7F6 /* NaurtSdk.swift */,
 				B3E7B5891CC2AC0600A0062D /* NaurtSdk.m */,
 				F4FF95D5245B92E700C19C63 /* NaurtSdk.h */,
+				79ECD04D2947589D00AB8495 /* LocationService.swift */,
 				792475CD291A7AFD0026C7F6 /* libNaurtSdk.a */,
 			);
 			sourceTree = "<group>";
@@ -114,6 +120,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A11D6C13280ED5F600238B95 /* NaurtSdk.m in Sources */,
+				79ECD0502947605600AB8495 /* SensorService.swift in Sources */,
+				79ECD04E2947589D00AB8495 /* LocationService.swift in Sources */,
 				792475CB291A75890026C7F6 /* NaurtSdk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

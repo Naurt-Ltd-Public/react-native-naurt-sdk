@@ -9,11 +9,12 @@ export interface NaurtAndroidInterface {
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type
 
-    isInitialised(): boolean;
-    isValidated(): boolean;
-    isRunning(): boolean;
+    // TODO: Make Android reflect this
+    getIsInitialised(): boolean;
+    getIsValidated(): boolean;
+    getIsRunning(): boolean;
     deviceUUID(): String;
-    journeyUUID(): String;
+    getJourneyUUID(): String;
     naurtPoint(): NaurtPoint;
     trackingStatus(): String; // TODO: Become enum
 }
@@ -26,11 +27,11 @@ export interface NaurtIosInterface {
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type
 
-    isInitialised(): boolean;
-    isValidated(): boolean;
-    isRunning(): boolean;
-    deviceUUID(): String;
-    journeyUUID(): String | undefined;
+    getIsInitialised(): boolean;
+    getIsValidated(): boolean;
+    getIsRunning(): boolean;
+    deviceUUID(): String; // TODO: make this getDeviceUUID
+    getJourneyUUID(): String | undefined;
     naurtPoint(): NaurtPoint | undefined;
     trackingStatus(): String; // TODO: Become enum
 }

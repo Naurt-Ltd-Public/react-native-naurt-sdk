@@ -2,6 +2,7 @@ require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
+
 Pod::Spec.new do |s|
   s.name         = "react-native-naurt-sdk"
   s.version      = package["version"]
@@ -16,7 +17,8 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React"
-  s.dependency 'Naurt.swift', '0.0.7'
+
+  s.dependency 'Naurt.rn', '0.0.4'
 
   s.swift_version = '5.0'
 end

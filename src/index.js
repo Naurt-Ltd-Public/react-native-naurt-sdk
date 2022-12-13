@@ -13,7 +13,6 @@ export class NaurtRN {
                 break;
             }
             case "ios": {
-                // TODO: Permissions requests in here
                 let naurtTemp = NativeModules.RNaurt;
                 console.log("The type of naurtTemp is");
                 console.log(naurtTemp);
@@ -37,6 +36,7 @@ export class NaurtRN {
         }
         let naurtSDK = this.naurt;
         naurtSDK.iOSInit(this.apiKey);
+        console.log("I initialised");
     }
     // Android only function for initialising Naurt
     AndroidInitialise(naurtEngine) {
@@ -86,20 +86,20 @@ export class NaurtRN {
         this.naurt.stop();
     }
     isInitialised() {
-        return this.naurt.isInitialised();
+        return this.naurt.getIsInitialised();
     }
     isValidated() {
-        return this.naurt.isValidated();
+        return this.naurt.getIsValidated();
     }
     isRunning() {
-        return this.naurt.isRunning();
+        return this.naurt.getIsRunning();
     }
     getDeviceUUID() {
         return this.naurt.deviceUUID();
     }
     getJourneyUUID() {
         // undefined indicates that there is no journey yet
-        return this.naurt.journeyUUID();
+        return this.naurt.getJourneyUUID();
     }
     getLatestNaurtPoint() {
         // undefined indicates that there is not yet a naurt point

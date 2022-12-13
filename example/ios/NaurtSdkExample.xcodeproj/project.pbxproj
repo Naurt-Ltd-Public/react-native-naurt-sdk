@@ -10,9 +10,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		3AAAFA3C2D4EC83AA280E04C /* Pods_NaurtSdkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC7AABA4A5B119BA8F743695 /* Pods_NaurtSdkExample.framework */; };
 		79127427292BDB3C003C3D3F /* AppDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FAF1A68108700A75B9A /* AppDelegate.h */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B89A894710DE41BA1694B856 /* Pods_NaurtSdkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1B9708F002B027136BF1B3 /* Pods_NaurtSdkExample.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +25,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = NaurtSdkExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = NaurtSdkExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = NaurtSdkExample/main.m; sourceTree = "<group>"; };
-		685A0E494B5AC9093CCF1E67 /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
+		6895A132184081D130C28E2F /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
 		79EDFDF4292BD95700398D3B /* libCocoaAsyncSocket.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCocoaAsyncSocket.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFDF6292BD95700398D3B /* double-conversion.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "double-conversion.xcframework"; path = "Pods/Flipper-DoubleConversion/Frameworks/double-conversion.xcframework"; sourceTree = "<group>"; };
 		79EDFDF8292BD95700398D3B /* libDoubleConversion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDoubleConversion.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,13 +68,13 @@
 		79EDFE42292BD95700398D3B /* libYoga.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYoga.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFE44292BD95700398D3B /* libYogaKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libYogaKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		79EDFE46292BD95700398D3B /* libZip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libZip.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D057E2575798F8E34095D67 /* Pods-NaurtSdkExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.debug.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = NaurtSdkExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1E7F3D12811F26200F89D77 /* libreact-native-naurt-sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-naurt-sdk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B40AC0343604713FC7D2BE71 /* Pods-NaurtSdkExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NaurtSdkExample.release.xcconfig"; path = "Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample.release.xcconfig"; sourceTree = "<group>"; };
-		DC7AABA4A5B119BA8F743695 /* Pods_NaurtSdkExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NaurtSdkExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FF1B9708F002B027136BF1B3 /* Pods_NaurtSdkExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NaurtSdkExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AAAFA3C2D4EC83AA280E04C /* Pods_NaurtSdkExample.framework in Frameworks */,
+				B89A894710DE41BA1694B856 /* Pods_NaurtSdkExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +169,7 @@
 				A19D9625280F0AAA0000D624 /* libreact-native-naurt-sdk.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				DC7AABA4A5B119BA8F743695 /* Pods_NaurtSdkExample.framework */,
+				FF1B9708F002B027136BF1B3 /* Pods_NaurtSdkExample.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -177,8 +177,8 @@
 		6B9684456A2045ADE5A6E47E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				685A0E494B5AC9093CCF1E67 /* Pods-NaurtSdkExample.debug.xcconfig */,
-				B40AC0343604713FC7D2BE71 /* Pods-NaurtSdkExample.release.xcconfig */,
+				7D057E2575798F8E34095D67 /* Pods-NaurtSdkExample.debug.xcconfig */,
+				6895A132184081D130C28E2F /* Pods-NaurtSdkExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -220,13 +220,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "NaurtSdkExample" */;
 			buildPhases = (
-				C9011F25F8E9D0B98D9F449E /* [CP] Check Pods Manifest.lock */,
+				F15905DAFB055E84D6F66426 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3B72354863C16EA920547F6F /* [CP] Embed Pods Frameworks */,
+				E982D7F09D6D97035F294964 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -296,7 +296,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		3B72354863C16EA920547F6F /* [CP] Embed Pods Frameworks */ = {
+		E982D7F09D6D97035F294964 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -330,7 +330,7 @@
 				"${BUILT_PRODUCTS_DIR}/fmt/fmt.framework",
 				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
 				"${BUILT_PRODUCTS_DIR}/react-native-naurt-sdk/react_native_naurt_sdk.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Naurt.swift/NaurtSDK.framework/NaurtSDK",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Naurt.rn/RNaurt.framework/RNaurt",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -361,14 +361,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fmt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_naurt_sdk.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NaurtSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNaurt.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-NaurtSdkExample/Pods-NaurtSdkExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C9011F25F8E9D0B98D9F449E /* [CP] Check Pods Manifest.lock */ = {
+		F15905DAFB055E84D6F66426 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -427,7 +427,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 685A0E494B5AC9093CCF1E67 /* Pods-NaurtSdkExample.debug.xcconfig */;
+			baseConfigurationReference = 7D057E2575798F8E34095D67 /* Pods-NaurtSdkExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -506,7 +506,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B40AC0343604713FC7D2BE71 /* Pods-NaurtSdkExample.release.xcconfig */;
+			baseConfigurationReference = 6895A132184081D130C28E2F /* Pods-NaurtSdkExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

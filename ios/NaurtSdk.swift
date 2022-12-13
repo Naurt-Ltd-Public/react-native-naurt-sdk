@@ -6,12 +6,13 @@
 //  Copyright © 2022 Facebook. All rights reserved.
 //
 import React
-import NaurtSDK
+import RNaurt
 import Foundation
+import CoreLocation
 
 @objc(RNaurt)
 class RNaurt: RCTEventEmitter, NaurtDelegate {
-    var naurt: NaurtSDK.Naurt? = nil;
+    var naurt: Naurt? = nil;
  
     
     var isInitialised: Bool = false;
@@ -21,9 +22,20 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     var journeyUUID: UUID? = nil;
     var status: NaurtTrackingStatus = NaurtTrackingStatus.UNKNOWN;
     
+    private var locationService: LocationService;
+    private var sensorService: SensorSerivce;
+    
+    override init() {
+        self.locationService = LocationService();
+        self.sensorService = SensorSerivce();
+        super.init();
+        
+    }
+    
     @objc
     func iOSInit(_ apiKey: String) {
-        self.naurt = NaurtSDK.Naurt(apiKey: apiKey);
+        self.naurt = Naurt(apiKey: apiKey);
+        self.naurt!.delegate = self;
     }
     
     deinit {
@@ -47,14 +59,54 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
             return;
         }
         self.naurt!.start();
+        
+        self.locationService.startUpdatingLocation();
+        NotificationCenter.default.addObserver(self, selector: #selector(self.newLocationServicePoint), name: NSNotification.Name("didUpdateLocation"), object: nil);
+        
+        self.sensorService.startUpdatingSensors();
+        NotificationCenter.default.addObserver(self, selector: #selector(self.newSensorReading), name: NSNotification.Name("didUpdateSensor"), object: nil);
+        
+    }
+    
+    @objc func newLocationServicePoint() {
+        print("New location point");
+        guard let newPoint = self.locationService.locationDataArray.last else {
+            return;
+        }
+        
+        self.locationService.cleanseLocations();
+        
+        let naurtPoint = self.naurt?.newLocationServicePoint(newPoint: newPoint);
+        print("Got back \(naurtPoint)");
+        
+        sendEvent(withName: "naurtDidUpdateLocation", body: naurtPoint);
+    
+    }
+    
+    @objc func newSensorReading(){
+        
+        guard let newSensorReading = self.sensorService.sensorData.asStruct() else {
+            return;
+        }
+               
+
+        self.sensorService.cleanseSensors();
+        
+        // Note: This line might seem unusual, but we are essential converting the data so it can be passed into the frameworks
+        let sr = MotionStruct(accel: newSensorReading.accel, gyro: newSensorReading.gyro, mag: newSensorReading.mag, timeS: newSensorReading.timeS);
+        
+        self.naurt?.newSensorReading(newSensorReading: sr);
     }
     
     @objc
     func stop() {
+        print("Inside the stop function");
         if self.naurt == nil {
             return;
         }
         self.naurt!.stop();
+        self.locationService.stopUpdatingLocation();
+        self.sensorService.stopUpdatingSensors();
     }
     
     @objc
@@ -99,41 +151,35 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     func trackingStatus() -> RNaurtTrackingStatus {
         return naurtStatusEnumObjc(status: self.status);
     }
-    
-    // NOTE: We HAVE to conform to the NaurtDelegate protocall, which makes sense
-    // in native iOS but seems clunky and redundent here
-    // That is because it is clunky and redundent
-    // These functions only exist to prevent a crash inside the native Swift code
+
+    // Delegate function
     func didChangeInitialised(isInitialised: Bool) {
         self.isInitialised = isInitialised;
+        print("Just initialised");
         sendEvent(withName: "naurtDidUpdateInitialise", body: isInitialised);
     }
     
     func didChangeValidated(isValidated: Bool) {
         self.isValidated = isValidated;
+        print("Just validated")
         sendEvent(withName: "naurtDidUpdateValidation", body: isValidated);
     }
     
     func didChangeRunning(isRunning: Bool) {
         self.isRunning = isRunning;
+        print("Just started running");
+        print("Running: \(isRunning)");
         sendEvent(withName: "naurtDidUpdateRunning", body: isRunning);
     }
-    
-    func didUpdateLocation(naurtPoint: NaurtLocation?) {
-        self.naurtLocation = naurtPoint;
-        if naurtPoint != nil {
-            sendEvent(withName: "naurtDidUpdateLocation", body: naurtPoint!);
-        }
-    }
-    
+        
     func didChangeJourneyUuid(journeyUuid: UUID?) {
+        print("Journey ID \(journeyUUID)");
         self.journeyUUID = journeyUuid;
     }
     
     func didChangeStatus(trackingStatus: NaurtTrackingStatus) {
         self.status = trackingStatus;
     }
-    
 }
 
 

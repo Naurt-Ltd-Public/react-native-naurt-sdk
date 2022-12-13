@@ -20,23 +20,23 @@ function RadioButton(props) {
             } })
         : null));
 }
+let naurt = new NaurtRN("637475b9-e92e-4650-bece-822ca077af92-111be559-2294-4cdc-a305-586326170cdb");
+if (Platform.OS == "android") {
+    naurt.AndroidInitialise("service");
+}
+else if (Platform.OS == "ios") {
+    naurt.IosInitialise();
+}
+else {
+    // TODO: Better error handling
+    throw "This app is only intended for Android or iOS";
+}
+let naurtEventEmitter = naurt.getEventEmitter();
 const NaurtComponent = () => {
-    let naurt = new NaurtRN("637475b9-e92e-4650-bece-822ca077af92-111be559-2294-4cdc-a305-586326170cdb");
-    if (Platform.OS == "android") {
-        naurt.AndroidInitialise("service");
-    }
-    else if (Platform.OS == "ios") {
-        naurt.IosInitialise();
-    }
-    else {
-        // TODO: Better error handling
-        throw "This app is only intended for Android or iOS";
-    }
-    let naurtEventEmitter = naurt.getEventEmitter();
     const [naurtDisplay, setNaurtDisplay] = useState(React.createElement(React.Fragment, null));
-    const [naurtIsInitialised, setNaurtIsInitialised] = useState(false);
-    const [naurtIsValidated, setNaurtIsValidated] = useState(false);
-    const [naurtIsRunning, setNaurtIsRunning] = useState(false);
+    const [naurtIsInitialised, setNaurtIsInitialised] = useState(naurt.isInitialised());
+    const [naurtIsValidated, setNaurtIsValidated] = useState(naurt.isValidated());
+    const [naurtIsRunning, setNaurtIsRunning] = useState(naurt.isRunning());
     const [naurtPoint, setNaurtPoint] = useState({
         latitude: 0.0,
         longitude: 0.0,
@@ -67,31 +67,36 @@ const NaurtComponent = () => {
             setNaurtIsValidated(event.isValidated);
         });
         naurtEventEmitter.addListener('naurtDidUpdateRunning', (event) => {
-            console.log('naurtDidUpdateRunning: ' + event.isRunning);
-            setNaurtIsRunning(event.isRunning);
+            console.log('naurtDidUpdateRunning: ' + event);
+            setNaurtIsRunning(event.body);
         });
         naurtEventEmitter.addListener('naurtDidUpdateLocation', (event) => {
-            console.log(`NAURT_NEW_POINT: [${event.latitude}, ${event.longitude}], ${event.timestamp}`);
-            setNaurtPoint({
-                latitude: event.latitude,
-                longitude: event.longitude,
-                timestamp: event.timestamp,
-                altitude: event.latitude,
-                heading: event.heading,
-                headingAccuracy: event.headingAccuracy,
-                horizontalAccuracy: event.horizontalAccuracy,
-                horizontalCovariance: event.horizontalCovariance,
-                speed: event.speed,
-                speedAccuracy: event.speedAccuracy,
-                verticalAccuracy: event.verticalAccuracy,
-                platformOrigin: event.platformOrigin,
-                locationProviderTimestamp: event.locationProviderTimestamp,
-                motionFlag: event.motionFlag,
-                cumulativeDistance: event.cumulativeDistance,
-                locationOrigin: event.locationOrigin,
-                environmentFlag: event.environmentFlag,
-                backgroundStatus: event.backgroundStatus
-            });
+            if (event === null) {
+                console.log("Got a null location update (inside &c)");
+            }
+            else {
+                console.log(`naurtDidUpdateLocation: [${event.latitude}, ${event.longitude}], ${event.timestamp}`);
+                setNaurtPoint({
+                    latitude: event.latitude,
+                    longitude: event.longitude,
+                    timestamp: event.timestamp,
+                    altitude: event.latitude,
+                    heading: event.heading,
+                    headingAccuracy: event.headingAccuracy,
+                    horizontalAccuracy: event.horizontalAccuracy,
+                    horizontalCovariance: event.horizontalCovariance,
+                    speed: event.speed,
+                    speedAccuracy: event.speedAccuracy,
+                    verticalAccuracy: event.verticalAccuracy,
+                    platformOrigin: event.platformOrigin,
+                    locationProviderTimestamp: event.locationProviderTimestamp,
+                    motionFlag: event.motionFlag,
+                    cumulativeDistance: event.cumulativeDistance,
+                    locationOrigin: event.locationOrigin,
+                    environmentFlag: event.environmentFlag,
+                    backgroundStatus: event.backgroundStatus
+                });
+            }
         });
         return () => {
             naurt.stop();

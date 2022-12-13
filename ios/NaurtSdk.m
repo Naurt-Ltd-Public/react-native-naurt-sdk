@@ -1,7 +1,9 @@
 #import "NaurtSdk.h"
+#import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
 // TODO: Need to make all these interfaces
-@interface RCT_EXTERN_MODULE(RNaurt, NSObject)
+@interface RCT_EXTERN_MODULE(RNaurt, RCTEventEmitter)
 
 RCT_EXTERN_METHOD(iOSInit: (NSString)apiKey)
 
@@ -15,5 +17,4 @@ RCT_EXTERN_METHOD(deviceUUID)
 RCT_EXTERN_METHOD(getJourneyUUID)
 RCT_EXTERN_METHOD(naurtPoint)
 RCT_EXTERN_METHOD(trackingStatus)
-
 @end
