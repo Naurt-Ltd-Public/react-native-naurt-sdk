@@ -10,6 +10,7 @@ import RNaurt
 import Foundation
 import CoreLocation
 
+
 @objc(RNaurt)
 class RNaurt: RCTEventEmitter, NaurtDelegate {
     var naurt: Naurt? = nil;
@@ -69,7 +70,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     }
     
     @objc func newLocationServicePoint() {
-        print("New location point");
         guard let newPoint = self.locationService.locationDataArray.last else {
             return;
         }
@@ -77,9 +77,21 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         self.locationService.cleanseLocations();
         
         let naurtPoint = self.naurt?.newLocationServicePoint(newPoint: newPoint);
-        print("Got back \(naurtPoint)");
+        let np = naurtLocationStructToClass(point: naurtPoint);
+        // Note that naurtPoint is optional, so we need to be candid about how we send this back to RN
+        if np != nil {
+            do {
+                let jsonData = try JSONEncoder().encode(np!);
+                let jsonString = String(data: jsonData, encoding: .utf8);
+                sendEvent(withName: "naurtDidUpdateLocation", body: jsonString);
+            } catch {
+                sendEvent(withName: "naurtDidUpdateLocation", body: false);
+            }
+        } else {
+            sendEvent(withName: "naurtDidUpdateLocation", body: false);
+        }
+     
         
-        sendEvent(withName: "naurtDidUpdateLocation", body: naurtPoint);
     
     }
     
@@ -155,25 +167,20 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     // Delegate function
     func didChangeInitialised(isInitialised: Bool) {
         self.isInitialised = isInitialised;
-        print("Just initialised");
         sendEvent(withName: "naurtDidUpdateInitialise", body: isInitialised);
     }
     
     func didChangeValidated(isValidated: Bool) {
         self.isValidated = isValidated;
-        print("Just validated")
         sendEvent(withName: "naurtDidUpdateValidation", body: isValidated);
     }
     
     func didChangeRunning(isRunning: Bool) {
         self.isRunning = isRunning;
-        print("Just started running");
-        print("Running: \(isRunning)");
         sendEvent(withName: "naurtDidUpdateRunning", body: isRunning);
     }
         
     func didChangeJourneyUuid(journeyUuid: UUID?) {
-        print("Journey ID \(journeyUUID)");
         self.journeyUUID = journeyUuid;
     }
     
@@ -182,9 +189,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     }
 }
 
-
-
-public class RNaurtLocation: NSObject {
+public class RNaurtLocation: NSObject, Encodable {
     public var timestamp: Double;
     public var longitude: Double;
     public var latitude: Double;

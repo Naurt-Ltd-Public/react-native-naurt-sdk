@@ -1,7 +1,6 @@
-import type {PlatformOrigin, LocationOrigin, EnvironmentFlag, BackgroundStatus} from "./enums";
+import type { LocationOrigin, EnvironmentFlag, BackgroundStatus} from "./enums";
 
 export interface NaurtPointEvent extends Event {
-    platformOrigin: PlatformOrigin,
     latitude: number,
     longitude: number,
     timestamp: number,
