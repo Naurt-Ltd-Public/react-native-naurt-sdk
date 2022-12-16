@@ -19,6 +19,7 @@ export class NaurtRN {
   apiKey: String;
 
   constructor(apiKey: String) {
+    console.log("I am creating Naurt")
     this.apiKey = apiKey;
 
     switch (Platform.OS) {
@@ -29,8 +30,7 @@ export class NaurtRN {
       }
       case "ios": {
         let naurtTemp = NativeModules.RNaurt;
-        console.log("The type of naurtTemp is");
-        console.log(naurtTemp);
+        
         this.naurt = naurtTemp as NaurtIosInterface
         break;
       }
@@ -60,7 +60,7 @@ export class NaurtRN {
 
   // Android only function for initialising Naurt
   AndroidInitialise(naurtEngine: NaurtAndroidEngineType): Boolean {
-
+    console.log("I am initialising Naurt");
     switch (Platform.OS) {
       case "android": {
         break;
@@ -122,7 +122,9 @@ export class NaurtRN {
   }
 
   isRunning(): boolean {
-    return this.naurt.getIsRunning();
+    var thinng = this.naurt.getIsRunning();
+    console.log("Thinng: ", thinng)
+    return thinng;
   }
 
   getDeviceUUID(): String {

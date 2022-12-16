@@ -11,14 +11,75 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import com.naurt.Naurt
 import com.naurt.*
 
-class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+import kotlinx.serialization.*
+import kotlinx.serialization.json.Json
+import kotlin.math.min
+
+@Serializable
+private data class NaurtOutput(
+  val timestamp: Double,
+  val longitude: Double,
+  val latitude: Double,
+  val altitude: Double,
+  val verticalAccuracy: Double,
+  val speed: Double,
+  val speedAccuracy: Double,
+  val course: Double,
+  val courseAccuracy: Double,
+  val horizontalAccuracy: Double,
+  val horizontalCovariance: Double
+) {
+
+}
+
+private class OutputTemp(
+  timestamp: Double,
+  longitude: Double,
+  latitude: Double,
+  altitude: Double,
+  verticalAccuracy: Double,
+  speed: Double,
+  speedAccuracy: Double,
+  course: Double,
+  courseAccuracy: Double,
+  horizontalAccuracy: Double,
+  horizontalCovariance: Double
+) {
+  val timestamp = timestamp
+  val longitude = minusIfNan(longitude)
+  val latitude = minusIfNan(latitude)
+  val altitude = minusIfNan(altitude)
+  val verticalAccuracy = minusIfNan(verticalAccuracy)
+  val speed = minusIfNan(speed)
+  val speedAccuracy = minusIfNan(speedAccuracy)
+  val course = minusIfNan(course)
+  val courseAccuracy = minusIfNan(courseAccuracy)
+  val horizontalAccuracy = minusIfNan(horizontalAccuracy)
+  val horizontalCovariance = minusIfNan(horizontalCovariance)
+
+  fun toData(): NaurtOutput {
+    return NaurtOutput(
+      timestamp, longitude, latitude, altitude, verticalAccuracy, speed, speedAccuracy, course, courseAccuracy, horizontalAccuracy, horizontalCovariance
+    )
+  }
+}
+
+private fun minusIfNan(num: Double): Double {
+  return if (num.isNaN()) {
+    -999.0
+  } else {
+    num
+  }
+
+}
+
+class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>
   private lateinit var naurtIsInitialisedListener: NaurtEventListener<NaurtIsInitialisedEvent>
   private lateinit var naurtIsValidatedListener: NaurtEventListener<NaurtIsValidatedEvent>
@@ -61,52 +122,45 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
   }
 
 
-
-  private fun mapLocation(loc: NaurtLocation): WritableMap {
-    val params = Arguments.createMap()
-
-    params.putDouble("latitude", loc.latitude)
-    params.putDouble("longitude", loc.longitude)
-    params.putDouble("timestamp", loc.timestamp.toDouble())
-    params.putDouble("horizontalAccuracy", loc.horizontalAccuracy)
-    params.putDouble("speed", loc.speed)
-    params.putDouble("heading", loc.heading)
-    params.putDouble("speedAccuracy", loc.speedAccuracy)
-    params.putDouble("headingAccuracy", loc.headingAccuracy)
-    params.putDouble("horizontalCovariance", loc.horizontalCovariance)
-    params.putDouble("altitude", loc.altitude)
-    params.putDouble("verticalAccuracy", loc.verticalAccuracy)
-
-    return params
+  @OptIn(ExperimentalSerializationApi::class)
+  private fun serisaliseLocation(loc: NaurtLocation): String {
+    // NOTE: "heading" is changing to "course", to make room for a new variable "heading"
+    // This is more representative of the traditional navigation nomenclature
+    val data = OutputTemp(
+      timestamp = loc.timestamp.toDouble(),
+      longitude = loc.longitude,
+      latitude = loc.latitude,
+      horizontalAccuracy = loc.horizontalAccuracy,
+      speed = loc.speed,
+      course = loc.heading,
+      speedAccuracy = loc.speedAccuracy,
+      courseAccuracy = loc.headingAccuracy,
+      horizontalCovariance = loc.horizontalCovariance,
+      altitude = loc.altitude,
+      verticalAccuracy = loc.verticalAccuracy
+    ).toData()
+    return Json.encodeToString(data)
   }
 
   private fun addListeners() {
     naurtLocationListener = NaurtEventListener<NaurtNewLocationEvent> { p0 ->
-      val params = mapLocation(p0.newPoint)
-
-      emitEvent("naurtDidUpdateLocation", params)
+      val jsonString = serisaliseLocation(p0.newPoint)
+      emitJson("naurtDidUpdateLocation", jsonString)
     }
     Naurt.on(NaurtEvents.NEW_LOCATION, naurtLocationListener)
 
     naurtIsInitialisedListener = NaurtEventListener<NaurtIsInitialisedEvent> { p0 ->
-      val params = Arguments.createMap()
-      params.putBoolean("isInitialised", p0.isInitialised)
-
-      emitEvent("naurtDidUpdateInitialise", params)
+      emitBool("naurtDidUpdateInitialise", p0.isInitialised)
     }
     Naurt.on(NaurtEvents.IS_INITIALISED, naurtIsInitialisedListener)
 
     naurtIsValidatedListener = NaurtEventListener<NaurtIsValidatedEvent> { p0 ->
-      val params = Arguments.createMap()
-      params.putBoolean("isValidated", p0.isValidated)
-      emitEvent("naurtDidUpdateValidation", params)
+      emitBool("naurtDidUpdateValidation", p0.isValidated)
     }
     Naurt.on(NaurtEvents.IS_VALIDATED, naurtIsValidatedListener)
 
     naurtRunningListener = NaurtEventListener<NaurtIsRunningEvent> { p0 ->
-      val params = Arguments.createMap()
-      params.putBoolean("isRunning", p0.isRunning)
-      emitEvent("naurtDidUpdateRunning", params)
+      emitBool("naurtDidUpdateRunning", p0.isRunning)
     }
     Naurt.on(NaurtEvents.IS_RUNNING, naurtRunningListener)
 
@@ -114,7 +168,7 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
 
   override fun getName(): String {
-      return "NaurtSdk"
+      return "NaurtAndroid"
   }
 
 
@@ -171,39 +225,29 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 
   /** Start the Naurt engine  */
   @ReactMethod
-  fun startNaurt() {
+  fun start() {
       Naurt.start()
   }
 
   /** Stop the Naurt Engine  */
   @ReactMethod
-  fun stopNaurt() {
+  fun stop() {
       Naurt.stop()
   }
 
   @ReactMethod
-  fun isInitialised(cb: Promise) {
-    cb.resolve(Naurt.getInitialised())
+  fun gteIsInitialised(): Boolean {
+    return Naurt.getInitialised()
   }
 
   @ReactMethod
-  fun isValidated(cb: Promise) {
-    cb.resolve(Naurt.getValidated())
+  fun getIsValidated(): Boolean {
+    return Naurt.getValidated()
   }
 
   @ReactMethod
-  fun isRunning(cb: Promise) {
-    cb.resolve(Naurt.getRunning())
-  }
-
-  @ReactMethod
-  fun isOnline(cb: Promise) {
-    cb.resolve(Naurt.getOnline())
-  }
-
-  @ReactMethod
-  fun hasLocationProvider(cb: Promise) {
-    cb.resolve(Naurt.getHasLocationProvider())
+  fun getIsRunning(): Boolean {
+    return Naurt.getRunning()
   }
 
 //  @ReactMethod
@@ -212,30 +256,25 @@ class NaurtSdkModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
 //  }
 
   @ReactMethod
-  fun journeyUuid(cb: Promise) {
-    cb.resolve(Naurt.getJourneyUuid().toString())
+  fun journeyUuid(): String {
+    return Naurt.getJourneyUuid().toString()
   }
 
   @ReactMethod
   fun naurtPoint(cb: Promise) {
     Naurt.getLocation()?.let {
-      cb.resolve(mapLocation(it))
+      cb.resolve(serisaliseLocation(it))
     }
 
     // Return an empty map if no device report is available
     cb.resolve(Arguments.createMap())
   }
 
-  @ReactMethod
-  fun naurtPoints(cb: Promise){
-    val arr = WritableNativeArray()
-    Naurt.getLocationHistory().forEach{
-      arr.pushMap(mapLocation(it))
-    }
-    cb.resolve(arr)
+  private fun emitJson(eventName: String, data: String) {
+    eventEmitter.emit(eventName, data)
   }
 
-  private fun emitEvent(eventName: String, data: WritableMap) {
-    eventEmitter.emit(eventName, data);
+  private fun emitBool(eventName: String, data: Boolean) {
+    eventEmitter.emit(eventName, data)
   }
 }
