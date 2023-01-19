@@ -1,22 +1,21 @@
 //
 //  SensorService.swift
-//  NaurtSdk
+//  NaurtInternalApp
 //
-//  Created by Nathaniel Curnick on 12/12/2022.
-//  Copyright © 2022 Facebook. All rights reserved.
+//  Created by Nathaniel Curnick on 18/01/2023.
 //
 
 import Foundation
 import CoreMotion
+import NaurtSDK
 
-internal struct SensorServiceStruct {
-    let accel: (Double, Double, Double);
-    let gyro: (Double, Double, Double);
-    let mag: (Double, Double, Double);
-    let timeS: Double
+public struct CMWrapper {
+    let motion: CMDeviceMotion;
+    let timeS: Double;
 }
 
-internal class MotionWrapper {
+
+public class MotionWrapper {
     var accel: (Double, Double, Double)?
     var gyro: (Double, Double, Double)?
     var mag: (Double, Double, Double)?
@@ -91,20 +90,19 @@ internal class MotionWrapper {
         return out;
     }
     
-    public func asStruct() -> SensorServiceStruct? {
+    public func asStruct() -> NaurtSDK.MotionStruct? {
         if self.isReady() {
-            return SensorServiceStruct(accel: self.accel!, gyro: self.gyro!, mag: self.mag!, timeS: self.timeS!);
+            return NaurtSDK.MotionStruct(accel: self.accel!, gyro: self.gyro!, mag: self.mag!, timeS: self.timeS!);
         } else {
             return nil;
         }
     }
 }
 
-internal class SensorSerivce {
+public class SensorSerivce {
     let sensorManager: CMMotionManager;
     var sensorData: MotionWrapper;
     let deviceMotionUpdateInterval: Double = 0.2;
-    
     
     init() {
         self.sensorManager = CMMotionManager();
@@ -147,9 +145,6 @@ internal class SensorSerivce {
             self.notifyDidUpdateSensor();
         }
     }
-    public func notifyDidUpdateSensor() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "didUpdateSensor"), object: nil);
-    }
     
     public func cleanseSensors() {
         self.sensorData.reset();
@@ -158,6 +153,11 @@ internal class SensorSerivce {
     public func isReady() -> Bool {
         return self.sensorData.isReady();
     }
+    
+    public func notifyDidUpdateSensor() {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "didUpdateSensor"), object: nil);
+        }
 }
+
 
 

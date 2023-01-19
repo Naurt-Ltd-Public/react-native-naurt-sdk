@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 
   s.dependency "React"
 
-  s.dependency 'Naurt.rn', '0.0.4'
+  s.dependency 'Naurt.swift', "0.0.11"
 
   s.swift_version = '5.0'
 end

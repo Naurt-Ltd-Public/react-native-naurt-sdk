@@ -5,43 +5,73 @@
 //  Created by Nathaniel Curnick on 08/11/2022.
 //  Copyright © 2022 Facebook. All rights reserved.
 //
-import React
-import RNaurt
-import Foundation
-import CoreLocation
+import React;
+import NaurtSDK;
+import Foundation;
+import CoreLocation;
 
 
 @objc(RNaurt)
 class RNaurt: RCTEventEmitter, NaurtDelegate {
-    var naurt: Naurt? = nil;
- 
     
-    var isInitialised: Bool = false;
+    @objc
+    func newLocationServicePoint() {
+        print("New location point in RNaurt")
+        
+        if let newLocation = self.locationService?.locationDataArray.last {
+            self.naurt?.newLocationPoint(newLocation: newLocation);
+            self.locationService?.cleanse();
+        }
+        
+    }
+    
+    @objc
+    func newSensorServicePoint() {
+        print("New sensor")
+        if let newMotion = self.sensorService?.sensorData.asStruct() {
+            self.naurt?.newSensorPoint(newMotion: newMotion);
+            self.sensorService?.cleanseSensors();
+        }
+        
+    }
+    
+    
+    
+    var naurt: Naurt? = nil;
+    var locationService: LocationService? = nil;
+    var sensorService: SensorSerivce? = nil;
+ 
     var isValidated: Bool = false;
     var isRunning: Bool = false;
     var naurtLocation: NaurtLocation? = nil;
     var journeyUUID: UUID? = nil;
     var status: NaurtTrackingStatus = NaurtTrackingStatus.UNKNOWN;
     
-    private var locationService: LocationService;
-    private var sensorService: SensorSerivce;
-    
     override init() {
-        self.locationService = LocationService();
-        self.sensorService = SensorSerivce();
         super.init();
         
     }
     
     @objc
     func iOSInit(_ apiKey: String) {
-        self.naurt = Naurt(apiKey: apiKey);
+        
+        self.naurt = Naurt(apiKey: apiKey, noServices: true);
         self.naurt!.delegate = self;
+        
+        self.sensorService = SensorSerivce();
+        
+        self.locationService = LocationService();
+        print("The delegate is set");
     }
     
     deinit {
         if self.naurt != nil {
-            self.naurt!.stop();
+            do {
+                try self.naurt!.stop();
+            } catch {
+                return;
+            }
+            
         }
     }
     
@@ -59,71 +89,42 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         if self.naurt == nil {
             return;
         }
-        self.naurt!.start();
         
-        self.locationService.startUpdatingLocation();
-        NotificationCenter.default.addObserver(self, selector: #selector(self.newLocationServicePoint), name: NSNotification.Name("didUpdateLocation"), object: nil);
-        
-        self.sensorService.startUpdatingSensors();
-        NotificationCenter.default.addObserver(self, selector: #selector(self.newSensorReading), name: NSNotification.Name("didUpdateSensor"), object: nil);
-        
+        do {
+            try self.naurt!.start();
+            self.locationService!.startUpdatingLocation();
+            self.sensorService!.startUpdatingSensors();
+            NotificationCenter.default.addObserver(self, selector: #selector(self.newLocationServicePoint), name: NSNotification.Name("didUpdateLocation"), object: nil);
+            NotificationCenter.default.addObserver(self, selector: #selector(self.newSensorServicePoint), name: NSNotification.Name("didUpdateSensor"), object: nil);
+            print("I started everything")
+        } catch {
+            return
+        }
+                
     }
     
-    @objc func newLocationServicePoint() {
-        guard let newPoint = self.locationService.locationDataArray.last else {
-            return;
-        }
-        
-        self.locationService.cleanseLocations();
-        
-        let naurtPoint = self.naurt?.newLocationServicePoint(newPoint: newPoint);
-        let np = naurtLocationStructToClass(point: naurtPoint);
-        // Note that naurtPoint is optional, so we need to be candid about how we send this back to RN
-        if np != nil {
-            do {
-                let jsonData = try JSONEncoder().encode(np!);
-                let jsonString = String(data: jsonData, encoding: .utf8);
-                sendEvent(withName: "naurtDidUpdateLocation", body: jsonString);
-            } catch {
-                sendEvent(withName: "naurtDidUpdateLocation", body: false);
-            }
-        } else {
-            sendEvent(withName: "naurtDidUpdateLocation", body: false);
-        }
-     
-        
-    
-    }
-    
-    @objc func newSensorReading(){
-        
-        guard let newSensorReading = self.sensorService.sensorData.asStruct() else {
-            return;
-        }
-               
 
-        self.sensorService.cleanseSensors();
-        
-        // Note: This line might seem unusual, but we are essential converting the data so it can be passed into the frameworks
-        let sr = MotionStruct(accel: newSensorReading.accel, gyro: newSensorReading.gyro, mag: newSensorReading.mag, timeS: newSensorReading.timeS);
-        
-        self.naurt?.newSensorReading(newSensorReading: sr);
-    }
     
     @objc
     func stop() {
-        print("Inside the stop function");
         if self.naurt == nil {
             return;
         }
-        self.naurt!.stop();
-        self.locationService.stopUpdatingLocation();
-        self.sensorService.stopUpdatingSensors();
+        do {
+            try self.naurt!.stop();
+            self.locationService!.stopUpdatingLocation();
+            self.sensorService!.stopUpdatingSensors();
+            NotificationCenter.default.removeObserver(self);
+        } catch {
+            return;
+        }
+        
+    
     }
     
     @objc
     func getIsInitialised() -> Bool {
-        return self.isInitialised;
+        return true;
     }
     
     @objc
@@ -165,27 +166,48 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     }
 
     // Delegate function
-    func didChangeInitialised(isInitialised: Bool) {
-        self.isInitialised = isInitialised;
-        sendEvent(withName: "naurtDidUpdateInitialise", body: isInitialised);
-    }
     
     func didChangeValidated(isValidated: Bool) {
+        print("Naurt is validating")
         self.isValidated = isValidated;
         sendEvent(withName: "naurtDidUpdateValidation", body: isValidated);
     }
     
     func didChangeRunning(isRunning: Bool) {
+        print("Naurt is running")
         self.isRunning = isRunning;
         sendEvent(withName: "naurtDidUpdateRunning", body: isRunning);
     }
         
     func didChangeJourneyUuid(journeyUuid: UUID?) {
+        print("journey uuid")
         self.journeyUUID = journeyUuid;
     }
     
     func didChangeStatus(trackingStatus: NaurtTrackingStatus) {
+        print("Changing status")
         self.status = trackingStatus;
+    }
+    
+    func didUpdateLocation(naurtPoint: NaurtSDK.NaurtLocation?) {
+        print("Naurt updating location")
+        if naurtPoint == nil {
+            return;
+        }
+        let np = naurtLocationStructToClass(point: naurtPoint);
+        
+        if np == nil {
+            return;
+        }
+        
+        do {
+            let jsonData = try JSONEncoder().encode(np!);
+            let jsonString = String(data: jsonData, encoding: .utf8);
+            sendEvent(withName: "naurtDidUpdateLocation", body: jsonString);
+        } catch {
+            sendEvent(withName: "naurtDidUpdateLocation", body: false);
+        }
+        
     }
 }
 
