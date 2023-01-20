@@ -12,7 +12,7 @@ const styles = StyleSheet.create(
   }
 );
 
-let naurt = new NaurtRN("637475b9-e92e-4650-bece-822ca077af92-111be559-2294-4cdc-a305-586326170cdb");
+let naurt = new NaurtRN("<YOUR API KEY HERE>");
 
 if (Platform.OS == "android") {
   naurt.AndroidInitialise("service");

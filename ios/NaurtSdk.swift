@@ -16,11 +16,10 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     
     @objc
     func newLocationServicePoint() {
-        print("New location point in RNaurt")
-        
-        if let newLocation = self.locationService?.locationDataArray.last {
-            self.naurt?.newLocationPoint(newLocation: newLocation);
-            self.locationService?.cleanse();
+        print("New location point in RNaurt");
+        if let newLocation = self.locationService.locationDataArray.last {
+            self.naurt!.newLocationPoint(newLocation: newLocation);
+            self.locationService.cleanseLocations();
         }
         
     }
@@ -28,9 +27,9 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     @objc
     func newSensorServicePoint() {
         print("New sensor")
-        if let newMotion = self.sensorService?.sensorData.asStruct() {
-            self.naurt?.newSensorPoint(newMotion: newMotion);
-            self.sensorService?.cleanseSensors();
+        if let newMotion = self.sensorService.sensorData.asStruct() {
+            self.naurt!.newSensorPoint(newMotion: newMotion);
+            self.sensorService.cleanseSensors();
         }
         
     }
@@ -38,8 +37,8 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     
     
     var naurt: Naurt? = nil;
-    var locationService: LocationService? = nil;
-    var sensorService: SensorSerivce? = nil;
+    var locationService: LocationService;
+    var sensorService: SensorSerivce;
  
     var isValidated: Bool = false;
     var isRunning: Bool = false;
@@ -48,8 +47,9 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     var status: NaurtTrackingStatus = NaurtTrackingStatus.UNKNOWN;
     
     override init() {
+        self.sensorService = SensorSerivce();
+        self.locationService = LocationService();
         super.init();
-        
     }
     
     @objc
@@ -58,9 +58,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         self.naurt = Naurt(apiKey: apiKey, noServices: true);
         self.naurt!.delegate = self;
         
-        self.sensorService = SensorSerivce();
         
-        self.locationService = LocationService();
         print("The delegate is set");
     }
     
@@ -92,8 +90,8 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         
         do {
             try self.naurt!.start();
-            self.locationService!.startUpdatingLocation();
-            self.sensorService!.startUpdatingSensors();
+            self.locationService.startUpdatingLocation();
+            self.sensorService.startUpdatingSensors();
             NotificationCenter.default.addObserver(self, selector: #selector(self.newLocationServicePoint), name: NSNotification.Name("didUpdateLocation"), object: nil);
             NotificationCenter.default.addObserver(self, selector: #selector(self.newSensorServicePoint), name: NSNotification.Name("didUpdateSensor"), object: nil);
             print("I started everything")
@@ -108,14 +106,19 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     @objc
     func stop() {
         if self.naurt == nil {
+            print("Can stop won't stop")
             return;
+            
         }
         do {
             try self.naurt!.stop();
-            self.locationService!.stopUpdatingLocation();
-            self.sensorService!.stopUpdatingSensors();
+            self.locationService.stopUpdatingLocation();
+            self.sensorService.stopUpdatingSensors();
             NotificationCenter.default.removeObserver(self);
+            print("Naurt stopped");
         } catch {
+            print(error);
+            print("Stopping exception");
             return;
         }
         

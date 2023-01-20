@@ -33,7 +33,8 @@ private data class NaurtOutput(
   val course: Double,
   val courseAccuracy: Double,
   val horizontalAccuracy: Double,
-  val horizontalCovariance: Double
+  val horizontalCovariance: Double,
+  
 ) {
 
 }

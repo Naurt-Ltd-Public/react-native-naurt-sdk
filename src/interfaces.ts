@@ -9,7 +9,6 @@ export interface NaurtAndroidInterface {
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type
 
-    // TODO: Make Android reflect this
     getIsInitialised(): boolean;
     getIsValidated(): boolean;
     getIsRunning(): boolean;
