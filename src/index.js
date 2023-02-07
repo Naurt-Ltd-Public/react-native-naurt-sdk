@@ -1,4 +1,5 @@
 import { NativeEventEmitter, NativeModules, PermissionsAndroid, Platform, } from "react-native";
+// import type { NaurtPoint } from "./naurt-point";
 export {} from "./naurt-point";
 export {} from "./events";
 export class NaurtRN {
@@ -16,6 +17,7 @@ export class NaurtRN {
             case "ios": {
                 let naurtTemp = NativeModules.RNaurt;
                 this.naurt = naurtTemp;
+                this.IosInitialise();
                 break;
             }
             default: {
@@ -24,18 +26,17 @@ export class NaurtRN {
         }
     }
     IosInitialise() {
-        switch (Platform.OS) {
-            case "ios": {
-                break;
-            }
-            default: {
-                // TODO: better error handling
-                throw "This method must only be called on iOS platforms";
-            }
-        }
+        // You do not need to manually call this function! It is done implicitly as part of making NaurtRN   
         let naurtSDK = this.naurt;
-        naurtSDK.iOSInit(this.apiKey);
-        console.log("I initialised");
+        return new Promise((resolve, reject) => {
+            naurtSDK.iOSInit(this.apiKey)
+                .then(() => {
+                resolve();
+            })
+                .catch(error => {
+                reject(new Error(error));
+            });
+        });
     }
     // Android only function for initialising Naurt
     AndroidInitialise(naurtEngine) {
@@ -79,33 +80,43 @@ export class NaurtRN {
         });
         return false;
     }
-    start() {
-        this.naurt.start();
+    beginAnalyticsSession(metadata) {
+        // You do not need to call this function to start getting locations from Naurt
+        // This is only necessary if you wish to associate some kind of metadata to a particular journey
+        // The metadata String MUST be a valid JSON or this will fail
+        return new Promise((resolve, reject) => {
+            this.naurt.beginAnalyticsSession(metadata)
+                .then(() => {
+                resolve();
+            })
+                .catch(error => {
+                reject(new Error(error));
+            });
+        });
     }
-    stop() {
-        this.naurt.stop();
-    }
-    isInitialised() {
-        return this.naurt.getIsInitialised();
+    endAnalyticsSession() {
+        return new Promise((resolve, reject) => {
+            this.naurt.stopAnalyticsSession("")
+                .then(() => {
+                resolve();
+            })
+                .catch(error => {
+                reject(new Error(error));
+            });
+        });
     }
     isValidated() {
         return this.naurt.getIsValidated();
     }
-    isRunning() {
-        var thinng = this.naurt.getIsRunning();
-        console.log("Thinng: ", thinng);
-        return thinng;
+    getIsInAnalyticsSession() {
+        return this.naurt.getIsInAnalyticsSession();
     }
     getDeviceUUID() {
-        return this.naurt.deviceUUID();
+        return this.naurt.getDeviceUUID();
     }
     getJourneyUUID() {
         // undefined indicates that there is no journey yet
         return this.naurt.getJourneyUUID();
-    }
-    getLatestNaurtPoint() {
-        // undefined indicates that there is not yet a naurt point
-        return this.naurt.naurtPoint();
     }
     getEventEmitter() {
         return new NativeEventEmitter(this.naurt);

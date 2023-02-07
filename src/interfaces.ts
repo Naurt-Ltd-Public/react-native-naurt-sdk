@@ -1,36 +1,41 @@
-import type { NaurtPoint } from "./naurt-point";
+// import type { NaurtPoint } from "./naurt-point";
 
 export interface NaurtAndroidInterface {
     initialiseNaurtStandalone(apiKey: String): void;
     initialiseNaurtService(apiKey: String): void;
-    start(): void;
-    stop(): void;
+
 
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type
 
-    getIsInitialised(): boolean;
+
+    // New ones below here
+    // Right now I have copy-pasta to keep in line with iOS
+    // This MUST change before RN release: very important!
+    beginAnalyticsSession(metadata: String): Promise<void>;
+    stopAnalyticsSession(dummy: String): Promise<void>;
+
+    onAppClose(): void;
+
     getIsValidated(): boolean;
-    getIsRunning(): boolean;
-    deviceUUID(): String;
-    getJourneyUUID(): String;
-    naurtPoint(): NaurtPoint;
-    trackingStatus(): String; // TODO: Become enum
+    getDeviceUUID(): String | undefined; // TODO: make this getDeviceUUID
+    getJourneyUUID(): String | undefined;
+    getIsInAnalyticsSession(): boolean;
 }
 
 export interface NaurtIosInterface {
-    iOSInit(apiKey: String): void;
-    start(): void;
-    stop(): void;
+    iOSInit(apiKey: String): Promise<void>;
+
+    beginAnalyticsSession(metadata: String): Promise<void>;
+    stopAnalyticsSession(dummy: String): Promise<void>;
+
+    onAppClose(): void;
 
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type
 
-    getIsInitialised(): boolean;
     getIsValidated(): boolean;
-    getIsRunning(): boolean;
-    deviceUUID(): String; // TODO: make this getDeviceUUID
+    getDeviceUUID(): String | undefined;
     getJourneyUUID(): String | undefined;
-    naurtPoint(): NaurtPoint | undefined;
-    trackingStatus(): String; // TODO: Become enum
+    getIsInAnalyticsSession(): boolean;
 }

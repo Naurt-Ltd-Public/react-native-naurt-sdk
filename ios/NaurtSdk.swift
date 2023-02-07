@@ -9,30 +9,13 @@ import React;
 import NaurtSDK;
 import Foundation;
 import CoreLocation;
+import GenericJSON;
 
-
+// MARK: RNaurt
 @objc(RNaurt)
-class RNaurt: RCTEventEmitter, NaurtDelegate {
+class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorServiceUser {
     
-    @objc
-    func newLocationServicePoint() {
-        print("New location point in RNaurt");
-        if let newLocation = self.locationService.locationDataArray.last {
-            self.naurt!.newLocationPoint(newLocation: newLocation);
-            self.locationService.cleanseLocations();
-        }
-        
-    }
     
-    @objc
-    func newSensorServicePoint() {
-        print("New sensor")
-        if let newMotion = self.sensorService.sensorData.asStruct() {
-            self.naurt!.newSensorPoint(newMotion: newMotion);
-            self.sensorService.cleanseSensors();
-        }
-        
-    }
     
     
     
@@ -41,7 +24,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
     var sensorService: SensorSerivce;
  
     var isValidated: Bool = false;
-    var isRunning: Bool = false;
+    var isInAnalyticsSession: Bool = false;
     var naurtLocation: NaurtLocation? = nil;
     var journeyUUID: UUID? = nil;
     var status: NaurtTrackingStatus = NaurtTrackingStatus.UNKNOWN;
@@ -50,146 +33,213 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         self.sensorService = SensorSerivce();
         self.locationService = LocationService();
         super.init();
+        self.locationService.user = self;
+        self.sensorService.user = self;
+        
     }
     
     @objc
-    func iOSInit(_ apiKey: String) {
+    func iOSInit(_ apiKey: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        do {
+            self.naurt = try Naurt(apiKey: apiKey, noServices: true);
+        } catch (let error as InitNaurtError) {
+            switch (error) {
+            case .fileSystem:
+                let err = NSError(domain: "iOSInit", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not init your filesystem"]);
+                reject(String(err.code), err.domain, err);
+                return;
+            case .couldNotCreateFirstJourney:
+                let err = NSError(domain: "iOSInit", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not start the first internal journey"]);
+                reject(String(err.code), err.domain, err);
+                return;
+            case .unknown:
+                let err = NSError(domain: "iOSInit", code: 3, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+                reject(String(err.code), err.domain, err);
+                return
+            @unknown default:
+                let err = NSError(domain: "iOSInit", code: 4, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+                reject(String(err.code), err.domain, err);
+                return;
+            }
+        } catch {
+            let err = NSError(domain: "iOSInit", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+            reject(String(err.code), err.domain, err);
+            return;
+        }
         
-        self.naurt = Naurt(apiKey: apiKey, noServices: true);
         self.naurt!.delegate = self;
-        
-        
+        self.locationService.startUpdatingLocation();
+        self.sensorService.startUpdatingSensors();
         print("The delegate is set");
+        resolve("Operation was success");
     }
     
     deinit {
-        if self.naurt != nil {
+        self.sensorService.stopUpdatingSensors();
+        self.locationService.stopUpdatingLocation();
+        self.onAppClose();
+    }
+    
+    // MARK: Services Delegate Functions
+    
+    func newLocationServicePoint(newLocation: CLLocation) {
+        self.naurt!.newLocationServicePoint(newLocation: newLocation);
+    }
+    
+    func newSensorServicePoint(newMotion: NaurtSDK.MotionStruct) {
+        self.naurt!.newSensorServicePoint(newMotion: newMotion);
+        self.sensorService.cleanseSensors();
+    }
+    
+    
+    // MARK: Naurt Delegate Functions
+    
+    
+    func didChangeAnalyticsSession(isInSession: Bool) {
+        self.isInAnalyticsSession = isInSession;
+        sendEvent(withName: "naurtDidUpdateAnalyticsSession", body: isInSession);
+    }
+    
+    func didChangeJourneyUuid(journeyUuid: UUID) {
+        self.journeyUUID = journeyUuid
+    }
+    
+    func didEnterGeofence(id: UUID) {
+        // Not supported
+    }
+    
+    func startAnalyticsSession(metadata: Encodable, geofences: [NaurtSDK.Geofence]?) throws {
+        do {
+            try self.naurt!.startAnalyticsSession(metadata: metadata);
+        } catch (let error as StartNaurtError) {
+            switch (error) {
+            case StartNaurtError.fileSystem:
+                throw NSError(domain: "endAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not init your filesystem"]);
+            case .alreadyInAnalyticsSession:
+                throw NSError(domain: "endAnalyticsSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "You are already in an analytics session"]);
+            case .notInAnalyticsSession:
+                // TODO: What is the point of this error?
+                throw NSError(domain: "endAnalyticsSession", code: 3);
+            case .notValidated:
+                throw NSError(domain: "endAnalyticsSession", code: 4, userInfo: [NSLocalizedDescriptionKey: "You must be validated to start an analytics session"]);
+            case .invalidJson:
+                throw NSError(domain: "endAnalyticsSession", code: 5, userInfo: [NSLocalizedDescriptionKey: "Could not encode your provided metadata"]);
+            case .noLocationService:
+                // TODO: What is the point of this error?
+                throw NSError(domain: "endAnalyticsSession", code: 6, userInfo: [NSLocalizedDescriptionKey: "No location service was provided"]);
+            case .noSensorService:
+                // TODO: What is the point of this error?
+                throw NSError(domain: "endAnalyticsSession", code: 7, userInfo: [NSLocalizedDescriptionKey: "No sensor service was provided"]);
+            case .unknown:
+                throw NSError(domain: "endAnalyticsSession", code: 8, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+            @unknown default:
+                throw NSError(domain: "endAnalyticsSession", code: 9, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+            }
+        } catch {
+            throw NSError(domain: "endAnalyticsSession", code: 10, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+        }
+        
+    }
+    
+    @objc
+    public func beginAnalyticsSession(_ metadata: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        // Takes a String representation of a JSON
+        
+        func convertToDictionary(text: String) -> [String: Any]? {
+          if let data = text.data(using: .utf8) {
             do {
-                try self.naurt!.stop();
+              return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             } catch {
+              print(error.localizedDescription)
+            }
+          }
+          return nil
+        }
+        
+        let optionalAny = convertToDictionary(text: metadata);
+        
+        if optionalAny == nil{
+            let err = NSError(domain: "beginAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not encode your provided metadata"]);
+            reject(String(err.code), err.domain, err);
+            return;
+        }
+        let unwrappedAny: [String: Any] = optionalAny!;
+        
+        var stringDict = [String: String]();
+        
+        for (key, value) in unwrappedAny {
+            guard let stringValue = "\(value)" as? String else {
+                let err = NSError(domain: "beginAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not encode your provided metadata"]);
+                reject(String(err.code), err.domain, err);
                 return;
             }
-            
+            stringDict[key] = stringValue;
         }
-    }
-    
-    @objc override static func requiresMainQueueSetup() -> Bool {
-        return false;
-    }
-    
-    override func supportedEvents() -> [String]! {
-        return ["naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateRunning", "naurtDidUpdateInitialise"];
-    }
-    
-    
-    @objc
-    func start() {
-        if self.naurt == nil {
-            return;
-        }
-        
-        do {
-            try self.naurt!.start();
-            self.locationService.startUpdatingLocation();
-            self.sensorService.startUpdatingSensors();
-            NotificationCenter.default.addObserver(self, selector: #selector(self.newLocationServicePoint), name: NSNotification.Name("didUpdateLocation"), object: nil);
-            NotificationCenter.default.addObserver(self, selector: #selector(self.newSensorServicePoint), name: NSNotification.Name("didUpdateSensor"), object: nil);
-            print("I started everything")
-        } catch {
-            return
-        }
+        print("The json string I got was \(stringDict)");
                 
-    }
-    
-
-    
-    @objc
-    func stop() {
-        if self.naurt == nil {
-            print("Can stop won't stop")
-            return;
-            
-        }
         do {
-            try self.naurt!.stop();
-            self.locationService.stopUpdatingLocation();
-            self.sensorService.stopUpdatingSensors();
-            NotificationCenter.default.removeObserver(self);
-            print("Naurt stopped");
+            try self.startAnalyticsSession(metadata: stringDict, geofences: nil);
+        } catch (let err as NSError){
+            reject(String(err.code), String(err.domain), err);
+            return
         } catch {
-            print(error);
-            print("Stopping exception");
+            reject("Unknown", "Unknown", error);
+            return;
+        }
+                              
+        resolve("Operation was success");
+    }
+    
+    func endAnalyticsSession() throws {
+        try self.naurt!.endAnalyticsSession();
+    }
+    
+    @objc
+    func stopAnalyticsSession(_ dummy: String, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) -> Void {
+        do {
+            try self.endAnalyticsSession();
+        } catch (let error as StopNaurtError) {
+            switch (error) {
+            case StopNaurtError.notRunning:
+                let err = NSError(domain: "endAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not end the analytics session since there was not one"]);
+                reject(String(err.code), err.domain, err);
+                return
+            case StopNaurtError.uknown:
+                let err = NSError(domain: "endAnalyticsSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+                reject(String(err.code), err.domain, err);
+                return;
+            default:
+                let err = NSError(domain: "endAnalyticsSession", code: 3, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+                reject(String(err.code), err.domain, err);
+                return;
+            }
+        } catch {
+            let err = NSError(domain: "endAnalyticsSession", code: 4, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+            reject(String(err.code), err.domain, err);
             return;
         }
         
-    
-    }
-    
-    @objc
-    func getIsInitialised() -> Bool {
-        return true;
-    }
-    
-    @objc
-    func getIsValidated() -> Bool {
-        return self.isValidated;
-    }
-    
-    @objc
-    func getIsRunning() -> Bool {
-        return self.isRunning;
-    }
-    
-    @objc
-    func deviceUUID() -> String? {
-        if self.naurt == nil {
-            return nil;
-        }
-        return self.naurt!.deviceUuid;
-    }
-    
-    @objc
-    func getJourneyUUID() -> String? {
-        // TODO: probably type errors here
-        guard let ju = self.journeyUUID else {
-            return nil;
-        }
+        resolve("Operation was success");
         
-        return ju.uuidString;
+    }
+    
+    func newPoi(poi: Encodable) throws {
+        // Not supported
+    }
+    
+    func errorStream(error: NaurtSDK.NaurtError) {
+        // Not supported
     }
     
     @objc
-    func naurtPoint() -> RNaurtLocation? {
-        return naurtLocationStructToClass(point: self.naurtLocation);
+    func onAppClose() {
+        self.naurt!.onAppClose();
     }
-    
-    @objc
-    func trackingStatus() -> RNaurtTrackingStatus {
-        return naurtStatusEnumObjc(status: self.status);
-    }
-
-    // Delegate function
     
     func didChangeValidated(isValidated: Bool) {
         print("Naurt is validating")
         self.isValidated = isValidated;
         sendEvent(withName: "naurtDidUpdateValidation", body: isValidated);
-    }
-    
-    func didChangeRunning(isRunning: Bool) {
-        print("Naurt is running")
-        self.isRunning = isRunning;
-        sendEvent(withName: "naurtDidUpdateRunning", body: isRunning);
-    }
-        
-    func didChangeJourneyUuid(journeyUuid: UUID?) {
-        print("journey uuid")
-        self.journeyUUID = journeyUuid;
-    }
-    
-    func didChangeStatus(trackingStatus: NaurtTrackingStatus) {
-        print("Changing status")
-        self.status = trackingStatus;
     }
     
     func didUpdateLocation(naurtPoint: NaurtSDK.NaurtLocation?) {
@@ -212,8 +262,61 @@ class RNaurt: RCTEventEmitter, NaurtDelegate {
         }
         
     }
+    
+    // MARK: Getters
+    
+    @objc
+    func getDeviceUUID() -> String? {
+        if self.naurt == nil {
+            return nil;
+        }
+        return self.naurt!.deviceUuid;
+    }
+    
+    @objc
+    func getJourneyUUID() -> String? {
+        // TODO: probably type errors here
+        guard let ju = self.journeyUUID else {
+            return nil;
+        }
+        
+        return ju.uuidString;
+    }
+    
+    @objc
+    func getIsValidated() -> Bool {
+        if self.naurt == nil {
+            return false;
+        }
+        
+        return self.naurt!.getIsValidated();
+    }
+    
+    @objc
+    func getIsInAnalyticsSession() -> Bool {
+        if self.naurt == nil {
+            return false;
+        }
+        
+        return self.naurt!.getIsInSession();
+    }
+    
+    
+    // MARK: React Native things
+    
+    
+    
+    
+    @objc override static func requiresMainQueueSetup() -> Bool {
+        return false;
+    }
+    
+    override func supportedEvents() -> [String]! {
+        return ["naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession"];
+    }
 }
 
+// TODO: Need to add source to the RNaurtLocation
 public class RNaurtLocation: NSObject, Encodable {
     public var timestamp: Double;
     public var longitude: Double;

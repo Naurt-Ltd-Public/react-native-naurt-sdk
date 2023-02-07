@@ -99,7 +99,9 @@ public class MotionWrapper {
     }
 }
 
-public class SensorSerivce {
+public class SensorSerivce: SensorServiceDelegate {
+    public var user: NaurtSDK.SensorServiceUser? = nil;
+    
     let sensorManager: CMMotionManager;
     var sensorData: MotionWrapper;
     let deviceMotionUpdateInterval: Double = 0.2;

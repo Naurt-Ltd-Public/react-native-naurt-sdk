@@ -13,7 +13,7 @@ if (Platform.OS == "android") {
     naurt.AndroidInitialise("service");
 }
 else if (Platform.OS == "ios") {
-    naurt.IosInitialise();
+    // Don't need to do anything here!
 }
 else {
     // TODO: Better error handling
@@ -24,11 +24,24 @@ const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggle = (naurt) => {
         if (isEnabled) {
-            naurt.stop();
+            naurt.endAnalyticsSession()
+                .then(() => {
+                console.log("Analytics session over");
+            })
+                .catch(error => {
+                console.error(error);
+                process.exit(1);
+            });
             setIsEnabled(!isEnabled);
         }
         else {
-            naurt.start();
+            naurt.beginAnalyticsSession("{\"hello\":\"kitty\", \"friends\": 0}").then(() => {
+                console.log("Began analytics session");
+            })
+                .catch(error => {
+                console.error(error);
+                process.exit(1);
+            });
             setIsEnabled(!isEnabled);
         }
     };
@@ -41,8 +54,7 @@ const ToggleButton = () => {
 const NaurtComponent = () => {
     const [latitude, setLatitude] = useState("No latitudes yet");
     const [longitude, setLongitude] = useState("No longitudes yet");
-    const [isRunning, setRunning] = useState(naurt.isRunning());
-    const [isInitialised, setInitialised] = useState(true); // There's a bit of a chicken and egg on this one
+    const [isInSession, setInSession] = useState(naurt.getIsInAnalyticsSession());
     const [isValidated, setValidated] = useState(naurt.isValidated());
     naurtEventEmitter.addListener("naurtDidUpdateLocation", (event) => {
         if (event === false) {
@@ -54,26 +66,19 @@ const NaurtComponent = () => {
             setLongitude(naurtData.longitude);
         }
     });
-    naurtEventEmitter.addListener("naurtDidUpdateInitialise", (event) => {
-        console.log("The event I'm getting is initalise", event);
-        console.log(event);
-        // TODO: Why does it sometimes come as null and others as undefined?
-        setInitialised(event);
-    });
     naurtEventEmitter.addListener("naurtDidUpdateValidation", (event) => {
         console.log("The event I'm getting is validation", event);
         // TODO: Why does it sometimes come as null and others as undefined?
         setValidated(event);
     });
-    naurtEventEmitter.addListener("naurtDidUpdateRunning", (event) => {
+    naurtEventEmitter.addListener("naurtDidUpdateAnalyticsSession", (event) => {
         // TODO: Why does it sometimes come as null and others as undefined?
         console.log("The event I'm getting is running", event);
-        setRunning(event);
+        setInSession(event);
     });
     return (React.createElement(View, null,
-        React.createElement(Text, null, isInitialised ? "Naurt is initialised" : "Naurt is not initialised"),
         React.createElement(Text, null, isValidated ? "Naurt is validated" : "Naurt is not validated"),
-        React.createElement(Text, null, isRunning ? "Naurt is running" : "Naurt is not running"),
+        React.createElement(Text, null, isInSession ? "Naurt is in an analytics session" : "Naurt is not in an analytics session"),
         React.createElement(Text, null,
             "Lat: ",
             latitude,
