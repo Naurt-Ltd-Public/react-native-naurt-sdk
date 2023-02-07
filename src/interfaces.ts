@@ -1,7 +1,6 @@
 // import type { NaurtPoint } from "./naurt-point";
 
 export interface NaurtAndroidInterface {
-    initialiseNaurtStandalone(apiKey: String): void;
     initialiseNaurtService(apiKey: String): void;
 
 

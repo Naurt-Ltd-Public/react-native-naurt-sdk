@@ -58,7 +58,7 @@ export class NaurtRN {
   }
 
   // Android only function for initialising Naurt
-  AndroidInitialise(naurtEngine: NaurtAndroidEngineType): Boolean {
+  AndroidInitialise(): Boolean {
     console.log("I am initialising Naurt");
     switch (Platform.OS) {
       case "android": {
@@ -80,17 +80,8 @@ export class NaurtRN {
           result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
 
         if (granted) {
-
-          switch (naurtEngine) {
-            case "standalone": {
-              naurtSDK.initialiseNaurtStandalone(this.apiKey);
-              return true;
-            }
-            case "service": {
-              naurtSDK.initialiseNaurtService(this.apiKey);
-              return true;
-            }
-          }
+          naurtSDK.initialiseNaurtService(this.apiKey);
+          return true;
           
         } else {
           // TODO: Better error handling

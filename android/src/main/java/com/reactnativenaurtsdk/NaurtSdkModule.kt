@@ -11,7 +11,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.modules.core.DeviceEventManagerModule
 
 import com.naurt.Naurt
@@ -19,7 +18,6 @@ import com.naurt.*
 
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
-import kotlin.math.min
 
 @Serializable
 private data class NaurtOutput(
@@ -34,7 +32,7 @@ private data class NaurtOutput(
   val courseAccuracy: Double,
   val horizontalAccuracy: Double,
   val horizontalCovariance: Double,
-  
+
 ) {
 
 }
@@ -81,10 +79,10 @@ private fun minusIfNan(num: Double): Double {
 }
 
 class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
-  private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>
-  private lateinit var naurtIsInitialisedListener: NaurtEventListener<NaurtIsInitialisedEvent>
-  private lateinit var naurtIsValidatedListener: NaurtEventListener<NaurtIsValidatedEvent>
-  private lateinit var naurtRunningListener: NaurtEventListener<NaurtIsRunningEvent>
+
+  private var naurt: Naurt? = null;
+  private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
+
 
   private val permissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -94,15 +92,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     Manifest.permission.READ_PHONE_STATE,
   )
 
-  val eventIds = arrayOf("naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateRunning", "naurtDidUpdateInitialise")
+  val eventIds = arrayOf("naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession")
 
   private val eventEmitter by lazy {
     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-  }
-
-  init {
-    // Setup lifecycle events handled by android
-    addListeners()
   }
 
   /** Check to see if the given context has been granted all permissions in the input array */
@@ -143,28 +136,26 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     return Json.encodeToString(data)
   }
 
+  /** Initialise Naurt with a given context  */
+  @ReactMethod
+  fun initialiseNaurtService(apiKey: String) {
+    this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, NaurtEngineType.SERVICE);
+    if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
+      Log.e("naurt", "Naurt does not have all required permissions to start")
+    }
+
+    this.addListeners()
+  }
+
   private fun addListeners() {
-    naurtLocationListener = NaurtEventListener<NaurtNewLocationEvent> { p0 ->
+    this.naurtLocationListener = NaurtEventListener<NaurtNewLocationEvent> { p0 ->
       val jsonString = serisaliseLocation(p0.newPoint)
       emitJson("naurtDidUpdateLocation", jsonString)
     }
-    Naurt.on(NaurtEvents.NEW_LOCATION, naurtLocationListener)
+    this.naurt?.on(NaurtEvents.NEW_LOCATION, naurtLocationListener);
 
-    naurtIsInitialisedListener = NaurtEventListener<NaurtIsInitialisedEvent> { p0 ->
-      emitBool("naurtDidUpdateInitialise", p0.isInitialised)
-    }
-    Naurt.on(NaurtEvents.IS_INITIALISED, naurtIsInitialisedListener)
-
-    naurtIsValidatedListener = NaurtEventListener<NaurtIsValidatedEvent> { p0 ->
-      emitBool("naurtDidUpdateValidation", p0.isValidated)
-    }
-    Naurt.on(NaurtEvents.IS_VALIDATED, naurtIsValidatedListener)
-
-    naurtRunningListener = NaurtEventListener<NaurtIsRunningEvent> { p0 ->
-      emitBool("naurtDidUpdateRunning", p0.isRunning)
-    }
-    Naurt.on(NaurtEvents.IS_RUNNING, naurtRunningListener)
-
+    // TODO: Must be changed!!
+    this.emitBool("naurtDidUpdateValidation", true);
   }
 
 
@@ -187,88 +178,68 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
       // Remove upstream listeners, stop unnecessary background tasks
   }
 
-  @ReactMethod
-  fun getIds(cb: Promise) {
-    val wa = WritableNativeArray()
-    eventIds.forEach {
-      wa.pushString(it)
-    }
-
-    cb.resolve(wa)
-  }
-
-  /** Initialise Naurt with a given context  */
-  @ReactMethod
-  fun initialiseNaurtStandalone(apiKey: String) {
-    if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
-      Log.e("naurt", "Naurt does not have all required permissions to start")
-    }
-
-    Naurt.initialiseStandalone(
-      apiKey,
-      reactApplicationContext.applicationContext
-    )
-  }
-
-
-  /** Initialise Naurt with a given context  */
-  @ReactMethod
-  fun initialiseNaurtService(apiKey: String) {
-    if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
-      Log.e("naurt", "Naurt does not have all required permissions to start")
-    }
-
-    Naurt.initialiseService(
-      apiKey,
-      reactApplicationContext.applicationContext
-    )
-  }
 
   /** Start the Naurt engine  */
   @ReactMethod
-  fun start() {
-      Naurt.start()
+  fun beginAnalyticsSession(metadata: String, promise: Promise) {
+      try {
+        this.naurt?.startAnalyticsSession(metadata)
+        promise.resolve(null);
+      } catch (error: Error){
+        promise.reject(error.message, error.stackTrace.toString());
+      }
+
   }
 
   /** Stop the Naurt Engine  */
   @ReactMethod
-  fun stop() {
-      Naurt.stop()
+  fun stopAnalyticsSession(dummy: String, promise: Promise) {
+      try {
+        this.naurt?.endAnalyticsSession();
+        promise.resolve(null);
+      } catch (error: Error) {
+        promise.reject(error.message, error.stackTrace.toString());
+      }
   }
 
   @ReactMethod
   fun gteIsInitialised(): Boolean {
-    return Naurt.getInitialised()
+    if (this.naurt == null) {
+      return false;
+    }
+    return this.naurt!!.getIsInitialised();
   }
 
   @ReactMethod
   fun getIsValidated(): Boolean {
-    return Naurt.getValidated()
-  }
-
-  @ReactMethod
-  fun getIsRunning(): Boolean {
-    return Naurt.getRunning()
-  }
-
-//  @ReactMethod
-//  fun deviceUUID(cb: Promise) {
-//    cb.resolve(Naurt.deviceUUID.toString())
-//  }
-
-  @ReactMethod
-  fun journeyUuid(): String {
-    return Naurt.getJourneyUuid().toString()
-  }
-
-  @ReactMethod
-  fun naurtPoint(cb: Promise) {
-    Naurt.getLocation()?.let {
-      cb.resolve(serisaliseLocation(it))
+    if (this.naurt == null) {
+      return false;
     }
+    return this.naurt!!.getValidated();
+  }
 
-    // Return an empty map if no device report is available
-    cb.resolve(Arguments.createMap())
+  @ReactMethod
+  fun getIsInAnalyticsSession(): Boolean {
+    if (this.naurt == null) {
+      return false;
+    }
+    return this.naurt!!.getInAnalyticsSession();
+  }
+
+  @ReactMethod
+  fun getDeviceUUID(): String {
+    if (this.naurt == null) {
+      return "";
+    }
+    return this.naurt!!.getDeviceID();
+  }
+
+  @ReactMethod
+  fun getJourneyUUID(): String {
+    if (this.naurt == null) {
+      return "";
+    }
+    return this.naurt!!.getCurrentSessionID();
   }
 
   private fun emitJson(eventName: String, data: String) {

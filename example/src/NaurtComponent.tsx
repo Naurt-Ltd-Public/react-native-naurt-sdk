@@ -12,10 +12,10 @@ const styles = StyleSheet.create(
   }
 );
 
-let naurt = new NaurtRN("YOUR KEY HERE");
+let naurt = new NaurtRN("YOUR API KEY");
 
 if (Platform.OS == "android") {
-  naurt.AndroidInitialise("service");
+  naurt.AndroidInitialise();
 } else if (Platform.OS == "ios") {
   // Don't need to do anything here!
 } else {
