@@ -19,7 +19,8 @@
     "react-native-naurt-sdk.podspec",
     "!lib/typescript/example",
     "!android/build",
-    "!ios/build"
+    "!ios/build",
+    "!node_modules"
   ],
   "scripts": {
     "test": "jest",
