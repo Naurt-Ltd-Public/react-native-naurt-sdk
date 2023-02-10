@@ -82,7 +82,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   private var naurt: Naurt? = null;
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
-
+  private lateinit var naurtValidationListener: NaurtEventListener<NaurtIsValidatedEvent>;
 
   private val permissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -154,6 +154,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     }
     this.naurt?.on(NaurtEvents.NEW_LOCATION, naurtLocationListener);
 
+    this.naurtValidationListener = NaurtEventListener<NaurtIsValidatedEvent> { p0 ->
+      emitBool("naurtDidUpdateValidation", p0.isValidated);
+    }
+    this.naurt?.on(NaurtEvents.IS_VALIDATED, naurtLocationListener);
     // TODO: Must be changed!!
     this.emitBool("naurtDidUpdateValidation", true);
   }
@@ -183,7 +187,8 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   @ReactMethod
   fun beginAnalyticsSession(metadata: String, promise: Promise) {
       try {
-        this.naurt?.startAnalyticsSession(metadata)
+        this.naurt?.startAnalyticsSession(metadata);
+        this.emitBool("naurtDidUpdateAnalyticsSession", true);
         promise.resolve(null);
       } catch (error: Error){
         promise.reject(error.message, error.stackTrace.toString());
@@ -196,6 +201,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   fun stopAnalyticsSession(dummy: String, promise: Promise) {
       try {
         this.naurt?.endAnalyticsSession();
+        this.emitBool("naurtDidUpdateAnalyticsSession", false);
         promise.resolve(null);
       } catch (error: Error) {
         promise.reject(error.message, error.stackTrace.toString());

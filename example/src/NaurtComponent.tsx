@@ -12,7 +12,7 @@ const styles = StyleSheet.create(
   }
 );
 
-let naurt = new NaurtRN("YOUR API KEY");
+let naurt = new NaurtRN("YOUR API KEY HERE");
 
 if (Platform.OS == "android") {
   naurt.AndroidInitialise();
@@ -39,7 +39,7 @@ const ToggleButton = () => {
       });
       setIsEnabled(!isEnabled);
     } else {
-      naurt.beginAnalyticsSession("{\"hello\":\"kitty\", \"friends\": 0}").then(() => {
+      naurt.beginAnalyticsSession("{\"hello\":\"kitty\"}").then(() => {
         console.log("Began analytics session");
       })
       .catch(error => {
@@ -81,14 +81,10 @@ const NaurtComponent = () => {
 
 
   naurtEventEmitter.addListener("naurtDidUpdateValidation", (event) => {
-    console.log("The event I'm getting is validation", event);
-    // TODO: Why does it sometimes come as null and others as undefined?
     setValidated(event);
   });
 
   naurtEventEmitter.addListener("naurtDidUpdateAnalyticsSession", (event) => {
-    // TODO: Why does it sometimes come as null and others as undefined?
-    console.log("The event I'm getting is running", event);
     setInSession(event);
   });
 

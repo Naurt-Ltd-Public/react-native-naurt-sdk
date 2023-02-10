@@ -19,7 +19,6 @@ export class NaurtRN {
   apiKey: String;
 
   constructor(apiKey: String) {
-    console.log("I am creating Naurt")
     this.apiKey = apiKey;
 
     switch (Platform.OS) {
@@ -59,7 +58,6 @@ export class NaurtRN {
 
   // Android only function for initialising Naurt
   AndroidInitialise(): Boolean {
-    console.log("I am initialising Naurt");
     switch (Platform.OS) {
       case "android": {
         break;
