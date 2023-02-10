@@ -123,7 +123,6 @@ export class NaurtRN {
 
   isRunning(): boolean {
     var thinng = this.naurt.getIsRunning();
-    console.log("Thinng: ", thinng)
     return thinng;
   }
 
