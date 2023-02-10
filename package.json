@@ -20,7 +20,11 @@
     "!lib/typescript/example",
     "!android/build",
     "!ios/build",
-    "!node_modules"
+    "!node_modules",
+    "!example",
+    "!**/build",
+    "!**/.gradle",
+    "!.git"
   ],
   "scripts": {
     "test": "jest",
