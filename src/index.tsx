@@ -25,6 +25,7 @@ export class NaurtRN {
       case "android": {
         let naurtTemp = NativeModules.NaurtAndroid;
         this.naurt = naurtTemp as NaurtAndroidInterface;
+        this.AndroidInitialise();
         break;
       }
       case "ios": {

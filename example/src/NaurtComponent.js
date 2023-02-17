@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { NaurtRN } from 'react-native-naurt-sdk';
 const styles = StyleSheet.create({
     button: {
@@ -8,17 +8,7 @@ const styles = StyleSheet.create({
         padding: 10
     }
 });
-let naurt = new NaurtRN("637475b9-e92e-4650-bece-822ca077af92-111be559-2294-4cdc-a305-586326170cdb");
-if (Platform.OS == "android") {
-    naurt.AndroidInitialise();
-}
-else if (Platform.OS == "ios") {
-    // Don't need to do anything here!
-}
-else {
-    // TODO: Better error handling
-    throw "This app is only intended for Android or iOS";
-}
+let naurt = new NaurtRN("3dc5c8f2-30af-4533-bdfa-e08c5415dfe8-78c03c3d-dcec-4a24-87e4-bf0f54f462cb");
 let naurtEventEmitter = naurt.getEventEmitter();
 const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);

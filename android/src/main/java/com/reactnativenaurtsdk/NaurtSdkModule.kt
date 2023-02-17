@@ -139,7 +139,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   /** Initialise Naurt with a given context  */
   @ReactMethod
   fun initialiseNaurtService(apiKey: String) {
-    this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, NaurtEngineType.SERVICE);
+    this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, NaurtEngineType.Service);
     if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
       Log.e("naurt", "Naurt does not have all required permissions to start")
     }
@@ -155,7 +155,8 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     this.naurt?.on(NaurtEvents.NEW_LOCATION, naurtLocationListener);
 
     this.naurtValidationListener = NaurtEventListener<NaurtIsValidatedEvent> { p0 ->
-      emitBool("naurtDidUpdateValidation", p0.isValidated);
+      val validated = p0.isValidated == NaurtValidationStatus.Valid;
+      emitBool("naurtDidUpdateValidation", validated);
     }
     this.naurt?.on(NaurtEvents.IS_VALIDATED, naurtLocationListener);
     // TODO: Must be changed!!
@@ -221,7 +222,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     if (this.naurt == null) {
       return false;
     }
-    return this.naurt!!.getValidated();
+    val validated = this.naurt!!.getIsValidated();
+
+    return validated == NaurtValidationStatus.Valid;
+
   }
 
   @ReactMethod

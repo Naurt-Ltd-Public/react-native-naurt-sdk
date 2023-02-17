@@ -1,5 +1,5 @@
 import  React, {useState} from "react";
-import { Text, View, Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { NaurtRN } from 'react-native-naurt-sdk';
 
 const styles = StyleSheet.create(
@@ -14,14 +14,6 @@ const styles = StyleSheet.create(
 
 let naurt = new NaurtRN("YOUR API KEY HERE");
 
-if (Platform.OS == "android") {
-  naurt.AndroidInitialise();
-} else if (Platform.OS == "ios") {
-  // Don't need to do anything here!
-} else {
-  // TODO: Better error handling
-  throw "This app is only intended for Android or iOS";
-}
 let naurtEventEmitter = naurt.getEventEmitter();
 
 const ToggleButton = () => {
