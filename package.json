@@ -1,6 +1,6 @@
 {
   "name": "react-native-naurt-sdk",
-  "version": "0.11.1",
+  "version": "1.0.0-rc.1",
   "description": "Naurt's official react native sdk wrapper",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -19,7 +19,12 @@
     "react-native-naurt-sdk.podspec",
     "!lib/typescript/example",
     "!android/build",
-    "!ios/build"
+    "!ios/build",
+    "!node_modules",
+    "!example",
+    "!**/build",
+    "!**/.gradle",
+    "!.git"
   ],
   "scripts": {
     "test": "jest",
@@ -153,5 +158,6 @@
         }
       ]
     ]
-  }
+  },
+  "dependencies": {}
 }

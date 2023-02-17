@@ -5,7 +5,7 @@ import {
   Platform,
 } from "react-native";
 import type { NaurtAndroidInterface, NaurtIosInterface } from "./interfaces";
-import type { NaurtPoint } from "./naurt-point";
+// import type { NaurtPoint } from "./naurt-point";
 
 
 export { NaurtPoint } from "./naurt-point";
@@ -19,19 +19,20 @@ export class NaurtRN {
   apiKey: String;
 
   constructor(apiKey: String) {
-    console.log("I am creating Naurt")
     this.apiKey = apiKey;
 
     switch (Platform.OS) {
       case "android": {
         let naurtTemp = NativeModules.NaurtAndroid;
         this.naurt = naurtTemp as NaurtAndroidInterface;
+        this.AndroidInitialise();
         break;
       }
       case "ios": {
         let naurtTemp = NativeModules.RNaurt;
         
-        this.naurt = naurtTemp as NaurtIosInterface
+        this.naurt = naurtTemp as NaurtIosInterface;
+        this.IosInitialise();
         break;
       }
       default: {
@@ -40,27 +41,24 @@ export class NaurtRN {
     }
   }
 
-  IosInitialise() {
-    switch (Platform.OS) {
-      case "ios": {
-        break;
-      }
-      default: {
-        // TODO: better error handling
-        throw "This method must only be called on iOS platforms"
-      }
-    }
-
-    
+  IosInitialise(): Promise<void> {
+    // You do not need to manually call this function! It is done implicitly as part of making NaurtRN   
     let naurtSDK = this.naurt as NaurtIosInterface;
-    naurtSDK.iOSInit(this.apiKey);
+    
 
-    console.log("I initialised");
+    return new Promise((resolve, reject) => {
+      naurtSDK.iOSInit(this.apiKey)
+      .then(() => {
+        resolve();
+      })
+      .catch(error => {
+        reject(new Error(error));
+      })
+    });
   }
 
   // Android only function for initialising Naurt
-  AndroidInitialise(naurtEngine: NaurtAndroidEngineType): Boolean {
-    console.log("I am initialising Naurt");
+  AndroidInitialise(): Boolean {
     switch (Platform.OS) {
       case "android": {
         break;
@@ -81,17 +79,8 @@ export class NaurtRN {
           result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
 
         if (granted) {
-
-          switch (naurtEngine) {
-            case "standalone": {
-              naurtSDK.initialiseNaurtStandalone(this.apiKey);
-              return true;
-            }
-            case "service": {
-              naurtSDK.initialiseNaurtService(this.apiKey);
-              return true;
-            }
-          }
+          naurtSDK.initialiseNaurtService(this.apiKey);
+          return true;
           
         } else {
           // TODO: Better error handling
@@ -105,39 +94,48 @@ export class NaurtRN {
     return false;
   }
 
-  start() {
-    this.naurt.start();
+  beginAnalyticsSession(metadata: String): Promise<void> {
+    // You do not need to call this function to start getting locations from Naurt
+    // This is only necessary if you wish to associate some kind of metadata to a particular journey
+    // The metadata String MUST be a valid JSON or this will fail
+    return new Promise((resolve, reject) => {
+      this.naurt.beginAnalyticsSession(metadata)
+      .then(() => {
+        resolve();
+      })
+      .catch(error => {
+        reject(new Error(error));
+      })
+    });
   }
 
-  stop() {
-    this.naurt.stop();
-  }
-
-  isInitialised(): boolean {
-    return this.naurt.getIsInitialised();
+  endAnalyticsSession(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.naurt.stopAnalyticsSession("")
+      .then(() => {
+        resolve();
+      })
+      .catch(error => {
+        reject(new Error(error));
+      })
+    });
   }
 
   isValidated(): boolean {
     return this.naurt.getIsValidated();
   }
 
-  isRunning(): boolean {
-    var thinng = this.naurt.getIsRunning();
-    return thinng;
+  getIsInAnalyticsSession(): boolean {
+    return this.naurt.getIsInAnalyticsSession();
   }
-
-  getDeviceUUID(): String {
-    return this.naurt.deviceUUID();
+  
+  getDeviceUUID(): String | undefined {
+    return this.naurt.getDeviceUUID();
   }
 
   getJourneyUUID(): String | undefined {
     // undefined indicates that there is no journey yet
     return this.naurt.getJourneyUUID();
-  }
-
-  getLatestNaurtPoint() : NaurtPoint | undefined {
-    // undefined indicates that there is not yet a naurt point
-    return this.naurt.naurtPoint();
   }
 
   getEventEmitter() : NativeEventEmitter {

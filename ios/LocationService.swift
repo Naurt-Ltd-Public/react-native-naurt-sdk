@@ -1,13 +1,15 @@
 import CoreLocation
 import Foundation
+import UIKit
+import NaurtSDK
 
-internal class LocationService: NSObject, CLLocationManagerDelegate {
+internal class LocationService: NSObject, CLLocationManagerDelegate, LocationServiceDelegate {
     
-    public static var sharedInstance = LocationService()
+    
     let locationManager: CLLocationManager
-    var locationDataArray: [CLLocation]
-    var useFilter: Bool
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
+    var user: LocationServiceUser? = nil;
+    
     
     override init() {
         locationManager = CLLocationManager()
@@ -19,24 +21,16 @@ internal class LocationService: NSObject, CLLocationManagerDelegate {
         locationManager.requestAlwaysAuthorization();
         locationManager.allowsBackgroundLocationUpdates = true
         locationManager.pausesLocationUpdatesAutomatically = false
-        locationDataArray = [CLLocation]()
         
-        useFilter = false
-        
-        super.init()
-        
+        super.init();
         locationManager.delegate = self
-        
         
     }
     
-    
+    // Delegate Methods
     func startUpdatingLocation(){
         if CLLocationManager.locationServicesEnabled(){
-            locationManager.startUpdatingLocation()
-        }else{
-            //tell view controllers to show an alert
-            showTurnOnLocationServiceAlert()
+            self.locationManager.startUpdatingLocation();
         }
     }
     
@@ -44,17 +38,15 @@ internal class LocationService: NSObject, CLLocationManagerDelegate {
         self.locationManager.stopUpdatingLocation();
     }
     
+    func didUpdateLocation(location: CLLocation){
+        self.user?.newLocationServicePoint(newLocation: location);
+    }
     
-    //MARK: CLLocationManagerDelegate protocol methods
-    public func locationManager(_ manager: CLLocationManager,
-                                  didUpdateLocations location: [CLLocation]){
-        
-        
+    // Location Manager Methods
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations location: [CLLocation]){
         if let newLocation = location.last {
-        
-            self.locationDataArray.append(newLocation);
-            notifiyDidUpdateLocation();
-            
+            print("New location \(newLocation.coordinate)");
+            self.didUpdateLocation(location: newLocation);
         }
         
     }
@@ -63,29 +55,14 @@ internal class LocationService: NSObject, CLLocationManagerDelegate {
                          didFailWithError error: Error){
         if (error as NSError).domain == kCLErrorDomain && (error as NSError).code == CLError.Code.denied.rawValue{
             //User denied your app access to location information.
-            showTurnOnLocationServiceAlert()
         }
     }
     
     public func locationManager(_ manager: CLLocationManager,
                                   didChangeAuthorization status: CLAuthorizationStatus){
-        if status == .authorizedWhenInUse{
+        if status == .authorizedAlways{
             //You can resume logging by calling startUpdatingLocation here
         }
-    }
-    
-    func showTurnOnLocationServiceAlert(){
-        NotificationCenter.default.post(name: Notification.Name(rawValue:"showTurnOnLocationServiceAlert"), object: nil)
-    }
-    
-    func notifiyDidUpdateLocation(){
-        NotificationCenter.default.post(name: Notification.Name(rawValue:"didUpdateLocation"), object: nil)
-    }
-    
-    public func cleanseLocations(){
-        // It's important to reset the cached location points after use
-        // This keeps memory low and also helps finding things easier
-        self.locationDataArray = [];
     }
     
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {

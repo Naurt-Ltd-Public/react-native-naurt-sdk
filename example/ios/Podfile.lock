@@ -10,9 +10,11 @@ PODS:
     - React-jsi (= 0.68.2)
     - ReactCommon/turbomodule/core (= 0.68.2)
   - fmt (6.2.1)
+  - GenericJSON (2.0.2)
   - glog (0.3.5)
   - LASwift (0.2.5)
-  - Naurt.swift (0.0.11):
+  - Naurt.swift (0.1.2):
+    - GenericJSON (~> 2.0.2)
     - LASwift (~> 0.2.5)
     - Zip (~> 2.1.2)
   - RCT-Folly (2021.06.28.00-v2):
@@ -222,8 +224,8 @@ PODS:
   - React-jsinspector (0.68.2)
   - React-logger (0.68.2):
     - glog
-  - react-native-naurt-sdk (0.9.1):
-    - Naurt.swift (= 0.0.11)
+  - react-native-naurt-sdk (1.0.0-rc1):
+    - Naurt.swift (= 0.1.2)
     - React
   - React-perflogger (0.68.2)
   - React-RCTActionSheet (0.68.2):
@@ -332,6 +334,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - fmt
+    - GenericJSON
     - LASwift
     - Naurt.swift
     - Zip
@@ -408,9 +411,10 @@ SPEC CHECKSUMS:
   FBLazyVector: a7a655862f6b09625d11c772296b01cd5164b648
   FBReactNativeSpec: 81ce99032d5b586fddd6a38d450f8595f7e04be4
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
+  GenericJSON: 79a840eeb77030962e8cf02a62d36bd413b67626
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   LASwift: a820932178025d61856a3c32c51fdfff3b00a42c
-  Naurt.swift: 48e1edfb53e687335f96815432ad97ef20dc5432
+  Naurt.swift: fcb86ef1606b5e2e4e230b659cd74bfb40198019
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 3e917ea5377751094f38145fdece525aa90545a0
   RCTTypeSafety: c43c072a4bd60feb49a9570b0517892b4305c45e
@@ -424,7 +428,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b7b553412f2ec768fe6c8f27cd6bafdb9d8719e6
   React-jsinspector: c5989c77cb89ae6a69561095a61cce56a44ae8e8
   React-logger: a0833912d93b36b791b7a521672d8ee89107aff1
-  react-native-naurt-sdk: 778ec4fbabebd5835bebbdf3116de76ce5a74931
+  react-native-naurt-sdk: dd4008519dc6e65aa1a260a37d572c46324d52e5
   React-perflogger: a18b4f0bd933b8b24ecf9f3c54f9bf65180f3fe6
   React-RCTActionSheet: 547fe42fdb4b6089598d79f8e1d855d7c23e2162
   React-RCTAnimation: bc9440a1c37b06ae9ebbb532d244f607805c6034
