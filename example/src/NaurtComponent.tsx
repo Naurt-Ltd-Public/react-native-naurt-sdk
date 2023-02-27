@@ -12,7 +12,7 @@ const styles = StyleSheet.create(
   }
 );
 
-let naurt = new NaurtRN("YOUR API KEY HERE");
+let naurt = new NaurtRN("YOUR APIKEY HERE");
 
 let naurtEventEmitter = naurt.getEventEmitter();
 

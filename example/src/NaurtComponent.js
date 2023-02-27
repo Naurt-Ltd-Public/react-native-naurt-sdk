@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         padding: 10
     }
 });
-let naurt = new NaurtRN("3dc5c8f2-30af-4533-bdfa-e08c5415dfe8-78c03c3d-dcec-4a24-87e4-bf0f54f462cb");
+let naurt = new NaurtRN("YOUR APIKEY HERE");
 let naurtEventEmitter = naurt.getEventEmitter();
 const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
