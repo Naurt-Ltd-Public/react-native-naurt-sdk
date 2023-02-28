@@ -1,6 +1,6 @@
 import  React, {useState} from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { NaurtRN } from 'react-native-naurt-sdk';
+import { NaurtRN, NaurtPoint } from 'react-native-naurt-sdk';
 
 const styles = StyleSheet.create(
   {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create(
   }
 );
 
-let naurt = new NaurtRN("YOUR APIKEY HERE");
+let naurt = new NaurtRN("YOUR API KEY HERE");
 
 let naurtEventEmitter = naurt.getEventEmitter();
 
@@ -31,7 +31,7 @@ const ToggleButton = () => {
       });
       setIsEnabled(!isEnabled);
     } else {
-      naurt.beginAnalyticsSession("{\"hello\":\"kitty\"}").then(() => {
+      naurt.beginAnalyticsSession("{\"driver_id\":465752}").then(() => {
         console.log("Began analytics session");
       })
       .catch(error => {
@@ -64,7 +64,13 @@ const NaurtComponent = () => {
     if (event === false) {
       console.log("Got a null update (maybe indoors, not converged &c)");
     } else {
+      // You can parse with JSON
       let naurtData = JSON.parse(event);
+      
+      // Or you can use the interface
+      let naurtInterface = event as NaurtPoint;
+      console.log(naurtInterface);
+      
       setLatitude(naurtData.latitude);
       setLongitude(naurtData.longitude);
     }

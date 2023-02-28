@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         padding: 10
     }
 });
-let naurt = new NaurtRN("YOUR APIKEY HERE");
+let naurt = new NaurtRN("4162b2e0-bc9d-4f7f-b9e8-ba75adcc85a2-7bdc58c5-b4ca-409d-8368-092a7ae88654");
 let naurtEventEmitter = naurt.getEventEmitter();
 const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -25,7 +25,7 @@ const ToggleButton = () => {
             setIsEnabled(!isEnabled);
         }
         else {
-            naurt.beginAnalyticsSession("{\"hello\":\"kitty\"}").then(() => {
+            naurt.beginAnalyticsSession("{\"driver_id\":465752}").then(() => {
                 console.log("Began analytics session");
             })
                 .catch(error => {
@@ -51,7 +51,11 @@ const NaurtComponent = () => {
             console.log("Got a null update (maybe indoors, not converged &c)");
         }
         else {
+            // You can parse with JSON
             let naurtData = JSON.parse(event);
+            // Or you can use the interface
+            let naurtInterface = event;
+            console.log(naurtInterface);
             setLatitude(naurtData.latitude);
             setLongitude(naurtData.longitude);
         }

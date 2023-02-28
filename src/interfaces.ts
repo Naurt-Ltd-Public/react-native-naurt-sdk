@@ -1,4 +1,3 @@
-// import type { NaurtPoint } from "./naurt-point";
 
 export interface NaurtAndroidInterface {
     initialiseNaurtService(apiKey: String): void;
@@ -14,10 +13,10 @@ export interface NaurtAndroidInterface {
     beginAnalyticsSession(metadata: String): Promise<void>;
     stopAnalyticsSession(dummy: String): Promise<void>;
 
-    onAppClose(): void;
+    destroy(): void;
 
     getIsValidated(): boolean;
-    getDeviceUUID(): String | undefined; // TODO: make this getDeviceUUID
+    getDeviceUUID(): String | undefined;
     getJourneyUUID(): String | undefined;
     getIsInAnalyticsSession(): boolean;
 }
@@ -28,7 +27,7 @@ export interface NaurtIosInterface {
     beginAnalyticsSession(metadata: String): Promise<void>;
     stopAnalyticsSession(dummy: String): Promise<void>;
 
-    onAppClose(): void;
+    destroy(): void;
 
     addListener(eventName: String): void; // *: Only here to conform to type
     removeListeners(count: number): void; // *: Only here to conform to type

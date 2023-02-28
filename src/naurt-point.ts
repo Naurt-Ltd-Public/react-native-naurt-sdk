@@ -1,7 +1,5 @@
-import type { PlatformOrigin, LocationOrigin, EnvironmentFlag, BackgroundStatus } from "./enums";
-
 export interface NaurtPoint {
-  platformOrigin: PlatformOrigin,
+  platformOrigin: String,
   latitude: number,
   longitude: number,
   timestamp: number,
@@ -14,10 +12,11 @@ export interface NaurtPoint {
   horizontalCovariance: number,
   altitude: number,
   verticalAccuracy: number,
-  cumulativeDistance: number | undefined, // undefined for iOS - support coming soon to iOS
   motionFlag: String | undefined, // undefined for iOS - support coming soon to iOS
-  locationOrigin: LocationOrigin | undefined, // undefined for iOS - support not possible
-  environmentFlag: EnvironmentFlag | undefined, // undefined for iOS - support not possible 
-  backgroundStatus: BackgroundStatus | undefined, // undefined for iOS - support coming soon to iOS
+  locationOrigin: String | undefined, // undefined for iOS - support not possible
+  environmentFlag: String | undefined, // undefined for iOS - support not possible 
+  backgroundStatus: String | undefined, // undefined for iOS - support coming soon to iOS
+  isMocked: Boolean | undefined, // Undefined for iOS
+  isMockedPrevented: Boolean | undefined // Undefined for iOS
 }
 

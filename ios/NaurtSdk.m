@@ -13,10 +13,11 @@ RCT_EXTERN_METHOD(beginAnalyticsSession: (NSString *)metadata
 
 RCT_EXTERN_METHOD(stopAnalyticsSession: (NSString *)dummy resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(onAppClose)
+RCT_EXTERN_METHOD(destroy)
 
 RCT_EXTERN_METHOD(getIsValidated)
 RCT_EXTERN_METHOD(getDeviceUUID)
 RCT_EXTERN_METHOD(getJourneyUUID)
 RCT_EXTERN_METHOD(getIsInAnalyticsSession)
+
 @end

@@ -232,8 +232,12 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
     }
     
     @objc
+    func destroy() {
+        self.onAppClose();
+    }
+    
     func onAppClose() {
-        self.naurt!.onAppClose();
+        self.naurt?.onAppClose();
     }
     
     func didChangeValidated(isValidated: Bool) {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.facebook.react.bridge.LifecycleEventListener
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -21,7 +22,9 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 private data class NaurtOutput(
-  val timestamp: Double,
+  val platformOrigin: String,
+  val timestamp: Long,
+  val locationProviderTimestamp: Long,
   val longitude: Double,
   val latitude: Double,
   val altitude: Double,
@@ -32,13 +35,19 @@ private data class NaurtOutput(
   val courseAccuracy: Double,
   val horizontalAccuracy: Double,
   val horizontalCovariance: Double,
-
+  val motionFlag: String,
+  val locationOrigin: String,
+  val environmentFlag: String,
+  val backgroundStatus: String,
+  val isMocked: Boolean,
+  val isMockedPrevented: Boolean
 ) {
 
 }
 
 private class OutputTemp(
-  timestamp: Double,
+  timestamp: Long,
+  locationProviderTimestamp: Long,
   longitude: Double,
   latitude: Double,
   altitude: Double,
@@ -48,9 +57,16 @@ private class OutputTemp(
   course: Double,
   courseAccuracy: Double,
   horizontalAccuracy: Double,
-  horizontalCovariance: Double
+  horizontalCovariance: Double,
+  motionFlag: String,
+  locationOrigin: String,
+  environmentFlag: String,
+  backgroundStatus: String,
+  isMocked: Boolean,
+  isMockedPrevented: Boolean
 ) {
   val timestamp = timestamp
+  val locationProviderTimestamp = locationProviderTimestamp
   val longitude = minusIfNan(longitude)
   val latitude = minusIfNan(latitude)
   val altitude = minusIfNan(altitude)
@@ -61,10 +77,34 @@ private class OutputTemp(
   val courseAccuracy = minusIfNan(courseAccuracy)
   val horizontalAccuracy = minusIfNan(horizontalAccuracy)
   val horizontalCovariance = minusIfNan(horizontalCovariance)
+  val motionFlag = motionFlag
+  val locationOrigin = locationOrigin
+  val environmentFlag = environmentFlag
+  val backgroundStatus = backgroundStatus
+  val isMocked = isMocked
+  val isMockedPrevented = isMockedPrevented
 
   fun toData(): NaurtOutput {
     return NaurtOutput(
-      timestamp, longitude, latitude, altitude, verticalAccuracy, speed, speedAccuracy, course, courseAccuracy, horizontalAccuracy, horizontalCovariance
+      "android",
+      timestamp,
+      locationProviderTimestamp,
+      longitude,
+      latitude,
+      altitude,
+      verticalAccuracy,
+      speed,
+      speedAccuracy,
+      course,
+      courseAccuracy,
+      horizontalAccuracy,
+      horizontalCovariance,
+      this.motionFlag,
+      this.locationOrigin,
+      this.environmentFlag,
+      this.backgroundStatus,
+      this.isMocked,
+      this.isMockedPrevented
     )
   }
 }
@@ -78,11 +118,12 @@ private fun minusIfNan(num: Double): Double {
 
 }
 
-class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext), LifecycleEventListener {
 
   private var naurt: Naurt? = null;
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
   private lateinit var naurtValidationListener: NaurtEventListener<NaurtIsValidatedEvent>;
+
 
   private val permissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -96,6 +137,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   private val eventEmitter by lazy {
     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+  }
+
+  init {
+    reactContext.addLifecycleEventListener(this)
   }
 
   /** Check to see if the given context has been granted all permissions in the input array */
@@ -121,7 +166,8 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     // NOTE: "heading" is changing to "course", to make room for a new variable "heading"
     // This is more representative of the traditional navigation nomenclature
     val data = OutputTemp(
-      timestamp = loc.timestamp.toDouble(),
+      timestamp = loc.timestamp,
+      locationProviderTimestamp = loc.locationProviderTimestamp,
       longitude = loc.longitude,
       latitude = loc.latitude,
       horizontalAccuracy = loc.horizontalAccuracy,
@@ -131,7 +177,13 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
       courseAccuracy = loc.headingAccuracy,
       horizontalCovariance = loc.horizontalCovariance,
       altitude = loc.altitude,
-      verticalAccuracy = loc.verticalAccuracy
+      verticalAccuracy = loc.verticalAccuracy,
+      motionFlag = loc.motionFlag.toString(),
+      locationOrigin = loc.locationOrigin.toString(),
+      environmentFlag = loc.environmentFlag.toString(),
+      backgroundStatus = loc.backgroundStatus.toString(),
+      isMocked = loc.isMocked,
+      isMockedPrevented = loc.isMockedPrevented
     ).toData()
     return Json.encodeToString(data)
   }
@@ -252,11 +304,35 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     return this.naurt!!.getCurrentSessionID();
   }
 
+  @ReactMethod
+  fun destroy() {
+    print("Destorying!")
+    if (this.naurt == null) {
+      return;
+    }
+
+    this.naurt!!.onDestroy();
+    this.naurt = null;
+    print("Destroyed")
+  }
+
   private fun emitJson(eventName: String, data: String) {
     eventEmitter.emit(eventName, data)
   }
 
   private fun emitBool(eventName: String, data: Boolean) {
     eventEmitter.emit(eventName, data)
+  }
+
+  override fun onHostResume() {
+    // Not relevant
+  }
+
+  override fun onHostPause() {
+    // Not relevant
+  }
+  
+  override fun onHostDestroy() {
+    this.destroy();
   }
 }

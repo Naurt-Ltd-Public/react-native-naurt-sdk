@@ -9,7 +9,6 @@ import type { NaurtAndroidInterface, NaurtIosInterface } from "./interfaces";
 
 
 export { NaurtPoint } from "./naurt-point";
-export { NaurtPointEvent, NaurtHasLocationEvent, NaurtInitialisedEvent, NaurtRunningEvent, NaurtValidatedEvent } from "./events";
 
 export type NaurtAndroidEngineType = "standalone" | "service";
 
@@ -141,5 +140,9 @@ export class NaurtRN {
   getEventEmitter() : NativeEventEmitter {
     return new NativeEventEmitter(this.naurt);
     
+  }
+
+  destroy() {
+    this.naurt.destroy();
   }
 }

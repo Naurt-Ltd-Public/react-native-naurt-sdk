@@ -1,7 +1,6 @@
 import { NativeEventEmitter, NativeModules, PermissionsAndroid, Platform, } from "react-native";
 // import type { NaurtPoint } from "./naurt-point";
 export {} from "./naurt-point";
-export {} from "./events";
 export class NaurtRN {
     naurt;
     apiKey;
