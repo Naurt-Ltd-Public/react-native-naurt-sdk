@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
         padding: 10
     }
 });
-let naurt = new NaurtRN("4162b2e0-bc9d-4f7f-b9e8-ba75adcc85a2-7bdc58c5-b4ca-409d-8368-092a7ae88654");
+// Engine type will only affect Android implementations.
+let naurt = new NaurtRN("YOUR_API_KEY_HERE", "standalone");
 let naurtEventEmitter = naurt.getEventEmitter();
 const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -16,12 +17,12 @@ const ToggleButton = () => {
         if (isEnabled) {
             naurt.endAnalyticsSession()
                 .then(() => {
-                console.log("Analytics session over");
-            })
+                    console.log("Analytics session over");
+                })
                 .catch(error => {
-                console.error(error);
-                process.exit(1);
-            });
+                    console.error(error);
+                    process.exit(1);
+                });
             setIsEnabled(!isEnabled);
         }
         else {
@@ -29,16 +30,18 @@ const ToggleButton = () => {
                 console.log("Began analytics session");
             })
                 .catch(error => {
-                console.error(error);
-                process.exit(1);
-            });
+                    console.error(error);
+                    process.exit(1);
+                });
             setIsEnabled(!isEnabled);
         }
     };
     return (React.createElement(View, null,
-        React.createElement(TouchableOpacity, { style: styles.button, onPress: () => {
+        React.createElement(TouchableOpacity, {
+            style: styles.button, onPress: () => {
                 toggle(naurt);
-            } },
+            }
+        },
             React.createElement(Text, null, isEnabled ? "Stop Naurt" : "Start Naurt"))));
 };
 const NaurtComponent = () => {
