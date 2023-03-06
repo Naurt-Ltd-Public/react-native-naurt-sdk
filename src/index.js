@@ -4,8 +4,10 @@ export {} from "./naurt-point";
 export class NaurtRN {
     naurt;
     apiKey;
-    constructor(apiKey) {
+    engineType;
+    constructor(apiKey, engineType = "standalone") {
         this.apiKey = apiKey;
+        this.engineType = engineType;
         switch (Platform.OS) {
             case "android": {
                 let naurtTemp = NativeModules.NaurtAndroid;
@@ -57,7 +59,7 @@ export class NaurtRN {
             let granted = result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted' &&
                 result['android.permission.ACCESS_FINE_LOCATION'] === 'granted';
             if (granted) {
-                naurtSDK.initialiseNaurtService(this.apiKey);
+                naurtSDK.initialiseNaurt(this.apiKey, this.engineType);
                 return true;
             }
             else {
@@ -110,5 +112,8 @@ export class NaurtRN {
     }
     getEventEmitter() {
         return new NativeEventEmitter(this.naurt);
+    }
+    destroy() {
+        this.naurt.destroy();
     }
 }

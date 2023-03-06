@@ -16,9 +16,11 @@ export class NaurtRN {
 
   naurt: NaurtAndroidInterface | NaurtIosInterface;
   apiKey: String;
+  engineType: String;
 
-  constructor(apiKey: String) {
+  constructor(apiKey: String, engineType = "standalone") {
     this.apiKey = apiKey;
+    this.engineType = engineType
 
     switch (Platform.OS) {
       case "android": {
@@ -29,7 +31,7 @@ export class NaurtRN {
       }
       case "ios": {
         let naurtTemp = NativeModules.RNaurt;
-        
+
         this.naurt = naurtTemp as NaurtIosInterface;
         this.IosInitialise();
         break;
@@ -43,16 +45,16 @@ export class NaurtRN {
   IosInitialise(): Promise<void> {
     // You do not need to manually call this function! It is done implicitly as part of making NaurtRN   
     let naurtSDK = this.naurt as NaurtIosInterface;
-    
+
 
     return new Promise((resolve, reject) => {
       naurtSDK.iOSInit(this.apiKey)
-      .then(() => {
-        resolve();
-      })
-      .catch(error => {
-        reject(new Error(error));
-      })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => {
+          reject(new Error(error));
+        })
     });
   }
 
@@ -78,9 +80,9 @@ export class NaurtRN {
           result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
 
         if (granted) {
-          naurtSDK.initialiseNaurtService(this.apiKey);
+          naurtSDK.initialiseNaurt(this.apiKey, this.engineType);
           return true;
-          
+
         } else {
           // TODO: Better error handling
           throw "initialiseNaurt | Missing Permissions!";
@@ -99,24 +101,24 @@ export class NaurtRN {
     // The metadata String MUST be a valid JSON or this will fail
     return new Promise((resolve, reject) => {
       this.naurt.beginAnalyticsSession(metadata)
-      .then(() => {
-        resolve();
-      })
-      .catch(error => {
-        reject(new Error(error));
-      })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => {
+          reject(new Error(error));
+        })
     });
   }
 
   endAnalyticsSession(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.naurt.stopAnalyticsSession("")
-      .then(() => {
-        resolve();
-      })
-      .catch(error => {
-        reject(new Error(error));
-      })
+        .then(() => {
+          resolve();
+        })
+        .catch(error => {
+          reject(new Error(error));
+        })
     });
   }
 
@@ -127,7 +129,7 @@ export class NaurtRN {
   getIsInAnalyticsSession(): boolean {
     return this.naurt.getIsInAnalyticsSession();
   }
-  
+
   getDeviceUUID(): String | undefined {
     return this.naurt.getDeviceUUID();
   }
@@ -137,9 +139,9 @@ export class NaurtRN {
     return this.naurt.getJourneyUUID();
   }
 
-  getEventEmitter() : NativeEventEmitter {
+  getEventEmitter(): NativeEventEmitter {
     return new NativeEventEmitter(this.naurt);
-    
+
   }
 
   destroy() {
