@@ -14,6 +14,7 @@
     "react-native": "0.68.2"
   },
   "devDependencies": {
+    "@notifee/react-native": "^7.5.0",
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@babel/runtime": "7.17.9",

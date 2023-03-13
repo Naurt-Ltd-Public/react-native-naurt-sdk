@@ -9,6 +9,8 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import NaurtComponent from './NaurtComponent';
 
+
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
