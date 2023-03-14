@@ -122,6 +122,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   private var naurt: Naurt? = null;
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
   private lateinit var naurtValidationListener: NaurtEventListener<NaurtIsValidatedEvent>;
+  private var keepAlive: Boolean = false;
 
 
   private val permissions = arrayOf(
@@ -189,15 +190,18 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   /** Initialise Naurt with a given context  */
   @ReactMethod
-  fun initialiseNaurt(apiKey: String, engineType: String) {
+  fun initialiseNaurt(apiKey: String, engineType: String, keepAlive: Boolean) {
     val naurtEngineType = when (engineType){
       "standalone" -> NaurtEngineType.Standalone
       "service" -> NaurtEngineType.Service
       else -> NaurtEngineType.Service
     }
 
-
     this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, naurtEngineType);
+
+    if (naurtEngineType == NaurtEngineType.Standalone && keepAlive) {
+      this.keepAlive = true;
+    }
 
     if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
       Log.e("naurt", "Naurt does not have all required permissions to start")
@@ -342,6 +346,9 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   }
 
   override fun onHostDestroy() {
-    this.destroy();
+    if (!this.keepAlive) {
+      print("I am going to kill this process now");
+      this.destroy();
+    }
   }
 }

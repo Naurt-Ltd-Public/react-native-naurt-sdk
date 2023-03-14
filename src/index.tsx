@@ -16,11 +16,13 @@ export class NaurtRN {
 
   naurt: NaurtAndroidInterface | NaurtIosInterface;
   apiKey: String;
-  engineType: String;
+  engineType: String | undefined;
+  keepAlive: boolean;
 
-  constructor(apiKey: String, engineType = "standalone") {
+  constructor(apiKey: String, engineType: String | undefined = undefined, keepAlive: boolean = false) {
     this.apiKey = apiKey;
-    this.engineType = engineType
+    this.engineType = engineType;
+    this.keepAlive = keepAlive;
 
     switch (Platform.OS) {
       case "android": {
@@ -80,7 +82,13 @@ export class NaurtRN {
           result['android.permission.ACCESS_FINE_LOCATION'] === 'granted'
 
         if (granted) {
-          naurtSDK.initialiseNaurt(this.apiKey, this.engineType);
+          var engine: String;
+          if (this.engineType == undefined) {
+            engine = "service";
+          } else {
+            engine = this.engineType;
+          }
+          naurtSDK.initialiseNaurt(this.apiKey, engine, this.keepAlive);
           return true;
 
         } else {

@@ -1,6 +1,6 @@
 
 export interface NaurtAndroidInterface {
-    initialiseNaurt(apiKey: String, engineType: String): void;
+    initialiseNaurt(apiKey: String, engineType: String, keepAlive: boolean): void;
 
 
     addListener(eventName: String): void; // *: Only here to conform to type

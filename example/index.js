@@ -1,8 +1,10 @@
-import { AppRegistry } from 'react-native';
+import { AppRegistry, EventEmitter } from 'react-native';
 import App from './src/App';
 import { name as appName } from './app.json';
 import notifee, { AndroidColor } from '@notifee/react-native';
 import { NaurtRN } from 'react-native-naurt-sdk';
+export const locationUpdateEventEmitter = new EventEmitter();
+export const LOCATION_UPDATE_EVENT = 'naurtDidUpdateLocation';
 async function onDisplayNotification() {
     // Create a channel (required for Android)
     const channelId = await notifee.createChannel({
@@ -20,13 +22,7 @@ async function onDisplayNotification() {
                     console.log("Got a null update (maybe indoors, not converged &c)");
                 }
                 else {
-                    // You can parse with JSON
-                    // let naurtData = JSON.parse(event);
-                    // Or you can use the interface
-                    let naurtInterface = event;
-                    console.log(naurtInterface);
-                    // setLatitude(naurtData.latitude);
-                    // setLongitude(naurtData.longitude);
+                    locationUpdateEventEmitter.emit(LOCATION_UPDATE_EVENT, event);
                 }
             });
             naurtEventEmitter.addListener("naurtDidUpdateValidation", (event) => {
@@ -38,7 +34,6 @@ async function onDisplayNotification() {
             // Long running task...
             var x = 0;
             setInterval(() => { x += 1; console.log("Hi, iter " + x); console.log(eventListener); }, 1000);
-            return;
         });
     });
     // Display a notification

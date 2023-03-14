@@ -5,9 +5,11 @@ export class NaurtRN {
     naurt;
     apiKey;
     engineType;
-    constructor(apiKey, engineType = "standalone") {
+    keepAlive;
+    constructor(apiKey, engineType = undefined, keepAlive = false) {
         this.apiKey = apiKey;
         this.engineType = engineType;
+        this.keepAlive = keepAlive;
         switch (Platform.OS) {
             case "android": {
                 let naurtTemp = NativeModules.NaurtAndroid;
@@ -59,7 +61,14 @@ export class NaurtRN {
             let granted = result['android.permission.ACCESS_COARSE_LOCATION'] === 'granted' &&
                 result['android.permission.ACCESS_FINE_LOCATION'] === 'granted';
             if (granted) {
-                naurtSDK.initialiseNaurt(this.apiKey, this.engineType);
+                var engine;
+                if (this.engineType == undefined) {
+                    engine = "service";
+                }
+                else {
+                    engine = this.engineType;
+                }
+                naurtSDK.initialiseNaurt(this.apiKey, engine, this.keepAlive);
                 return true;
             }
             else {
