@@ -319,14 +319,12 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   @ReactMethod
   fun destroy() {
-    print("Destorying!")
     if (this.naurt == null) {
       return;
     }
 
     this.naurt!!.onDestroy();
     this.naurt = null;
-    print("Destroyed")
   }
 
   private fun emitJson(eventName: String, data: String) {
@@ -347,7 +345,6 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   override fun onHostDestroy() {
     if (!this.keepAlive) {
-      print("I am going to kill this process now");
       this.destroy();
     }
   }
