@@ -21,7 +21,7 @@
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
     <service android:name="com.naurt.NaurtService" android:enabled="true" android:exported="true" android:permission="android.permission.ACCESS_FINE_LOCATION" android:foregroundServiceType="location|dataSync" />
-
+    <service android:name="app.notifee.core.ForegroundService" android:enabled="true" android:permission="android.permission.ACCESS_FINE_LOCATION" android:foregroundServiceType="location|dataSync"/>
     <receiver android:name="com.naurt.StopNaurtBroadcastReciever" android:enabled="true" android:exported="true" android:permission="android.permission.ACCESS_FINE_LOCATION">
       <intent-filter>
         <action android:name="stopservice" />

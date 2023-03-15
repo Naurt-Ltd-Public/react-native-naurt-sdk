@@ -9,7 +9,6 @@ import com.facebook.react.bridge.LifecycleEventListener
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule
@@ -123,6 +122,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   private var naurt: Naurt? = null;
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
   private lateinit var naurtValidationListener: NaurtEventListener<NaurtIsValidatedEvent>;
+  private var keepAlive: Boolean = false;
 
 
   private val permissions = arrayOf(
@@ -190,8 +190,19 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   /** Initialise Naurt with a given context  */
   @ReactMethod
-  fun initialiseNaurtService(apiKey: String) {
-    this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, NaurtEngineType.Service);
+  fun initialiseNaurt(apiKey: String, engineType: String, keepAlive: Boolean) {
+    val naurtEngineType = when (engineType){
+      "standalone" -> NaurtEngineType.Standalone
+      "service" -> NaurtEngineType.Service
+      else -> NaurtEngineType.Service
+    }
+
+    this.naurt = Naurt(apiKey, reactApplicationContext.applicationContext, naurtEngineType);
+
+    if (naurtEngineType == NaurtEngineType.Standalone && keepAlive) {
+      this.keepAlive = true;
+    }
+
     if(!hasPermissions(reactApplicationContext.applicationContext, permissions)) {
       Log.e("naurt", "Naurt does not have all required permissions to start")
     }
@@ -210,9 +221,11 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
       val validated = p0.isValidated == NaurtValidationStatus.Valid;
       emitBool("naurtDidUpdateValidation", validated);
     }
-    this.naurt?.on(NaurtEvents.IS_VALIDATED, naurtLocationListener);
-    // TODO: Must be changed!!
-    this.emitBool("naurtDidUpdateValidation", true);
+    this.naurt?.on(NaurtEvents.IS_VALIDATED, naurtValidationListener);
+
+
+//    // TODO: Must be changed!!
+//    this.emitBool("naurtDidUpdateValidation", true);
   }
 
 
@@ -306,14 +319,12 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
   @ReactMethod
   fun destroy() {
-    print("Destorying!")
     if (this.naurt == null) {
       return;
     }
 
     this.naurt!!.onDestroy();
     this.naurt = null;
-    print("Destroyed")
   }
 
   private fun emitJson(eventName: String, data: String) {
@@ -331,8 +342,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   override fun onHostPause() {
     // Not relevant
   }
-  
+
   override fun onHostDestroy() {
-    this.destroy();
+    if (!this.keepAlive) {
+      this.destroy();
+    }
   }
 }

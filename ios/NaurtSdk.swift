@@ -70,7 +70,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         self.naurt!.delegate = self;
         self.locationService.startUpdatingLocation();
         self.sensorService.startUpdatingSensors();
-        print("The delegate is set");
         resolve("Operation was success");
     }
     
@@ -175,7 +174,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
             }
             stringDict[key] = stringValue;
         }
-        print("The json string I got was \(stringDict)");
                 
         do {
             try self.startAnalyticsSession(metadata: stringDict, geofences: nil);
@@ -241,13 +239,11 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
     }
     
     func didChangeValidated(isValidated: Bool) {
-        print("Naurt is validating")
         self.isValidated = isValidated;
         sendEvent(withName: "naurtDidUpdateValidation", body: isValidated);
     }
     
     func didUpdateLocation(naurtPoint: NaurtSDK.NaurtLocation?) {
-        print("Naurt updating location")
         if naurtPoint == nil {
             return;
         }
