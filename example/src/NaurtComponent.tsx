@@ -23,7 +23,6 @@ const ToggleButton = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   
   const toggle = (naurt: NaurtRN) => {
-    naurt.setEmissionFrequency(5.0);
     if (isEnabled) {
       naurt.endAnalyticsSession()
         .then(() => {
