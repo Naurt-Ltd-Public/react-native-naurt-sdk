@@ -152,6 +152,21 @@ export class NaurtRN {
 
   }
 
+  setEmissionFrequency(frequency: number | undefined) {
+    if (frequency == undefined) {
+      this.naurt.setEmissionFrequency(0.0, true);
+    } else {
+      this.naurt.setEmissionFrequency(frequency, false);
+    }
+  }
+
+  activateBatteryOptimisation(activate: Boolean) {
+    if (Platform.OS == "android") {
+      let naurt = this.naurt as NaurtAndroidInterface;
+      naurt.activateBatteryOptimisation(activate);
+    }
+  }
+
   destroy() {
     this.naurt.destroy();
   }

@@ -122,6 +122,14 @@ export class NaurtRN {
     getEventEmitter() {
         return new NativeEventEmitter(this.naurt);
     }
+    setEmissionFrequency(frequency) {
+        if (frequency == undefined) {
+            this.naurt.setEmissionFrequency(0.0, true);
+        }
+        else {
+            this.naurt.setEmissionFrequency(frequency, false);
+        }
+    }
     destroy() {
         this.naurt.destroy();
     }

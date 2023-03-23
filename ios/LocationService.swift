@@ -45,7 +45,6 @@ internal class LocationService: NSObject, CLLocationManagerDelegate, LocationSer
     // Location Manager Methods
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations location: [CLLocation]){
         if let newLocation = location.last {
-            print("New location \(newLocation.coordinate)");
             self.didUpdateLocation(location: newLocation);
         }
         

@@ -14,11 +14,6 @@ import GenericJSON;
 // MARK: RNaurt
 @objc(RNaurt)
 class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorServiceUser {
-    
-    
-    
-    
-    
     var naurt: Naurt? = nil;
     var locationService: LocationService;
     var sensorService: SensorSerivce;
@@ -26,8 +21,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
     var isValidated: Bool = false;
     var isInAnalyticsSession: Bool = false;
     var naurtLocation: NaurtLocation? = nil;
-    var journeyUUID: UUID? = nil;
-    var status: NaurtTrackingStatus = NaurtTrackingStatus.UNKNOWN;
+    var journeyUUID: String? = nil;
     
     override init() {
         self.sensorService = SensorSerivce();
@@ -52,10 +46,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
                 let err = NSError(domain: "iOSInit", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not start the first internal journey"]);
                 reject(String(err.code), err.domain, err);
                 return;
-            case .unknown:
-                let err = NSError(domain: "iOSInit", code: 3, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
-                reject(String(err.code), err.domain, err);
-                return
             @unknown default:
                 let err = NSError(domain: "iOSInit", code: 4, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
                 reject(String(err.code), err.domain, err);
@@ -85,7 +75,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         self.naurt!.newLocationServicePoint(newLocation: newLocation);
     }
     
-    func newSensorServicePoint(newMotion: NaurtSDK.MotionStruct) {
+    func newSensorServicePoint(newMotion: NaurtSDK.MotionContainer) {
         self.naurt!.newSensorServicePoint(newMotion: newMotion);
         self.sensorService.cleanseSensors();
     }
@@ -99,15 +89,11 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         sendEvent(withName: "naurtDidUpdateAnalyticsSession", body: isInSession);
     }
     
-    func didChangeJourneyUuid(journeyUuid: UUID) {
+    func didChangeJourneyUuid(journeyUuid: String) {
         self.journeyUUID = journeyUuid
     }
     
-    func didEnterGeofence(id: UUID) {
-        // Not supported
-    }
-    
-    func startAnalyticsSession(metadata: Encodable, geofences: [NaurtSDK.Geofence]?) throws {
+    func startAnalyticsSession(metadata: NSDictionary, geofences: [NaurtSDK.Geofence]?) throws {
         do {
             try self.naurt!.startAnalyticsSession(metadata: metadata);
         } catch (let error as StartNaurtError) {
@@ -116,9 +102,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
                 throw NSError(domain: "endAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not init your filesystem"]);
             case .alreadyInAnalyticsSession:
                 throw NSError(domain: "endAnalyticsSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "You are already in an analytics session"]);
-            case .notInAnalyticsSession:
-                // TODO: What is the point of this error?
-                throw NSError(domain: "endAnalyticsSession", code: 3);
             case .notValidated:
                 throw NSError(domain: "endAnalyticsSession", code: 4, userInfo: [NSLocalizedDescriptionKey: "You must be validated to start an analytics session"]);
             case .invalidJson:
@@ -129,8 +112,8 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
             case .noSensorService:
                 // TODO: What is the point of this error?
                 throw NSError(domain: "endAnalyticsSession", code: 7, userInfo: [NSLocalizedDescriptionKey: "No sensor service was provided"]);
-            case .unknown:
-                throw NSError(domain: "endAnalyticsSession", code: 8, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
+            case .geofencingRequested:
+                throw NSError(domain: "endAnalyticsSession", code: 8, userInfo: [NSLocalizedDescriptionKey: "Geofencing requested by methods not provided"]);
             @unknown default:
                 throw NSError(domain: "endAnalyticsSession", code: 9, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
             }
@@ -174,9 +157,11 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
             }
             stringDict[key] = stringValue;
         }
+        
+        let nsDict = NSDictionary(dictionary: stringDict);
                 
         do {
-            try self.startAnalyticsSession(metadata: stringDict, geofences: nil);
+            try self.startAnalyticsSession(metadata: nsDict, geofences: nil);
         } catch (let err as NSError){
             reject(String(err.code), String(err.domain), err);
             return
@@ -202,10 +187,6 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
                 let err = NSError(domain: "endAnalyticsSession", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not end the analytics session since there was not one"]);
                 reject(String(err.code), err.domain, err);
                 return
-            case StopNaurtError.uknown:
-                let err = NSError(domain: "endAnalyticsSession", code: 2, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
-                reject(String(err.code), err.domain, err);
-                return;
             default:
                 let err = NSError(domain: "endAnalyticsSession", code: 3, userInfo: [NSLocalizedDescriptionKey: "Unknown error"]);
                 reject(String(err.code), err.domain, err);
@@ -221,13 +202,10 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         
     }
     
-    func newPoi(poi: Encodable) throws {
+    func newPoi(poi: NSDictionary) throws {
         // Not supported
     }
     
-    func errorStream(error: NaurtSDK.NaurtError) {
-        // Not supported
-    }
     
     @objc
     func destroy() {
@@ -247,15 +225,12 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         if naurtPoint == nil {
             return;
         }
-        let np = naurtLocationStructToClass(point: naurtPoint);
         
-        if np == nil {
-            return;
-        }
-        
+        naurtPoint!.courseAccuracy = -1;
+        naurtPoint!.horizontalCovariance = -1;
         do {
-            let jsonData = try JSONEncoder().encode(np!);
-            let jsonString = String(data: jsonData, encoding: .utf8);
+            let jsonData = try JSONEncoder().encode(naurtPoint!);
+            let jsonString = String(data: jsonData, encoding: .utf8)!;
             sendEvent(withName: "naurtDidUpdateLocation", body: jsonString);
         } catch {
             sendEvent(withName: "naurtDidUpdateLocation", body: false);
@@ -270,7 +245,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         if self.naurt == nil {
             return nil;
         }
-        return self.naurt!.deviceUuid;
+        return self.naurt!.getDeviceUUID(); // TODO: Come back to this
     }
     
     @objc
@@ -280,7 +255,7 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
             return nil;
         }
         
-        return ju.uuidString;
+        return ju;
     }
     
     @objc
@@ -301,98 +276,26 @@ class RNaurt: RCTEventEmitter, NaurtDelegate, LocationServiceUser, SensorService
         return self.naurt!.getIsInSession();
     }
     
+    // MARK: Setters
+    
+    @objc func setEmissionFrequency(_ frequency: NSNumber, nul: Bool) {
+        if nul {
+            let nul: Double? = nil;
+            self.naurt?.setEmissionFrequency(frequency: nul);
+        } else {
+            self.naurt?.setEmissionFrequency(frequency: frequency);
+        }
+        
+        
+    }
     
     // MARK: React Native things
-    
-    
-    
     
     @objc override static func requiresMainQueueSetup() -> Bool {
         return false;
     }
     
     override func supportedEvents() -> [String]! {
-        return ["naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession"];
+        return ["naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession", "naurtUserLocationEnabledEvent"];
     }
-}
-
-// TODO: Need to add source to the RNaurtLocation
-public class RNaurtLocation: NSObject, Encodable {
-    public var timestamp: Double;
-    public var longitude: Double;
-    public var latitude: Double;
-    public var altitude: Double;
-    public var verticalAccuracy: Double;
-    public var speed: Double;
-    public var speedAccuracy: Double;
-    public var course: Double;
-    public var courseAccuracy: Double;
-    public var horizontalAccuracy: Double
-    public var horizontalCovariance: Double;
-    
-    init(timestamp: Double, longitude: Double, latitude: Double, altitude: Double, verticalAccuracy: Double, speed: Double, speedAccuracy: Double, course: Double, courseAccuracy: Double, horizontalAccuracy: Double, horizontalCovariance: Double) {
-        self.timestamp = timestamp
-        self.longitude = longitude
-        self.latitude = latitude
-        self.altitude = altitude
-        self.verticalAccuracy = verticalAccuracy
-        self.speed = speed
-        self.speedAccuracy = speedAccuracy
-        self.course = course
-        self.courseAccuracy = courseAccuracy
-        self.horizontalAccuracy = horizontalAccuracy
-        self.horizontalCovariance = horizontalCovariance
-    }
-}
-
-// We have to make this a function and not a constructor of the class since objc needs to be able to understand the class
-// objc CAN NOT understand Swift structs
-private func naurtLocationStructToClass(point: NaurtLocation?) -> RNaurtLocation? {
-    guard let unwrappedPoint = point else {
-        return nil;
-    }
-    
-    return RNaurtLocation(
-        timestamp: unwrappedPoint.timestamp,
-        longitude: unwrappedPoint.longitude,
-        latitude: unwrappedPoint.latitude,
-        altitude: unwrappedPoint.altitude,
-        verticalAccuracy: unwrappedPoint.verticalAccuracy,
-        speed: unwrappedPoint.speed,
-        speedAccuracy: unwrappedPoint.speedAccuracy,
-        course: unwrappedPoint.course,
-        courseAccuracy: unwrappedPoint.courseAccuracy,
-        horizontalAccuracy: unwrappedPoint.horizontalAccuracy,
-        horizontalCovariance: unwrappedPoint.horizontalCovariance);
-}
-
-private func naurtStatusEnumObjc(status: NaurtTrackingStatus) -> RNaurtTrackingStatus {
-    
-    switch status {
-    case NaurtTrackingStatus.FULL:
-        return RNaurtTrackingStatus.FULL;
-    case NaurtTrackingStatus.READY:
-        return RNaurtTrackingStatus.READY;
-    case NaurtTrackingStatus.UNKNOWN:
-        return RNaurtTrackingStatus.UNKNOWN;
-    case NaurtTrackingStatus.AWAITING_VALIDATION:
-        return RNaurtTrackingStatus.AWAITING_VALIDATION;
-    case NaurtTrackingStatus.FAILING_VALIDATION:
-        return RNaurtTrackingStatus.FAILING_VALIDATION;
-    case NaurtTrackingStatus.INVALID_API_KEY:
-        return RNaurtTrackingStatus.INVALID_API_KEY;
-    @unknown default:
-        return RNaurtTrackingStatus.UNKNOWN;
-    }
-}
-
-
-@objc
-public enum RNaurtTrackingStatus: Int {
-    case FULL // Naurt is fully operational, and operating at maximum performance
-    case READY // Naurt is ready to start
-    case UNKNOWN // An unknown error has occurred, please contact Naurt support
-    case AWAITING_VALIDATION // Naurt has been initialised and is now awaiting validation from the Naurt Server
-    case FAILING_VALIDATION // Naurt is faling validation. Check internet connection. Naurt will continue to try validating for you.
-    case INVALID_API_KEY // Your API key is invalid. Naurt will no longer try to validate. Please contact Naurt Support for help with your API Key
 }

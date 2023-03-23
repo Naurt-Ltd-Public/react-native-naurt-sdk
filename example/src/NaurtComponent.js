@@ -13,6 +13,7 @@ let naurtEventEmitter = naurt.getEventEmitter();
 const ToggleButton = () => {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggle = (naurt) => {
+        naurt.setEmissionFrequency(5.0);
         if (isEnabled) {
             naurt.endAnalyticsSession()
                 .then(() => {
@@ -65,6 +66,9 @@ const NaurtComponent = () => {
     });
     naurtEventEmitter.addListener("naurtDidUpdateAnalyticsSession", (event) => {
         setInSession(event);
+    });
+    naurtEventEmitter.addListener("naurtUserLocationEnabledEvent", (event) => {
+        console.log("User setting location services:", event);
     });
     return (React.createElement(View, null,
         React.createElement(Text, null, isValidated ? "Naurt is validated" : "Naurt is not validated"),

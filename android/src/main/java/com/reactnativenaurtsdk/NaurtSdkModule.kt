@@ -122,6 +122,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
   private var naurt: Naurt? = null;
   private lateinit var naurtLocationListener: NaurtEventListener<NaurtNewLocationEvent>;
   private lateinit var naurtValidationListener: NaurtEventListener<NaurtIsValidatedEvent>;
+  private lateinit var naurtLocationEnabledEventListener: NaurtEventListener<NaurtLocationEnabledEvent>;
   private var keepAlive: Boolean = false;
 
 
@@ -133,7 +134,7 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     Manifest.permission.READ_PHONE_STATE,
   )
 
-  val eventIds = arrayOf("naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession")
+  val eventIds = arrayOf("naurtDidUpdateLocation", "naurtDidUpdateValidation", "naurtDidUpdateAnalyticsSession", "naurtUserLocationEnabledEvent")
 
   private val eventEmitter by lazy {
     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
@@ -223,6 +224,10 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
     }
     this.naurt?.on(NaurtEvents.IS_VALIDATED, naurtValidationListener);
 
+    this.naurtLocationEnabledEventListener = NaurtEventListener<NaurtLocationEnabledEvent> { p0 ->
+      emitBool("naurtUserLocationEnabledEvent", p0.enabled);
+    }
+    this.naurt?.on(NaurtEvents.LOCATION_ENABLED, naurtLocationEnabledEventListener);
 
 //    // TODO: Must be changed!!
 //    this.emitBool("naurtDidUpdateValidation", true);
@@ -325,6 +330,24 @@ class NaurtAndroid(reactContext: ReactApplicationContext) : ReactContextBaseJava
 
     this.naurt!!.onDestroy();
     this.naurt = null;
+  }
+
+  @ReactMethod
+  fun setEmissionFrequency(frequency: Double, nul: Boolean) {
+    if (this.naurt == null) {
+      return;
+    }
+    if (nul) {
+      this.naurt!!.setEmissionFrequency(null);
+    } else {
+      this.naurt!!.setEmissionFrequency(frequency);
+    }
+
+  }
+
+  @ReactMethod
+  fun activateBatteryOptimisation(activate: Boolean) {
+    this.naurt?.activateBatteryOptimisation(activate);
   }
 
   private fun emitJson(eventName: String, data: String) {
