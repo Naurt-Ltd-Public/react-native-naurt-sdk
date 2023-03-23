@@ -23,6 +23,7 @@ const ToggleButton = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   
   const toggle = (naurt: NaurtRN) => {
+    naurt.setEmissionFrequency(5.0);
     if (isEnabled) {
       naurt.endAnalyticsSession()
         .then(() => {
@@ -66,8 +67,6 @@ const NaurtComponent = () => {
   const [latitude, setLatitude] = useState("No latitudes yet");
   const [longitude, setLongitude] = useState("No longitudes yet");
 
-
-
   naurtEventEmitter.addListener("naurtDidUpdateLocation", (event) => {
     if (event === false) {
       console.log("Got a null update (maybe indoors, not converged &c)");
@@ -84,8 +83,6 @@ const NaurtComponent = () => {
     }
   });
 
-
-
   naurtEventEmitter.addListener("naurtDidUpdateValidation", (event) => {
     setValidated(event);
   });
@@ -94,7 +91,10 @@ const NaurtComponent = () => {
     setInSession(event);
   });
 
-
+  naurtEventEmitter.addListener("naurtUserLocationEnabledEvent", (event) => {
+    console.log("User setting location services:", event);
+  });
+  
   return (
 
     <View>

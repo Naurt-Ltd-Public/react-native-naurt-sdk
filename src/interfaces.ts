@@ -19,6 +19,9 @@ export interface NaurtAndroidInterface {
     getDeviceUUID(): String | undefined;
     getJourneyUUID(): String | undefined;
     getIsInAnalyticsSession(): boolean;
+
+    setEmissionFrequency(frequency: number, nul: Boolean): void;
+    activateBatteryOptimisation(activate: Boolean): void;
 }
 
 export interface NaurtIosInterface {
@@ -36,4 +39,6 @@ export interface NaurtIosInterface {
     getDeviceUUID(): String | undefined;
     getJourneyUUID(): String | undefined;
     getIsInAnalyticsSession(): boolean;
+
+    setEmissionFrequency(frequency: number, nul: Boolean): void;
 }

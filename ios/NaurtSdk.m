@@ -20,4 +20,6 @@ RCT_EXTERN_METHOD(getDeviceUUID)
 RCT_EXTERN_METHOD(getJourneyUUID)
 RCT_EXTERN_METHOD(getIsInAnalyticsSession)
 
+RCT_EXTERN_METHOD(setEmissionFrequency: (nonnull NSNumber *)frequency nul:(BOOL)nul)
+
 @end

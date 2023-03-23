@@ -90,9 +90,9 @@ public class MotionWrapper {
         return out;
     }
     
-    public func asStruct() -> NaurtSDK.MotionStruct? {
+    public func asStruct() -> NaurtSDK.MotionContainer? {
         if self.isReady() {
-            return NaurtSDK.MotionStruct(accel: self.accel!, gyro: self.gyro!, mag: self.mag!, timeS: self.timeS!);
+            return NaurtSDK.MotionContainer(accel: self.accel!, gyro: self.gyro!, mag: self.mag!, timeS: self.timeS!);
         } else {
             return nil;
         }
